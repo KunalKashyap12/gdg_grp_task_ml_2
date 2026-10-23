@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: florascan-crop-disease-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: NO_ALBUMENTATIONS_UPDATE
+        value: "1"

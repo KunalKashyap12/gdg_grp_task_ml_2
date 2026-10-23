@@ -45,3 +45,4 @@ test_dl/
 # Models
 models/*.pt
 models/*.onnx
+!models/crop_disease_model.onnx
