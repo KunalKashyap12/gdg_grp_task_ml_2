@@ -185,6 +185,33 @@ def test_v1_predict_non_leaf_wallpaper_rejected(client):
     assert data["message"] == "Not a leaf. Please upload a new image."
 
 
+def test_v1_predict_dark_graphic_wallpaper_and_portrait_rejected(client):
+    """
+    Ensures dark graphic wallpapers with red lettering/faces (e.g. sports wallpapers)
+    are strictly rejected as not_a_leaf, avoiding false foliar disease diagnoses.
+    """
+    import numpy as np
+    # Synthetic dark wallpaper: black background with red typography & warm skin tone patch (zero green)
+    img_arr = np.zeros((224, 224, 3), dtype=np.uint8)
+    # Red graphic text region:
+    img_arr[30:70, 30:190] = [180, 20, 20]
+    # Human face skin-tone patch (warm tone: R~210, G~150, B~120):
+    img_arr[100:180, 80:150] = [210, 150, 120]
+    
+    buf = io.BytesIO()
+    Image.fromarray(img_arr).save(buf, format="JPEG")
+    img_bytes = buf.getvalue()
+
+    files = {"image": ("verstappen_wallpaper.jpg", img_bytes, "image/jpeg")}
+    res = client.post("/api/v1/predict", files=files)
+
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "not_a_leaf"
+    assert data["is_leaf"] is False
+    assert data["message"] == "Not a leaf. Please upload a new image."
+
+
 def test_v1_predict_with_valid_crop_hint(client):
     img_bytes = create_image_bytes(color=(30, 140, 30))
     files = {"image": ("leaf.jpg", img_bytes, "image/jpeg")}

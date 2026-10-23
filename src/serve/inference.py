@@ -166,6 +166,14 @@ class CropDiseaseInferenceEngine:
             if float(np.std(small_arr)) < 3.0:
                 return False, "low_confidence", LOW_CONF_MESSAGE
 
+            r = small_arr[:, :, 0].astype(np.float32)
+            g = small_arr[:, :, 1].astype(np.float32)
+            b = small_arr[:, :, 2].astype(np.float32)
+
+            # Excess Green index (ExG = 2G - R - B) standard in foliar ag-vision
+            exg = 2.0 * g - r - b
+            exg_fraction = float(np.mean(exg > 15.0))
+
             hsv = np.array(Image.fromarray(small_arr).convert("HSV"))
             h, s, v = hsv[:, :, 0], hsv[:, :, 1], hsv[:, :, 2]
 
@@ -176,18 +184,49 @@ class CropDiseaseInferenceEngine:
             green_mask = (h >= 35) & (h <= 115) & (s >= 18) & (v >= 18)
             yellow_mask = (h >= 22) & (h < 35) & (s >= 20) & (v >= 20)
             necrotic_mask = (h >= 5) & (h < 22) & (s >= 20) & (v >= 15) & (v <= 215)
-            foliar_mask = green_mask | yellow_mask | necrotic_mask
 
-            foliar_fraction = float(np.mean(foliar_mask))
             green_fraction = float(np.mean(green_mask))
+            yellow_fraction = float(np.mean(yellow_mask))
+            vegetative_fraction = green_fraction + yellow_fraction
             low_sat_fraction = float(np.mean(s < 18))
 
-            # Technical line-drawing / monochromatic blueprint / wallpaper rejection:
+            # Skin tone detection in YCbCr color space (detects human portraits / faces / selfies)
+            cb = 128.0 - 0.168736 * r - 0.331264 * g + 0.5 * b
+            cr = 128.0 + 0.5 * r - 0.418688 * g - 0.081312 * b
+            skin_mask = (cb >= 77) & (cb <= 127) & (cr >= 133) & (cr <= 173) & (s >= 20)
+            skin_fraction = float(np.mean(skin_mask))
+
+            # Dark background proportion (e.g. dark digital wallpapers, dark graphic frames)
+            dark_mask = (v < 35)
+            dark_fraction = float(np.mean(dark_mask))
+
+            # 1. Botanical Vegetation Anchor Test:
+            # A living crop leaf MUST possess plant tissue (chlorophyll green or chlorotic yellow).
+            # Necrotic lesions only exist ON plant leaves. Without vegetative tissue, necrotic colors
+            # are non-botanical artifacts (human skin, red graphic text, reddish clothing, paint, etc.).
+            if vegetative_fraction < 0.03 and exg_fraction < 0.03:
+                return False, "not_a_leaf", "Not a leaf. Please upload a new image."
+
+            # 2. Human Portrait / Face / Selfie Filter:
+            if skin_fraction > 0.08 and green_fraction < 0.05:
+                return False, "not_a_leaf", "Not a leaf. Please upload a new image."
+
+            # 3. Dark Wallpaper / Graphic Rejection:
+            if dark_fraction > 0.50 and vegetative_fraction < 0.08:
+                return False, "not_a_leaf", "Not a leaf. Please upload a new image."
+
+            # 4. Technical line-drawing / monochromatic blueprint / wallpaper rejection:
             # High proportion of desaturated pixels (>70%) without sufficient foliar green
             if low_sat_fraction > 0.70 and green_fraction < 0.04:
                 return False, "not_a_leaf", "Not a leaf. Please upload a new image."
 
-            # Non-botanical objects with negligible foliar tissue (cars, documents, clothing, skies)
+            # 5. Non-botanical objects with negligible foliar tissue
+            # Necrotic tissue only contributes when anchored to a vegetative leaf
+            foliar_mask = green_mask | yellow_mask
+            if vegetative_fraction >= 0.02:
+                foliar_mask = foliar_mask | necrotic_mask
+
+            foliar_fraction = float(np.mean(foliar_mask))
             if foliar_fraction < 0.04:
                 return False, "not_a_leaf", "Not a leaf. Please upload a new image."
 
@@ -341,7 +380,13 @@ class CropDiseaseInferenceEngine:
             ]
         else:
             final_conf = float(calibrated_probs[best_idx])
-            is_low_conf = (final_conf < self.threshold) or (entropy > self.entropy_threshold)
+            sorted_cal = np.sort(calibrated_probs)[::-1]
+            cal_margin = float(sorted_cal[0] - sorted_cal[1]) if len(sorted_cal) > 1 else 1.0
+            is_low_conf = (
+                (final_conf < self.threshold) or
+                (entropy > self.entropy_threshold) or
+                (cal_margin < self.margin_threshold)
+            )
             # Top-k items from global calibrated distribution in strict descending order
             top_k_count = min(max(1, top_k), self.num_classes)
             top_k_items = []
