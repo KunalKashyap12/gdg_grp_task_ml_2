@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FloraScan AI — Crop Leaf Disease Diagnostic System</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            agri: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @keyframes scan {
+      0% { top: 0%; opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { top: 100%; opacity: 0.8; }
+    }
+    .scanner-beam {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(34,197,94,0) 0%, rgba(34,197,94,1) 50%, rgba(34,197,94,0) 100%);
+      box-shadow: 0 0 12px 2px rgba(34, 197, 94, 0.7);
+      animation: scan 2s ease-in-out infinite alternate;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(229, 231, 235, 0.8);
+    }
+    .dark .glass-card {
+      background: rgba(23, 37, 28, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #report-panel, #report-panel * {
+        visibility: visible;
+      }
+      #report-panel {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen font-sans antialiased transition-colors duration-200">
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-agri-600 to-agri-400 flex items-center justify-center text-white shadow-md shadow-agri-500/20">
+          <i data-lucide="sprout" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-agri-800 via-agri-600 to-agri-500 dark:from-agri-200 dark:to-agri-400 bg-clip-text text-transparent">
+              FloraScan AI
+            </span>
+            <span class="text-xs px-2 py-0.5 font-semibold rounded-full bg-agri-100 dark:bg-agri-950/80 text-agri-700 dark:text-agri-300 border border-agri-200 dark:border-agri-800">
+              v1.0.0
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
+            Calibrated Edge Crop Foliar Pathology & Diagnostic System
+          </p>
+        </div>
+      </div>
+
+      <!-- STATUS & LINKS -->
+      <div class="flex items-center space-x-3 sm:space-x-4">
+        <!-- Live API status indicator -->
+        <div id="api-status-badge" class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="api-status-text">ONNX Inference Active</span>
+        </div>
+
+        <a href="/docs" target="_blank" class="no-print inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition">
+          <i data-lucide="code" class="w-3.5 h-3.5"></i>
+          <span>Swagger Docs</span>
+        </a>
+
+        <!-- Dark/Light Mode Toggle -->
+        <button id="theme-toggle" class="no-print p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Toggle color theme">
+          <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APPLICATION LAYOUT -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    
+    <!-- SUBHEADER / MODEL SPECS BAR -->
+    <div class="mb-6 p-3.5 rounded-2xl glass-card flex flex-wrap items-center justify-between gap-3 text-xs shadow-sm">
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-slate-600 dark:text-slate-300">
+        <div class="flex items-center space-x-1.5">
+          <i data-lucide="cpu" class="w-4 h-4 text-agri-600 dark:text-agri-400"></i>
+          <span>Architecture: <strong class="font-semibold text-slate-800 dark:text-slate-100">MobileNetV3-Large (ONNX)</strong></span>
+        </div>
+        <div class="flex items-center space-x-1.5">
+          <i data-lucide="layers" class="w-4 h-4 text-agri-600 dark:text-agri-400"></i>
+          <span>Registry: <strong class="font-semibold text-slate-800 dark:text-slate-100">37 Classes · 10 Botanical Crops</strong></span>
+        </div>
+        <div class="flex items-center space-x-1.5">
+          <i data-lucide="sliders" class="w-4 h-4 text-agri-600 dark:text-agri-400"></i>
+          <span>Calibration: <strong class="font-semibold text-slate-800 dark:text-slate-100 font-mono">T = 0.4792</strong></span>
+        </div>
+        <div class="flex items-center space-x-1.5">
+          <i data-lucide="shield-check" class="w-4 h-4 text-agri-600 dark:text-agri-400"></i>
+          <span>Reject Cutoff: <strong class="font-semibold text-slate-800 dark:text-slate-100 font-mono">θ = 74.0%</strong></span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 text-slate-500 dark:text-slate-400">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-agri-500"></span>
+        <span>Sub-5ms CPU Latency</span>
+      </div>
+    </div>
+
+    <!-- 2-COLUMN WORKSPACE: LEFT UPLOAD / RIGHT DIAGNOSTIC REPORT -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      
+      <!-- ======================================================== -->
+      <!-- LEFT COLUMN: IMAGE UPLOAD & INTERACTIVE CAPTURE STUDIO  -->
+      <!-- ======================================================== -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- UPLOAD CARD -->
+        <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800/80 relative">
+          
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-bold text-base text-slate-800 dark:text-slate-100 flex items-center space-x-2">
+              <i data-lucide="camera" class="w-5 h-5 text-agri-600 dark:text-agri-400"></i>
+              <span>Foliar Leaf Photo Input</span>
+            </h2>
+            <span id="preview-chip" class="hidden text-xs font-medium px-2 py-0.5 rounded-md bg-agri-50 dark:bg-agri-950 text-agri-700 dark:text-agri-300 border border-agri-200 dark:border-agri-800">
+              Ready
+            </span>
+          </div>
+
+          <!-- DROPZONE / PREVIEW AREA -->
+          <div id="drop-zone" class="group relative rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-agri-500 dark:hover:border-agri-400 bg-slate-50/50 dark:bg-slate-900/50 p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 min-h-[260px] overflow-hidden">
+            
+            <!-- File input hidden -->
+            <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" class="hidden">
+
+            <!-- Empty Dropzone State -->
+            <div id="drop-prompt" class="space-y-3 flex flex-col items-center justify-center py-4">
+              <div class="w-14 h-14 rounded-full bg-agri-50 dark:bg-agri-950/70 border border-agri-200 dark:border-agri-800 flex items-center justify-center text-agri-600 dark:text-agri-400 group-hover:scale-110 transition-transform">
+                <i data-lucide="upload-cloud" class="w-7 h-7"></i>
+              </div>
+              <div class="space-y-1">
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                  Drag and drop leaf image here
+                </p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">
+                  or <span class="text-agri-600 dark:text-agri-400 font-medium underline">browse from your computer</span>
+                </p>
+              </div>
+              <div class="text-[11px] text-slate-400 dark:text-slate-500 flex items-center space-x-2 pt-2">
+                <span>JPEG · PNG · WebP</span>
+                <span>•</span>
+                <span>Max 5 MB</span>
+                <span>•</span>
+                <span>Close-up single leaf</span>
+              </div>
+            </div>
+
+            <!-- Active Image Preview Container (Hidden initially) -->
+            <div id="preview-wrapper" class="hidden relative w-full h-full flex flex-col items-center">
+              <div class="relative w-full max-h-[300px] rounded-lg overflow-hidden flex items-center justify-center bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-slate-800">
+                <img id="image-preview" src="" alt="Uploaded Leaf Preview" class="max-h-[290px] w-auto object-contain rounded-lg shadow-sm">
+                
+                <!-- Animated Scanning Beam during inference -->
+                <div id="scanner-line" class="hidden scanner-beam"></div>
+              </div>
+
+              <!-- Image Metadata Bar -->
+              <div id="image-meta" class="w-full mt-3 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono bg-slate-100/70 dark:bg-slate-800/70 px-3 py-1.5 rounded-lg">
+                <span id="meta-filename" class="truncate max-w-[150px]">leaf.jpg</span>
+                <span id="meta-resolution">224×224 px</span>
+                <span id="meta-size">0 KB</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- BOTANICAL CROP CONTEXT SELECTOR -->
+          <div class="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+            <label for="crop-select" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center justify-between">
+              <span class="flex items-center space-x-1.5">
+                <i data-lucide="tag" class="w-3.5 h-3.5 text-agri-600"></i>
+                <span>Botanical Crop Context</span>
+              </span>
+              <span class="text-[10px] text-slate-400 font-normal">Optional conditioning</span>
+            </label>
+            <select id="crop-select" class="w-full text-xs font-semibold rounded-lg p-2.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-agri-500 focus:outline-none transition">
+              <option value="auto">🔍 Auto-Detect Crop (All 10 Species)</option>
+              <option value="Apple">🍏 Apple (Malus domestica)</option>
+              <option value="Cherry">🍒 Cherry (Prunus avium)</option>
+              <option value="Grape">🍇 Grape (Vitis vinifera)</option>
+              <option value="Maize">🌽 Maize / Corn (Zea mays)</option>
+              <option value="Peach">🍑 Peach (Prunus persica)</option>
+              <option value="Pepper">🫑 Pepper (Capsicum annuum)</option>
+              <option value="Potato">🥔 Potato (Solanum tuberosum)</option>
+              <option value="Rice">🌾 Rice / Paddy (Oryza sativa)</option>
+              <option value="Strawberry">🍓 Strawberry (Fragaria)</option>
+              <option value="Tomato">🍅 Tomato (Solanum lycopersicum)</option>
+            </select>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">
+              Select your tree/crop if known to eliminate cross-species field ambiguity.
+            </p>
+          </div>
+
+          <!-- PRIMARY ACTION BUTTONS -->
+          <div class="mt-4 flex items-center space-x-3">
+            <button id="btn-predict" disabled class="flex-1 py-3 px-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-agri-600 to-agri-500 hover:from-agri-700 hover:to-agri-600 shadow-lg shadow-agri-600/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center space-x-2 transition-all">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span id="btn-predict-text">Run Diagnostic AI</span>
+            </button>
+            <button id="btn-clear" class="hidden py-3 px-4 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-slate-200 dark:border-slate-700 transition flex items-center justify-center" title="Clear image">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- ERROR NOTICE BOX -->
+          <div id="upload-error" class="hidden mt-3 p-3 rounded-xl text-xs bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900 flex items-start space-x-2">
+            <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
+            <span id="upload-error-msg">Failed to process image file.</span>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+
+      <!-- ======================================================== -->
+      <!-- RIGHT COLUMN: INTERACTIVE DIAGNOSTIC REPORT PANEL       -->
+      <!-- ======================================================== -->
+      <div id="report-panel" class="lg:col-span-7 space-y-6">
+
+        <!-- 1. EMPTY PLACEHOLDER STATE (Shown when no image analyzed) -->
+        <div id="state-empty" class="glass-card rounded-2xl p-8 sm:p-12 text-center border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex flex-col items-center justify-center min-h-[480px]">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-agri-100 to-agri-50 dark:from-agri-950 dark:to-slate-900 border border-agri-200 dark:border-agri-800 flex items-center justify-center text-agri-600 dark:text-agri-400 mb-5 shadow-sm">
+            <i data-lucide="clipboard-check" class="w-10 h-10"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">
+            Awaiting Foliar Photograph
+          </h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 max-w-md mb-8">
+            Upload a close-up photo of a single plant leaf on the left panel to generate a full pathological diagnostic report.
+          </p>
+
+          <!-- 4-STEP PIPELINE OVERVIEW -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-xl text-left">
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <span class="text-xs font-mono font-bold text-agri-600 dark:text-agri-400">01</span>
+              <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mt-1">Image Ingestion</p>
+              <p class="text-[11px] text-slate-400">JPEG, PNG, WebP</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <span class="text-xs font-mono font-bold text-agri-600 dark:text-agri-400">02</span>
+              <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mt-1">ONNX Runtime</p>
+              <p class="text-[11px] text-slate-400">Sub-5ms inference</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <span class="text-xs font-mono font-bold text-agri-600 dark:text-agri-400">03</span>
+              <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mt-1">T-Calibration</p>
+              <p class="text-[11px] text-slate-400">T=0.4792 scaling</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <span class="text-xs font-mono font-bold text-agri-600 dark:text-agri-400">04</span>
+              <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mt-1">OOD Reject</p>
+              <p class="text-[11px] text-slate-400">θ = 74.0% cutoff</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. ANALYZING / LOADING SKELETON STATE -->
+        <div id="state-loading" class="hidden glass-card rounded-2xl p-8 sm:p-12 text-center border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex flex-col items-center justify-center min-h-[480px]">
+          <div class="relative w-16 h-16 mb-5">
+            <div class="absolute inset-0 rounded-full border-4 border-agri-200 dark:border-agri-950 animate-ping opacity-25"></div>
+            <div class="w-16 h-16 rounded-full border-4 border-agri-600 border-t-transparent animate-spin flex items-center justify-center">
+              <i data-lucide="sparkles" class="w-6 h-6 text-agri-600 animate-pulse"></i>
+            </div>
+          </div>
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1">
+            Running Foliar Diagnostics...
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Preprocessing image tensor to 224×224 · Evaluating MobileNetV3 ONNX graph · Computing calibrated posterior probabilities
+          </p>
+        </div>
+
+        <!-- 3. POPULATED DIAGNOSTIC REPORT (Shown when result is available) -->
+        <div id="state-report" class="hidden space-y-6">
+
+          <!-- REPORT HEADER & STATUS BANNER -->
+          <div id="banner-status" class="p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+            <div class="flex items-center space-x-3">
+              <div id="banner-icon-box" class="w-10 h-10 rounded-xl flex items-center justify-center">
+                <i id="banner-icon" data-lucide="check-circle" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <h3 id="banner-title" class="text-base font-bold">
+                    High Confidence Diagnosis
+                  </h3>
+                  <span id="banner-tag" class="text-xs px-2 py-0.5 rounded-full font-semibold">
+                    ACCEPTED
+                  </span>
+                </div>
+                <p id="banner-subtitle" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
+                  Identification meets precision confidence safety cutoff (θ ≥ 74.0%).
+                </p>
+
+                <!-- 1-Click Disambiguation Box on Low Confidence -->
+                <div id="disambiguation-container" class="hidden mt-3 pt-3 border-t border-amber-200/80 dark:border-amber-900/60 w-full">
+                  <span class="text-xs font-bold text-amber-950 dark:text-amber-200 block mb-2 flex items-center gap-1.5">
+                    <i data-lucide="help-circle" class="w-4 h-4 text-amber-600"></i>
+                    <span>Ambiguous Host Species: Did you mean one of these crops? Click to resolve:</span>
+                  </span>
+                  <div id="disambiguation-pills" class="flex flex-wrap gap-2"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action buttons (Print & Copy) -->
+            <div class="flex items-center space-x-2 no-print">
+              <button onclick="copyReportSummary()" class="p-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition flex items-center space-x-1" title="Copy diagnosis summary">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">Copy</span>
+              </button>
+              <button onclick="window.print()" class="p-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition flex items-center space-x-1" title="Print or save PDF">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">Print / PDF</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- NOT A LEAF REJECTION VIEW -->
+          <div id="not-a-leaf-view" class="hidden glass-card rounded-2xl p-8 text-center border border-rose-200 dark:border-rose-900/60 bg-rose-50/50 dark:bg-rose-950/20 shadow-sm space-y-4">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center text-rose-600 dark:text-rose-400 shadow-inner">
+              <i data-lucide="image-off" class="w-8 h-8"></i>
+            </div>
+            <div class="space-y-2">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-200 text-rose-800 dark:bg-rose-900 dark:text-rose-200">
+                Out of Domain / Non-Botanical Image
+              </span>
+              <h3 id="not-a-leaf-title" class="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
+                Not a leaf. Please upload a new image.
+              </h3>
+              <p id="not-a-leaf-desc" class="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
+                The uploaded image lacks recognizable plant foliage characteristics (such as chlorophyll/foliar color bands or plant cellular tissue). Disease diagnosis and pesticide recommendations are withheld to protect your crops.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-rose-200/60 dark:border-rose-900/40 flex flex-wrap justify-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+              <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Supported: 14 Agricultural Crops</span>
+              <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> 38 Plant Pathology Classes</span>
+            </div>
+          </div>
+
+          <!-- DIAGNOSIS CARDS WRAPPER (CONTAINER HIDDEN WHEN REJECTED AS NON-LEAF) -->
+          <div id="diagnosis-cards" class="space-y-6">
+
+          <!-- PRIMARY FINDING CARD -->
+          <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800/80">
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="flex items-center space-x-2 mb-1.5">
+                  <span id="crop-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-agri-100 dark:bg-agri-950 text-agri-800 dark:text-agri-300 border border-agri-200 dark:border-agri-800">
+                    Tomato
+                  </span>
+                  <span id="healthy-badge" class="hidden text-xs px-2 py-0.5 rounded-md font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                    Healthy Plant
+                  </span>
+                </div>
+                <h2 id="disease-name" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight">
+                  Early Blight
+                </h2>
+                <p id="pathology-label" class="text-xs font-mono text-slate-400 dark:text-slate-500 mt-0.5">
+                  Tomato___Early_blight
+                </p>
+              </div>
+
+              <!-- Big Confidence Percentage Badge -->
+              <div class="text-right">
+                <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Calibrated Conf.</span>
+                <div class="flex items-baseline justify-end space-x-1">
+                  <span id="confidence-percentage" class="text-3xl sm:text-4xl font-extrabold font-mono text-agri-600 dark:text-agri-400">
+                    95.1%
+                  </span>
+                </div>
+                <span id="certainty-pill" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-agri-100 text-agri-700 dark:bg-agri-950 dark:text-agri-300">
+                  HIGH CERTAINTY
+                </span>
+              </div>
+            </div>
+
+            <!-- Disease Description -->
+            <p id="disease-desc" class="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
+              Concentric ring target-like brown necrotic spots caused by Alternaria solani.
+            </p>
+
+            <!-- Temperature Calibrated Confidence Meter -->
+            <div class="mt-5 space-y-2">
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-slate-600 dark:text-slate-400 flex items-center space-x-1">
+                  <span>Confidence Gauge</span>
+                  <span class="text-[10px] text-slate-400 font-mono">(T=0.4792)</span>
+                </span>
+                <span class="text-slate-500 font-mono text-[11px]">Threshold Cutoff: 74.0%</span>
+              </div>
+              <div class="relative w-full h-3 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                <div id="confidence-bar" class="h-full rounded-full bg-gradient-to-r from-agri-500 to-agri-400 transition-all duration-700 ease-out" style="width: 85%;"></div>
+                <!-- Cutoff Marker line at 74% -->
+                <div class="absolute top-0 bottom-0 w-0.5 bg-slate-700 dark:bg-slate-300 z-10 opacity-70" style="left: 74%;" title="Safety Reject Cutoff (74%)"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                <span>0%</span>
+                <span class="text-amber-600 dark:text-amber-400 font-semibold">θ = 74%</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TWO-STAGE HIERARCHICAL DIAGNOSTIC PIPELINE CARD -->
+          <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800/80">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
+                <i data-lucide="git-branch" class="w-4 h-4 text-agri-600"></i>
+                <span>Hierarchical Two-Stage Classification Pipeline</span>
+              </h3>
+              <span id="hier-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                TWO-STAGE ACTIVE
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- STAGE 1: Leaf Species Identification -->
+              <div class="p-4 rounded-xl bg-agri-50/60 dark:bg-agri-950/20 border border-agri-200 dark:border-agri-800/60">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-[11px] font-bold uppercase text-agri-700 dark:text-agri-300 flex items-center space-x-1">
+                    <span>🍃 Stage 1: Leaf Species</span>
+                  </span>
+                  <span id="stage1-leaf-conf" class="text-xs font-mono font-bold text-agri-700 dark:text-agri-300">--%</span>
+                </div>
+                <div class="flex items-center space-x-2 mt-1">
+                  <span id="stage1-leaf-crop" class="text-lg font-extrabold text-slate-900 dark:text-slate-50">Crop Leaf</span>
+                  <span id="stage1-leaf-pill" class="text-[10px] px-2 py-0.5 rounded font-semibold bg-agri-200 text-agri-900 dark:bg-agri-900 dark:text-agri-200">IDENTIFIED</span>
+                </div>
+                <div id="stage1-leaf-candidates" class="mt-2 text-[11px] text-slate-500 dark:text-slate-400 flex flex-wrap gap-1">
+                  <!-- Alternative candidate pills rendered via JS -->
+                </div>
+              </div>
+
+              <!-- STAGE 2: Conditional Foliar Disease Diagnosis -->
+              <div class="p-4 rounded-xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800/60">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-[11px] font-bold uppercase text-blue-700 dark:text-blue-300 flex items-center space-x-1">
+                    <span>🔬 Stage 2: Foliar Pathology</span>
+                  </span>
+                  <span id="stage2-disease-conf" class="text-xs font-mono font-bold text-blue-700 dark:text-blue-300">--%</span>
+                </div>
+                <div class="flex items-center space-x-2 mt-1">
+                  <span id="stage2-disease-title" class="text-lg font-extrabold text-slate-900 dark:text-slate-50">Condition</span>
+                  <span id="stage2-disease-pill" class="text-[10px] px-2 py-0.5 rounded font-semibold bg-blue-200 text-blue-900 dark:bg-blue-900 dark:text-blue-200">DIAGNOSED</span>
+                </div>
+                <p id="stage2-disease-breakdown" class="mt-2 text-[11px] text-slate-500 dark:text-slate-400">
+                  Total foliar pathology: --% · Healthy baseline: --%
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- TOP-3 DIFFERENTIAL DIAGNOSTICS BREAKDOWN -->
+          <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800/80">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center space-x-1.5">
+              <i data-lucide="bar-chart-2" class="w-4 h-4 text-agri-600"></i>
+              <span>Differential Diagnostics Candidates (Top-3)</span>
+            </h3>
+
+            <div id="top-k-container" class="space-y-3">
+              <!-- Dynamically rendered via JS -->
+            </div>
+          </div>
+
+          <!-- TAILORED AGRONOMIC GUIDANCE & INTERVENTIONS -->
+          <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800/80">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center space-x-1.5">
+              <i data-lucide="shield" class="w-4 h-4 text-agri-600"></i>
+              <span>Agronomic Action Plan & Management Protocol</span>
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="guidance-grid">
+              
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
+                <div class="flex items-center space-x-2 text-agri-700 dark:text-agri-300 font-semibold text-xs mb-1.5">
+                  <i data-lucide="scissors" class="w-4 h-4"></i>
+                  <span>Immediate Cultural Practices</span>
+                </div>
+                <p id="guidance-cultural" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Prune infected lower foliage immediately and sanitize pruning shears with 70% alcohol.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
+                <div class="flex items-center space-x-2 text-agri-700 dark:text-agri-300 font-semibold text-xs mb-1.5">
+                  <i data-lucide="droplet" class="w-4 h-4"></i>
+                  <span>Irrigation & Humidity</span>
+                </div>
+                <p id="guidance-irrigation" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Avoid overhead sprinkler irrigation. Apply drip irrigation directly at the soil surface to minimize leaf moisture duration.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
+                <div class="flex items-center space-x-2 text-agri-700 dark:text-agri-300 font-semibold text-xs mb-1.5">
+                  <i data-lucide="flask-round" class="w-4 h-4"></i>
+                  <span>Treatment Options</span>
+                </div>
+                <p id="guidance-treatment" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Apply approved copper-based organic fungicides or bio-fungicide (Bacillus subtilis) at first symptom onset.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
+                <div class="flex items-center space-x-2 text-agri-700 dark:text-agri-300 font-semibold text-xs mb-1.5">
+                  <i data-lucide="repeat" class="w-4 h-4"></i>
+                  <span>Long-term Prevention</span>
+                </div>
+                <p id="guidance-prevention" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Practice 3-to-4 year solanaceous crop rotation. Plant disease-resistant certified hybrid cultivars.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          </div><!-- END DIAGNOSIS CARDS WRAPPER -->
+
+          <!-- SYSTEM TELEMETRY STRIP -->
+          <div class="p-4 rounded-xl bg-slate-100/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-slate-500">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i>
+              <span>Inference: <strong id="telemetry-latency" class="text-slate-800 dark:text-slate-200">4.68 ms</strong></span>
+            </div>
+            <div>
+              <span>Model: <strong id="telemetry-version" class="text-slate-800 dark:text-slate-200">1.0.0 (ONNX CPU)</strong></span>
+            </div>
+            <div>
+              <span>Threshold: <strong class="text-slate-800 dark:text-slate-200">θ = 0.74</strong></span>
+            </div>
+          </div>
+
+          <!-- MANDATORY AGRICULTURAL DISCLAIMER ALERT -->
+          <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-amber-900 dark:text-amber-200 text-xs flex items-start space-x-3">
+            <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="font-bold block mb-0.5">Mandatory Agricultural & Safety Disclaimer:</strong>
+              <p id="disclaimer-text">
+                AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold shadow-xl flex items-center space-x-2">
+      <i data-lucide="check" class="w-4 h-4 text-agri-400"></i>
+      <span id="toast-msg">Notification message</span>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT CLIENT LOGIC -->
+  <script>
+    // State Variables
+    let currentImageBlob = null;
+    let currentImageFilename = null;
+    let lastPredictionResult = null;
+    let supportedClassesRegistry = null;
+
+    // DOM Elements
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const dropPrompt = document.getElementById('drop-prompt');
+    const previewWrapper = document.getElementById('preview-wrapper');
+    const imagePreview = document.getElementById('image-preview');
+    const scannerLine = document.getElementById('scanner-line');
+    const previewChip = document.getElementById('preview-chip');
+    const metaFilename = document.getElementById('meta-filename');
+    const metaResolution = document.getElementById('meta-resolution');
+    const metaSize = document.getElementById('meta-size');
+    const btnPredict = document.getElementById('btn-predict');
+    const btnPredictText = document.getElementById('btn-predict-text');
+    const btnClear = document.getElementById('btn-clear');
+    const uploadError = document.getElementById('upload-error');
+    const uploadErrorMsg = document.getElementById('upload-error-msg');
+    const cropSelect = document.getElementById('crop-select');
+
+    // Report States
+    const stateEmpty = document.getElementById('state-empty');
+    const stateLoading = document.getElementById('state-loading');
+    const stateReport = document.getElementById('state-report');
+
+    // Report Elements
+    const bannerStatus = document.getElementById('banner-status');
+    const bannerIconBox = document.getElementById('banner-icon-box');
+    const bannerIcon = document.getElementById('banner-icon');
+    const bannerTitle = document.getElementById('banner-title');
+    const bannerTag = document.getElementById('banner-tag');
+    const bannerSubtitle = document.getElementById('banner-subtitle');
+    const cropBadge = document.getElementById('crop-badge');
+    const healthyBadge = document.getElementById('healthy-badge');
+    const diseaseName = document.getElementById('disease-name');
+    const pathologyLabel = document.getElementById('pathology-label');
+    const diseaseDesc = document.getElementById('disease-desc');
+    const confidencePercentage = document.getElementById('confidence-percentage');
+    const certaintyPill = document.getElementById('certainty-pill');
+    const confidenceBar = document.getElementById('confidence-bar');
+    const topKContainer = document.getElementById('top-k-container');
+    const telemetryLatency = document.getElementById('telemetry-latency');
+    const telemetryVersion = document.getElementById('telemetry-version');
+    const disclaimerText = document.getElementById('disclaimer-text');
+
+    // Guidance Elements
+    const guidanceCultural = document.getElementById('guidance-cultural');
+    const guidanceIrrigation = document.getElementById('guidance-irrigation');
+    const guidanceTreatment = document.getElementById('guidance-treatment');
+    const guidancePrevention = document.getElementById('guidance-prevention');
+
+    // Crop Emoji Registry
+    const cropEmojis = {
+      'Apple': '🍏',
+      'Cherry': '🍒',
+      'Grape': '🍇',
+      'Maize': '🌽',
+      'Peach': '🍑',
+      'Pepper': '🫑',
+      'Pepper bell': '🫑',
+      'Potato': '🥔',
+      'Rice': '🌾',
+      'Strawberry': '🍓',
+      'Tomato': '🍅'
+    };
+
+    // Agronomic Knowledgebase for all classes
+    const agronomicKnowledge = {
+      'Healthy': {
+        type: 'Healthy Plant',
+        cultural: 'Maintain regular field scouting (weekly), optimal plant density, and ensure proper sunlight penetration.',
+        irrigation: 'Continue balanced irrigation regimen suited to the current crop phonological stage.',
+        treatment: 'No disease intervention required. Avoid prophylactic chemical sprays to preserve beneficial predators.',
+        prevention: 'Maintain soil organic matter, balanced N-P-K fertilization, and crop rotation schedules.'
+      },
+      'Bacterial_spot': {
+        type: 'Bacterial (Xanthomonas spp.)',
+        cultural: 'Avoid working in wet fields to prevent splashing bacterial inoculum. Destroy heavily infected plant debris.',
+        irrigation: 'Switch to ground-level drip irrigation. Eliminate overhead sprinkler systems.',
+        treatment: 'Apply preventative fixed-copper sprays mixed with mancozeb to overcome copper tolerance.',
+        prevention: 'Use certified disease-free pathogen-indexed seed stocks and hot water treated seeds.'
+      },
+      'Early_blight': {
+        type: 'Fungal (Alternaria solani)',
+        cultural: 'Prune lowest infected leaves touching the soil. Mulch around plant bases to prevent spore splash-back.',
+        irrigation: 'Water at sunrise so leaves dry rapidly. Avoid evening overhead irrigation.',
+        treatment: 'Apply chlorothalonil or copper-based protective fungicide at first lesion appearance.',
+        prevention: 'Practice 3-to-4 year rotation away from solanaceous crops. Plant resistant cultivars.'
+      },
+      'Late_blight': {
+        type: 'Oomycete (Phytophthora infestans)',
+        cultural: 'Immediately remove and bag severely blighted vines. Destroy all cull potato piles in neighborhood.',
+        irrigation: 'Strictly prevent standing leaf wetness. Increase plant spacing for maximum airflow.',
+        treatment: 'Apply targeted systemic fungicides (e.g. cymoxanil, mandipropamid) when disease forecast is high.',
+        prevention: 'Use certified blight-free seed tubers and plant late-blight resistant varieties.'
+      },
+      'Leaf_mold': {
+        type: 'Fungal (Passalora fulva)',
+        cultural: 'Significantly improve greenhouse and canopy ventilation. Keep relative humidity strictly below 85%.',
+        irrigation: 'Drip irrigate at soil level. Keep foliage completely dry.',
+        treatment: 'Apply preventive biofungicides (Bacillus amyloliquefaciens) or copper fungicides.',
+        prevention: 'Select resistant hybrid cultivars with Cf-resistance genes.'
+      },
+      'Septoria_leaf_spot': {
+        type: 'Fungal (Septoria lycopersici)',
+        cultural: 'Remove affected lower leaves as soon as small spots appear. Sanitize all stakes and cages.',
+        irrigation: 'Avoid overhead watering. Mulch soil surface with clean straw or plastic barrier.',
+        treatment: 'Spray protective fungicides (chlorothalonil, copper sulfate) on 7-to-10 day intervals.',
+        prevention: 'Eradicate nightshade weed hosts. Rotate away from tomatoes for at least 2 seasons.'
+      },
+      'Spider_mites': {
+        type: 'Arachnid Pest (Tetranychus urticae)',
+        cultural: 'Wash undersides of foliage with strong water spray to dislodge mite colonies and webbing.',
+        irrigation: 'Prevent plant water stress, as hot and dry conditions trigger explosive mite reproduction.',
+        treatment: 'Release predatory mites (Phytoseiulus persimilis) or apply insecticidal soap / horticultural neem oil.',
+        prevention: 'Avoid broad-spectrum synthetic pyrethroids that destroy natural predatory beneficial insects.'
+      },
+      'Target_spot': {
+        type: 'Fungal (Corynespora cassiicola)',
+        cultural: 'Remove diseased leaves. Ensure adequate plant spacing for fast foliar drying.',
+        irrigation: 'Water early morning at the base of the plant.',
+        treatment: 'Apply protectant or strobilurin-class fungicides if infection threatens yield.',
+        prevention: 'Eliminate alternative weed hosts around the field border.'
+      },
+      'Yellow_leaf_curl_virus': {
+        type: 'Viral (TYLCV - Begomovirus)',
+        cultural: 'Immediately rogue out and destroy stunted, curled plants to reduce virus reservoir.',
+        irrigation: 'Maintain steady drip watering to support uninfected plant vigor.',
+        treatment: 'Viruses cannot be cured. Target whitefly (Bemisia tabaci) vectors with insecticidal soaps or systemic imidacloprid.',
+        prevention: 'Install 50-mesh insect-proof netting in seedling nurseries. Plant TYLCV-resistant hybrids.'
+      },
+      'Mosaic_virus': {
+        type: 'Viral (Tobamovirus / CMV)',
+        cultural: 'Workers must wash hands with milk or trisodium phosphate before handling plants. No tobacco use nearby.',
+        irrigation: 'Standard drip irrigation; avoid touching wet leaves during cultivation.',
+        treatment: 'No chemical cure. Remove and burn symptomatic plants immediately.',
+        prevention: 'Use certified virus-free seeds; disinfect pruning tools and trellis wires.'
+      },
+      'Common_rust': {
+        type: 'Fungal (Puccinia sorghi)',
+        cultural: 'Pustules break open releasing reddish-brown airborne spores. Monitor upper leaves before silking.',
+        irrigation: 'Maintain optimal moisture balance. Avoid prolonged overhead irrigation.',
+        treatment: 'Fungicide application (pyraclostrobin or azoxystrobin) is economical if rust appears before tasseling.',
+        prevention: 'Plant resistant corn hybrids with Rp gene rust resistance.'
+      },
+      'Gray_leaf_spot': {
+        type: 'Fungal (Cercospora zeae-maydis)',
+        cultural: 'Bury infected corn residue via tillage if allowable, or rotate to non-host crops (soybean/wheat).',
+        irrigation: 'Ensure proper plant spacing to facilitate rapid morning canopy drying.',
+        treatment: 'Apply dual-action triazole + strobilurin fungicides at early blister stage if weather is warm and humid.',
+        prevention: 'Select hybrids with high gray leaf spot tolerance scores.'
+      },
+      'Northern_leaf_blight': {
+        type: 'Fungal (Exserohilum turcicum)',
+        cultural: 'Long cigar-shaped grayish lesions. Manage infected crop residue through deep incorporation or rotation.',
+        irrigation: 'Minimize leaf wetness duration.',
+        treatment: 'Apply foliar fungicide if lesions appear on the ear leaf or higher before silking.',
+        prevention: 'Plant corn hybrids bearing Ht1, Ht2, or HtN resistance genes.'
+      },
+      'Apple_scab': {
+        type: 'Fungal (Venturia inaequalis)',
+        cultural: 'Rake and shred or compost fallen apple leaves in autumn to eliminate overwintering pseudothecia.',
+        irrigation: 'Prune tree canopy annually during dormancy to allow sunlight and rapid wind drying.',
+        treatment: 'Apply protectant sprays (captan or mancozeb) ahead of predicted spring rain infection periods.',
+        prevention: 'Plant scab-immune apple cultivars (e.g. Enterprise, Liberty, GoldRush, Pristine).'
+      },
+      'Black_rot': {
+        type: 'Fungal (Botryosphaeria obtusa / Guignardia bidwellii)',
+        cultural: 'Prune out dead wood, fire blight cankers, and mummified fruits hanging on branches.',
+        irrigation: 'Ensure open canopy structure to facilitate fast drying.',
+        treatment: 'Apply captan, thiophanate-methyl, or myclobutanil fungicides starting at bud break.',
+        prevention: 'Sterilize pruning tools between cuts. Keep vineyard floor clean of dried mummies.'
+      },
+      'Cedar_apple_rust': {
+        type: 'Fungal (Gymnosporangium juniperi-virginianae)',
+        cultural: 'Requires both apple and Eastern red cedar trees. Remove galls from nearby juniper trees if possible.',
+        irrigation: 'Maintain open, airy apple tree canopies.',
+        treatment: 'Apply myclobutanil or mancozeb when cedar galls form orange gelatinous telial horns in spring.',
+        prevention: 'Plant resistant apple varieties (e.g. Freedom, Liberty, Redfree).'
+      },
+      'Esca_black_measles': {
+        type: 'Fungal Complex (Phaeomoniella / Phaeoacremonium)',
+        cultural: 'Avoid large pruning wounds in wet weather. Protect pruning cuts with wound sealants.',
+        irrigation: 'Minimize water stress on mature vines.',
+        treatment: 'No chemical cure available. Prune infected cordons back to clean white wood.',
+        prevention: 'Obtain certified clean propagation stock from accredited grapevine nurseries.'
+      },
+      'Leaf_blight': {
+        type: 'Fungal (Pseudocercospora vitis / Bipolaris)',
+        cultural: 'Remove fallen leaf debris. Thin vigorous grape canopy for improved sunlight penetration.',
+        irrigation: 'Irrigate beneath the vine row via drip tape.',
+        treatment: 'Apply approved foliar fungicides if severe defoliation is observed before veraison.',
+        prevention: 'Maintain balanced vine nutrition avoiding excess nitrogen vigor.'
+      },
+      'Powdery_mildew': {
+        type: 'Fungal (Podosphaera / Erysiphe)',
+        cultural: 'White powdery superficial patches on foliage. Thin dense canopy leaves to improve sunlight exposure.',
+        irrigation: 'High humidity favors spore germination, but free water actually inhibits it.',
+        treatment: 'Apply sulfur formulations, potassium bicarbonate, or neem horticultural oil at early shoot growth.',
+        prevention: 'Plant mildew-tolerant cultivars and avoid excessive nitrogen fertilizer.'
+      },
+      'Leaf_scorch': {
+        type: 'Fungal (Diplocarpon earlianum) / Bacterial (Xylella)',
+        cultural: 'Remove severely scorched strawberry leaves after harvest. Renovate strawberry beds promptly.',
+        irrigation: 'Drip irrigate beds. Avoid overhead sprinkling during warm humid periods.',
+        treatment: 'Apply protective fungicides (captan or copper) in spring if leaf scorch is historically severe.',
+        prevention: 'Plant certified disease-free strawberry crowns with good resistance ratings.'
+      },
+      'Bacterial_leaf_blight': {
+        type: 'Bacterial (Xanthomonas oryzae pv. oryzae)',
+        cultural: 'Drain paddy water temporarily during severe outbreak. Avoid excess urea top-dressing.',
+        irrigation: 'Ensure proper water level control; avoid submerged leaf tips.',
+        treatment: 'Apply bactericides such as copper hydroxide or validamycin if recommended locally.',
+        prevention: 'Cultivate resistant rice varieties carrying Xa genes (e.g. Xa4, Xa21).'
+      },
+      'Brown_spot': {
+        type: 'Fungal (Bipolaris oryzae)',
+        cultural: 'Commonly associated with poor soil fertility or nutrient imbalance (especially potassium/silicon).',
+        irrigation: 'Avoid paddy drought stress; maintain shallow continuous flooding.',
+        treatment: 'Apply seed treatments with carbendazim or foliar sprays with propiconazole or edifenphos.',
+        prevention: 'Apply balanced N-P-K fertilizer and incorporate silicon supplements into soil.'
+      },
+      'Leaf_blast': {
+        type: 'Fungal (Magnaporthe oryzae / Pyricularia oryzae)',
+        cultural: 'Spindle-shaped diamond lesions with gray centers. Avoid excessive split application of nitrogen.',
+        irrigation: 'Keep paddy submerged to prevent drought-induced susceptibility.',
+        treatment: 'Spray systemic fungicides (tricyclazole, isoprothiolane, or kasugamycin) at early leaf blast onset.',
+        prevention: 'Plant durable blast-resistant varieties and treat seeds before sowing.'
+      }
+    };
+
+    // Initialize UI on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      checkApiHealth();
+      fetchClassesRegistry();
+      setupEventListeners();
+    });
+
+    // Check API Health
+    async function checkApiHealth() {
+      try {
+        const res = await fetch('/api/v1/health');
+        if (res.ok) {
+          const data = await res.json();
+          const badge = document.getElementById('api-status-badge');
+          const text = document.getElementById('api-status-text');
+          badge.className = "inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800";
+          text.textContent = "ONNX Inference Active";
+        }
+      } catch (err) {
+        const badge = document.getElementById('api-status-badge');
+        const text = document.getElementById('api-status-text');
+        badge.className = "inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800";
+        text.textContent = "API Standby";
+      }
+    }
+
+    // Fetch Supported Classes Registry
+    async function fetchClassesRegistry() {
+      try {
+        const res = await fetch('/api/v1/classes');
+        if (res.ok) {
+          supportedClassesRegistry = await res.json();
+        }
+      } catch (err) {
+        console.warn("Could not preload classes registry", err);
+      }
+    }
+
+    // Setup Drag-and-drop & Input Event Listeners
+    function setupEventListeners() {
+      // Click dropzone to trigger input
+      dropZone.addEventListener('click', (e) => {
+        if (e.target !== btnClear) {
+          fileInput.click();
+        }
+      });
+
+      // File input change
+      fileInput.addEventListener('change', (e) => {
+        if (fileInput.files && fileInput.files[0]) {
+          handleSelectedFile(fileInput.files[0]);
+        }
+      });
+
+      // Drag and drop events
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.add('border-agri-500', 'bg-agri-50/50', 'dark:bg-agri-950/20');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove('border-agri-500', 'bg-agri-50/50', 'dark:bg-agri-950/20');
+        }, false);
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files && files.length > 0) {
+          handleSelectedFile(files[0]);
+        }
+      });
+
+      // Paste from clipboard support
+      window.addEventListener('paste', (e) => {
+        if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length > 0) {
+          const file = e.clipboardData.files[0];
+          if (file.type.startsWith('image/')) {
+            handleSelectedFile(file);
+            showToast("Pasted image from clipboard");
+          }
+        }
+      });
+
+      // Predict Button Click
+      btnPredict.addEventListener('click', () => {
+        executePrediction();
+      });
+
+      // Clear Button Click
+      btnClear.addEventListener('click', (e) => {
+        e.stopPropagation();
+        resetToEmpty();
+      });
+
+      // Theme toggle
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+        lucide.createIcons();
+      });
+    }
+
+    // Process Selected File
+    function handleSelectedFile(file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      if (!validTypes.includes(file.type.toLowerCase()) && !file.name.match(/\.(jpe?g|png|webp)$/i)) {
+        showError("Invalid file type. Please upload a JPEG, PNG, or WebP image.");
+        return;
+      }
+
+      // Validate 5 MB limit
+      if (file.size > 5 * 1024 * 1024) {
+        showError(`File is too large (${(file.size / (1024 * 1024)).toFixed(2)} MB). Maximum allowed size is 5 MB.`);
+        return;
+      }
+
+      hideError();
+      currentImageBlob = file;
+      currentImageFilename = file.name;
+
+      // Render Preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imagePreview.src = e.target.result;
+        
+        // Compute resolution
+        const tempImg = new Image();
+        tempImg.onload = () => {
+          metaResolution.textContent = `${tempImg.naturalWidth} × ${tempImg.naturalHeight} px`;
+        };
+        tempImg.src = e.target.result;
+
+        metaFilename.textContent = file.name;
+        metaSize.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+
+        dropPrompt.classList.add('hidden');
+        previewWrapper.classList.remove('hidden');
+        previewChip.classList.remove('hidden');
+        btnClear.classList.remove('hidden');
+        btnPredict.removeAttribute('disabled');
+        btnPredictText.textContent = "Run Diagnostic AI";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Load Sample Presets via 1-Click Buttons
+    async function loadSamplePreset(filename, displayName, crop, pathologyType, cropHint = null) {
+      try {
+        hideError();
+        btnPredictText.textContent = "Loading Sample...";
+        btnPredict.setAttribute('disabled', 'true');
+
+        if (cropHint && cropSelect) {
+          cropSelect.value = cropHint;
+        } else if (cropSelect) {
+          cropSelect.value = 'auto';
+        }
+
+        const response = await fetch(`/api/v1/samples/${filename}`);
+        if (!response.ok) {
+          throw new Error(`Failed to load preset sample image (${response.status})`);
+        }
+        const blob = await response.blob();
+        const file = new File([blob], filename, { type: blob.type || 'image/jpeg' });
+        
+        handleSelectedFile(file);
+        showToast(`Loaded ${displayName} (${crop}) sample`);
+
+        // Automatically trigger prediction after quick visual load
+        setTimeout(() => {
+          executePrediction();
+        }, 300);
+
+      } catch (err) {
+        showError(`Unable to load sample: ${err.message}`);
+        btnPredictText.textContent = "Run Diagnostic AI";
+      }
+    }
+
+    // Execute Prediction API Request
+    async function executePrediction() {
+      if (!currentImageBlob) {
+        showError("Please upload or select a leaf image first.");
+        return;
+      }
+
+      try {
+        hideError();
+        // UI states
+        btnPredict.setAttribute('disabled', 'true');
+        btnPredictText.textContent = "Diagnosing...";
+        scannerLine.classList.remove('hidden');
+        stateEmpty.classList.add('hidden');
+        stateReport.classList.add('hidden');
+        stateLoading.classList.remove('hidden');
+
+        const formData = new FormData();
+        formData.append('image', currentImageBlob, currentImageFilename || 'leaf.jpg');
+        if (cropSelect && cropSelect.value && cropSelect.value !== 'auto') {
+          formData.append('crop', cropSelect.value);
+        }
+
+        const tStart = performance.now();
+        const res = await fetch('/api/v1/predict', {
+          method: 'POST',
+          body: formData
+        });
+
+        const clientLatency = (performance.now() - tStart).toFixed(1);
+        const data = await res.json();
+
+        scannerLine.classList.add('hidden');
+        stateLoading.classList.add('hidden');
+        btnPredict.removeAttribute('disabled');
+        btnPredictText.textContent = "Run Diagnostic AI";
+
+        if (!res.ok) {
+          const errMsg = data.error ? data.error.message : "Inference diagnosis failed.";
+          showError(errMsg);
+          stateEmpty.classList.remove('hidden');
+          return;
+        }
+
+        lastPredictionResult = data;
+        renderDiagnosticReport(data, clientLatency);
+
+      } catch (err) {
+        scannerLine.classList.add('hidden');
+        stateLoading.classList.add('hidden');
+        btnPredict.removeAttribute('disabled');
+        btnPredictText.textContent = "Run Diagnostic AI";
+        showError(`Network/API error: ${err.message}`);
+        stateEmpty.classList.remove('hidden');
+      }
+    }
+
+    // Render Diagnostic Report onto Right Column
+    function renderDiagnosticReport(data, clientLatency) {
+      stateReport.classList.remove('hidden');
+
+      const notLeafView = document.getElementById('not-a-leaf-view');
+      const diagCards = document.getElementById('diagnosis-cards');
+      const isNotLeaf = (data.is_leaf === false) || (data.status === "not_a_leaf");
+
+      // 0. Leaf Gatekeeper Check: If image is not a leaf, hide all diagnosis widgets
+      if (isNotLeaf) {
+        if (notLeafView) notLeafView.classList.remove('hidden');
+        if (diagCards) diagCards.classList.add('hidden');
+
+        bannerStatus.className = "p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-wrap items-center justify-between gap-3 shadow-sm bg-rose-50/90 dark:bg-rose-950/40 border-rose-300 dark:border-rose-900 text-rose-950 dark:text-rose-100";
+        bannerIconBox.className = "w-10 h-10 rounded-xl bg-rose-200 dark:bg-rose-900 flex items-center justify-center text-rose-800 dark:text-rose-200";
+        bannerIcon.setAttribute('data-lucide', 'shield-alert');
+        bannerTitle.textContent = "Non-Botanical Image Detected";
+        bannerTag.className = "text-xs px-2.5 py-0.5 rounded-full font-bold bg-rose-200 text-rose-900 dark:bg-rose-900 dark:text-rose-200";
+        bannerTag.textContent = "REJECTED (NOT A LEAF)";
+        bannerSubtitle.textContent = data.message || "Not a leaf. Please upload a new image.";
+
+        telemetryLatency.textContent = `${data.inference_time_ms || clientLatency} ms (Gatekeeper)`;
+        telemetryVersion.textContent = `v${data.model_version || '1.0.0'}`;
+        if (data.disclaimer) {
+          disclaimerText.textContent = data.disclaimer;
+        }
+
+        lucide.createIcons();
+        showToast("Image rejected: Not a plant leaf");
+        return;
+      }
+
+      // If verified as a botanical leaf, ensure diagnosis cards are displayed
+      if (notLeafView) notLeafView.classList.add('hidden');
+      if (diagCards) diagCards.classList.remove('hidden');
+
+      const pred = data.prediction;
+      const isLowConf = data.low_confidence || (data.status === "low_confidence");
+      const confPct = (pred.confidence * 100).toFixed(1);
+      const isHealthy = (pred.disease.toLowerCase() === 'healthy');
+
+      // 1. Status Banner configuration
+      const disambigContainer = document.getElementById('disambiguation-container');
+      const disambigPills = document.getElementById('disambiguation-pills');
+
+      if (isLowConf) {
+        bannerStatus.className = "p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-wrap items-center justify-between gap-3 shadow-sm bg-amber-50/90 dark:bg-amber-950/40 border-amber-300 dark:border-amber-900 text-amber-950 dark:text-amber-100";
+        bannerIconBox.className = "w-10 h-10 rounded-xl bg-amber-200 dark:bg-amber-900 flex items-center justify-center text-amber-800 dark:text-amber-200";
+        bannerIcon.setAttribute('data-lucide', 'alert-triangle');
+        bannerTitle.textContent = "Low Confidence / Cross-Species Ambiguity Filter";
+        bannerTag.className = "text-xs px-2.5 py-0.5 rounded-full font-bold bg-amber-200 text-amber-900 dark:bg-amber-900 dark:text-amber-200";
+        bannerTag.textContent = "REJECTED (LOW CONFIDENCE)";
+        bannerSubtitle.textContent = data.message || "Confidence is below the 74.0% safety threshold. Please confirm your crop species below or retake with clearer lighting.";
+
+        // Populate Disambiguation Quick Action Pills
+        if (disambigContainer && disambigPills) {
+          disambigPills.innerHTML = "";
+          const candidates = (data.stage1_leaf && data.stage1_leaf.candidates) || [];
+          if (candidates.length > 0) {
+            candidates.forEach(cand => {
+              const btn = document.createElement('button');
+              btn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-agri-100 dark:hover:bg-agri-950 border border-slate-300 dark:border-slate-700 shadow-sm transition flex items-center gap-1.5 cursor-pointer";
+              btn.innerHTML = `${cropEmojis[cand.crop] || '🌿'} <span>Confirm <strong>${cand.crop}</strong> Leaf</span> <span class="text-[10px] text-slate-400">(${(cand.confidence*100).toFixed(1)}%)</span>`;
+              btn.onclick = () => {
+                if (cropSelect) {
+                  cropSelect.value = cand.crop;
+                  executePrediction();
+                }
+              };
+              disambigPills.appendChild(btn);
+            });
+            disambigContainer.classList.remove('hidden');
+          } else {
+            disambigContainer.classList.add('hidden');
+          }
+        }
+      } else {
+        if (disambigContainer) disambigContainer.classList.add('hidden');
+        bannerStatus.className = "p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-wrap items-center justify-between gap-3 shadow-sm bg-emerald-50/90 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-900 text-emerald-950 dark:text-emerald-100";
+        bannerIconBox.className = "w-10 h-10 rounded-xl bg-emerald-200 dark:bg-emerald-900 flex items-center justify-center text-emerald-800 dark:text-emerald-200";
+        bannerIcon.setAttribute('data-lucide', 'check-circle-2');
+        bannerTitle.textContent = isHealthy ? "Healthy Leaf Confirmed" : "High Confidence Disease Diagnosis";
+        bannerTag.className = "text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-200";
+        bannerTag.textContent = "ACCEPTED (VERIFIED)";
+        bannerSubtitle.textContent = data.message || "Diagnosis verified above calibrated safety threshold (θ = 74.0%).";
+      }
+
+      // 2. Primary Finding Card
+      const emoji = cropEmojis[pred.crop] || '🌿';
+      const cleanDiseaseName = pred.disease.replace(/_/g, ' ');
+
+      if (isLowConf) {
+        cropBadge.className = "px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800";
+        cropBadge.innerHTML = `⚠️ Unconfirmed Candidate: ${emoji} ${pred.crop}`;
+        diseaseName.textContent = `Unverified (${cleanDiseaseName})`;
+        pathologyLabel.textContent = `Ambiguous host species: ${pred.label} (${confPct}% < θ 74%)`;
+        diseaseDesc.textContent = `The AI detected foliar lesion patterns resembling ${cleanDiseaseName}, but host tree species could not be verified above the 74.0% safety threshold. Due to visual overlap in fungal symptoms across related crops, please confirm your tree species above.`;
+        certaintyPill.textContent = "REJECTED (BELOW THRESHOLD)";
+        certaintyPill.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300";
+      } else {
+        cropBadge.className = "px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-agri-100 dark:bg-agri-950 text-agri-800 dark:text-agri-300 border border-agri-200 dark:border-agri-800";
+        cropBadge.innerHTML = `${emoji} ${pred.crop}`;
+        diseaseName.textContent = cleanDiseaseName;
+        pathologyLabel.textContent = pred.label;
+        let descriptionText = "";
+        if (supportedClassesRegistry && supportedClassesRegistry.classes) {
+          const found = supportedClassesRegistry.classes.find(c => c.label === pred.label);
+          if (found) descriptionText = found.description;
+        }
+        if (!descriptionText) {
+          descriptionText = isHealthy 
+            ? "Foliage exhibits normal green morphology, intact venation, and zero macroscopic foliar lesions."
+            : `Pathological foliar symptoms detected on ${pred.crop} leaf corresponding to ${cleanDiseaseName}.`;
+        }
+        diseaseDesc.textContent = descriptionText;
+      }
+
+      if (isHealthy) {
+        healthyBadge.classList.remove('hidden');
+      } else {
+        healthyBadge.classList.add('hidden');
+      }
+
+      // Populate Hierarchical Two-Stage Pipeline Card
+      const stage1 = data.stage1_leaf || {};
+      const stage2 = data.stage2_disease || {};
+      
+      const s1Crop = stage1.identified_crop || pred.crop;
+      const s1Conf = ((stage1.confidence !== undefined ? stage1.confidence : pred.confidence) * 100).toFixed(1);
+      const isCond = stage1.is_conditioned || Boolean(data.crop_conditioned);
+
+      const s1CropElem = document.getElementById('stage1-leaf-crop');
+      const s1ConfElem = document.getElementById('stage1-leaf-conf');
+      const s1PillElem = document.getElementById('stage1-leaf-pill');
+      const s1CandsElem = document.getElementById('stage1-leaf-candidates');
+
+      if (s1CropElem) s1CropElem.textContent = `${cropEmojis[s1Crop] || '🌱'} ${s1Crop} Leaf`;
+      if (s1ConfElem) s1ConfElem.textContent = `${s1Conf}%`;
+      if (s1PillElem) {
+        s1PillElem.textContent = isCond ? "USER CONFIRMED" : "AUTO-IDENTIFIED";
+        s1PillElem.className = isCond
+          ? "text-[10px] px-2 py-0.5 rounded font-semibold bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-200"
+          : "text-[10px] px-2 py-0.5 rounded font-semibold bg-agri-200 text-agri-900 dark:bg-agri-900 dark:text-agri-200";
+      }
+
+      if (s1CandsElem) {
+        s1CandsElem.innerHTML = "";
+        const candidates = stage1.candidates || [];
+        if (candidates.length > 0) {
+          const intro = document.createElement('span');
+          intro.textContent = "Alternative Species: ";
+          intro.className = "text-slate-400 mr-1 text-[10px]";
+          s1CandsElem.appendChild(intro);
+
+          candidates.forEach(cand => {
+            const btn = document.createElement('button');
+            btn.className = "px-2 py-0.5 rounded text-[10px] bg-slate-200/70 hover:bg-agri-200 dark:bg-slate-800 dark:hover:bg-agri-900 text-slate-700 dark:text-slate-300 font-medium transition cursor-pointer";
+            btn.title = `Click to re-diagnose assuming this is a ${cand.crop} leaf`;
+            btn.textContent = `${cropEmojis[cand.crop] || ''} ${cand.crop} (${(cand.confidence*100).toFixed(1)}%)`;
+            btn.onclick = () => {
+              if (cropSelect) {
+                cropSelect.value = cand.crop;
+                executePrediction();
+              }
+            };
+            s1CandsElem.appendChild(btn);
+          });
+        }
+      }
+
+      // Stage 2
+      const s2Dis = (stage2.disease || pred.disease).replace(/_/g, ' ');
+      const s2Conf = ((stage2.confidence !== undefined ? stage2.confidence : pred.confidence) * 100).toFixed(1);
+      const s2DisElem = document.getElementById('stage2-disease-title');
+      const s2ConfElem = document.getElementById('stage2-disease-conf');
+      const s2PillElem = document.getElementById('stage2-disease-pill');
+      const s2BreakdownElem = document.getElementById('stage2-disease-breakdown');
+
+      if (s2DisElem) s2DisElem.textContent = s2Dis;
+      if (s2ConfElem) s2ConfElem.textContent = `${s2Conf}%`;
+      if (s2PillElem) {
+        s2PillElem.textContent = isHealthy ? "HEALTHY BASELINE" : "PATHOLOGY DIAGNOSED";
+        s2PillElem.className = isHealthy
+          ? "text-[10px] px-2 py-0.5 rounded font-semibold bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-200"
+          : "text-[10px] px-2 py-0.5 rounded font-semibold bg-rose-200 text-rose-900 dark:bg-rose-900 dark:text-rose-200";
+      }
+      if (s2BreakdownElem) {
+        const pathMass = (stage2.pathology_mass !== undefined ? stage2.pathology_mass * 100 : (isHealthy ? 0.0 : 100.0)).toFixed(1);
+        const healthyBase = (100.0 - parseFloat(pathMass)).toFixed(1);
+        s2BreakdownElem.textContent = `Foliar pathology: ${pathMass}% · Healthy baseline: ${healthyBase}%`;
+      }
+
+      // 3. Confidence Metrics & Gauge
+      confidencePercentage.textContent = `${confPct}%`;
+      confidenceBar.style.width = `${Math.min(100, Math.max(5, pred.confidence * 100))}%`;
+
+      if (pred.confidence >= 0.85) {
+        certaintyPill.textContent = "HIGH CERTAINTY";
+        certaintyPill.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300";
+        confidenceBar.className = "h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-700 ease-out";
+      } else if (pred.confidence >= 0.74) {
+        certaintyPill.textContent = "MODERATE CERTAINTY";
+        certaintyPill.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-lime-100 text-lime-800 dark:bg-lime-950 dark:text-lime-300";
+        confidenceBar.className = "h-full rounded-full bg-gradient-to-r from-lime-500 to-lime-400 transition-all duration-700 ease-out";
+      } else {
+        certaintyPill.textContent = "BELOW THRESHOLD (UNSURE)";
+        certaintyPill.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300";
+        confidenceBar.className = "h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-700 ease-out";
+      }
+
+      // 4. Render Top-3 Candidates Breakdown
+      topKContainer.innerHTML = "";
+      if (data.top_k && data.top_k.length > 0) {
+        data.top_k.forEach((item, index) => {
+          const itemConfPct = (item.confidence * 100).toFixed(1);
+          const parts = item.label.split('___');
+          const itemCrop = parts[0] || 'Plant';
+          const itemDisease = (parts[1] || '').replace(/_/g, ' ');
+          const itemEmoji = cropEmojis[itemCrop] || '🌱';
+
+          const card = document.createElement('div');
+          card.className = `p-3 rounded-xl border ${index === 0 ? 'bg-agri-50/60 dark:bg-agri-950/30 border-agri-300 dark:border-agri-800' : 'bg-slate-50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800'}`;
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <div class="flex items-center space-x-2">
+                <span class="w-5 h-5 rounded-full ${index === 0 ? 'bg-agri-600 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'} flex items-center justify-center font-bold text-[10px]">
+                  #${index + 1}
+                </span>
+                <span class="font-bold text-slate-800 dark:text-slate-100">${itemEmoji} ${itemCrop}: ${itemDisease}</span>
+              </div>
+              <span class="font-mono font-bold ${index === 0 ? 'text-agri-600 dark:text-agri-400' : 'text-slate-500'}">${itemConfPct}%</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+              <div class="h-full rounded-full ${index === 0 ? 'bg-agri-500' : 'bg-slate-400 dark:bg-slate-600'} transition-all duration-500" style="width: ${Math.max(2, item.confidence * 100)}%;"></div>
+            </div>
+          `;
+          topKContainer.appendChild(card);
+        });
+      }
+
+      // 5. Populate Agronomic Interventions
+      if (isLowConf) {
+        guidanceCultural.textContent = "Maintain standard scouting. Do not initiate emergency cultural clearing until the host species and pathology are confirmed.";
+        guidanceIrrigation.textContent = "Irrigate at soil level. Avoid foliar wetting which accelerates spore spread across all fungal species.";
+        guidanceTreatment.textContent = "⚠️ Specific chemical treatments are safely withheld. Applying fungicides formulated for an unconfirmed crop species risks chemical phytotoxicity, leaf burn, or harvest loss.";
+        guidancePrevention.textContent = "To obtain verified pathology and treatments, confirm your crop species above or retake the photo isolating a single leaf against a neutral background.";
+      } else {
+        const adviceKey = isHealthy ? 'Healthy' : (pred.disease in agronomicKnowledge ? pred.disease : 'Early_blight');
+        const advice = agronomicKnowledge[adviceKey] || agronomicKnowledge['Healthy'];
+        guidanceCultural.textContent = advice.cultural;
+        guidanceIrrigation.textContent = advice.irrigation;
+        guidanceTreatment.textContent = advice.treatment;
+        guidancePrevention.textContent = advice.prevention;
+      }
+
+      // 6. System Telemetry
+      telemetryLatency.textContent = `${data.inference_time_ms || clientLatency} ms (ONNX Engine)`;
+      telemetryVersion.textContent = `v${data.model_version || '1.0.0'}`;
+      if (data.disclaimer) {
+        disclaimerText.textContent = data.disclaimer;
+      }
+
+      lucide.createIcons();
+      showToast("Diagnostic report generated successfully");
+    }
+
+    // Reset Form to Empty State
+    function resetToEmpty() {
+      currentImageBlob = null;
+      currentImageFilename = null;
+      lastPredictionResult = null;
+      fileInput.value = "";
+      imagePreview.src = "";
+      
+      dropPrompt.classList.remove('hidden');
+      previewWrapper.classList.add('hidden');
+      previewChip.classList.add('hidden');
+      btnClear.classList.add('hidden');
+      btnPredict.setAttribute('disabled', 'true');
+      btnPredictText.textContent = "Run Diagnostic AI";
+      scannerLine.classList.add('hidden');
+
+      stateReport.classList.add('hidden');
+      stateLoading.classList.add('hidden');
+      stateEmpty.classList.remove('hidden');
+
+      const notLeafView = document.getElementById('not-a-leaf-view');
+      const diagCards = document.getElementById('diagnosis-cards');
+      const disambigContainer = document.getElementById('disambiguation-container');
+      if (notLeafView) notLeafView.classList.add('hidden');
+      if (diagCards) diagCards.classList.remove('hidden');
+      if (disambigContainer) disambigContainer.classList.add('hidden');
+
+      if (cropSelect) {
+        cropSelect.value = 'auto';
+      }
+      hideError();
+    }
+
+    // Helper: Show Error Alert
+    function showError(msg) {
+      uploadErrorMsg.textContent = msg;
+      uploadError.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    // Helper: Hide Error Alert
+    function hideError() {
+      uploadError.classList.add('hidden');
+    }
+
+    // Helper: Toast Message
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      toastMsg.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+
+    // Copy Diagnosis Summary to Clipboard
+    function copyReportSummary() {
+      if (!lastPredictionResult) return;
+      if (lastPredictionResult.is_leaf === false || lastPredictionResult.status === 'not_a_leaf') {
+        const text = `FLORASCAN AI DIAGNOSTIC REPORT\n` +
+          `Status: REJECTED (NOT A LEAF)\n` +
+          `Message: ${lastPredictionResult.message || 'Not a leaf. Please upload a new image.'}\n` +
+          `Model: MobileNetV3-Large Foliar Gatekeeper\n` +
+          `Disclaimer: ${lastPredictionResult.disclaimer || 'AI-assisted indication only. Consult an agronomist.'}`;
+        navigator.clipboard.writeText(text).then(() => {
+          showToast("Rejection summary copied to clipboard!");
+        }).catch(err => {
+          showToast("Summary generated (clipboard blocked)");
+        });
+        return;
+      }
+      const pred = lastPredictionResult.prediction;
+      const conf = (pred.confidence * 100).toFixed(1);
+      const text = `FLORASCAN AI DIAGNOSTIC REPORT\n` +
+        `Crop: ${pred.crop}\n` +
+        `Condition: ${pred.disease.replace(/_/g, ' ')}\n` +
+        `Status: ${lastPredictionResult.status.toUpperCase()} (Confidence: ${conf}%)\n` +
+        `Model: MobileNetV3-Large (ONNX T=0.4792, θ=0.74)\n` +
+        `Disclaimer: ${lastPredictionResult.disclaimer || 'AI-assisted indication only. Consult an agronomist.'}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Diagnostic summary copied to clipboard!");
+      }).catch(err => {
+        showToast("Summary generated (clipboard blocked)");
+      });
+    }
+  </script>
+</body>
+</html>

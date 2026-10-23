@@ -1,0 +1,4 @@
+model_name,val_accuracy,val_macro_f1,parameters_m,model_size_mb,cpu_latency_ms,training_time_sec
+baseline_cnn,0.18960000000000002,0.1399,0.43,1.64,23.97,1192.9
+mobilenet_v3_large,0.8987,0.8934000000000001,4.25,16.41,33.07,915.2
+efficientnet_b0,0.7751,0.7614,4.05,15.75,48.07,584.0

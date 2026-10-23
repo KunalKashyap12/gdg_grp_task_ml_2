@@ -1,0 +1,335 @@
+[
+  {
+    "class_id": 0,
+    "label": "Tomato___Bacterial_spot",
+    "crop": "Tomato",
+    "disease": "Bacterial_spot",
+    "display_name": "Tomato: Bacterial Spot",
+    "description": "Small water-soaked circular lesions on foliage caused by Xanthomonas species.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 1,
+    "label": "Tomato___Early_blight",
+    "crop": "Tomato",
+    "disease": "Early_blight",
+    "display_name": "Tomato: Early Blight",
+    "description": "Concentric ring target-like brown necrotic spots caused by Alternaria solani.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 2,
+    "label": "Tomato___Late_blight",
+    "crop": "Tomato",
+    "disease": "Late_blight",
+    "display_name": "Tomato: Late Blight",
+    "description": "Rapidly spreading pale to brown lesions with white sporulation caused by Phytophthora infestans.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 3,
+    "label": "Tomato___Leaf_mold",
+    "crop": "Tomato",
+    "disease": "Leaf_mold",
+    "display_name": "Tomato: Leaf Mold",
+    "description": "Pale green to yellow spots with olive green velvety mold patches caused by Passalora fulva.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 4,
+    "label": "Tomato___Septoria_leaf_spot",
+    "crop": "Tomato",
+    "disease": "Septoria_leaf_spot",
+    "display_name": "Tomato: Septoria Leaf Spot",
+    "description": "Numerous small circular brown spots with dark margins and gray centers caused by Septoria lycopersici.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 5,
+    "label": "Tomato___Spider_mites",
+    "crop": "Tomato",
+    "disease": "Spider_mites",
+    "display_name": "Tomato: Two-Spotted Spider Mites",
+    "description": "Fine yellow speckling, stippling, and webbing caused by Tetranychus urticae infestation.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 6,
+    "label": "Tomato___Target_spot",
+    "crop": "Tomato",
+    "disease": "Target_spot",
+    "display_name": "Tomato: Target Spot",
+    "description": "Zonate necrotic lesions with light-brown centers caused by Corynespora cassiicola.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 7,
+    "label": "Tomato___Yellow_leaf_curl_virus",
+    "crop": "Tomato",
+    "disease": "Yellow_leaf_curl_virus",
+    "display_name": "Tomato: Yellow Leaf Curl Virus",
+    "description": "Upward leaf curling, severe stunting, and interveinal chlorosis transmitted by whiteflies.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 8,
+    "label": "Tomato___Mosaic_virus",
+    "crop": "Tomato",
+    "disease": "Mosaic_virus",
+    "display_name": "Tomato: Mosaic Virus",
+    "description": "Mottled light and dark green patterns with distorted foliage caused by Tobacco/Tomato mosaic virus.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 9,
+    "label": "Tomato___Healthy",
+    "crop": "Tomato",
+    "disease": "Healthy",
+    "display_name": "Tomato: Healthy",
+    "description": "Vibrant green leaf foliage without pathological lesions or parasitic infestations.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 10,
+    "label": "Potato___Early_blight",
+    "crop": "Potato",
+    "disease": "Early_blight",
+    "display_name": "Potato: Early Blight",
+    "description": "Dark brown necrotic lesions with concentric rings caused by Alternaria solani.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 11,
+    "label": "Potato___Late_blight",
+    "crop": "Potato",
+    "disease": "Late_blight",
+    "display_name": "Potato: Late Blight",
+    "description": "Irregular dark water-soaked patches caused by Phytophthora infestans, devastating in cool damp weather.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 12,
+    "label": "Potato___Healthy",
+    "crop": "Potato",
+    "disease": "Healthy",
+    "display_name": "Potato: Healthy",
+    "description": "Healthy vigorous potato foliage without blight or bacterial infection.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 13,
+    "label": "Pepper___Bacterial_spot",
+    "crop": "Pepper",
+    "disease": "Bacterial_spot",
+    "display_name": "Bell Pepper: Bacterial Spot",
+    "description": "Small yellow-green circular lesions turning dark brown with greasy texture caused by Xanthomonas campestris.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 14,
+    "label": "Pepper___Healthy",
+    "crop": "Pepper",
+    "disease": "Healthy",
+    "display_name": "Bell Pepper: Healthy",
+    "description": "Firm, uniform deep green leaves without bacterial spotting or chlorosis.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 15,
+    "label": "Maize___Gray_leaf_spot",
+    "crop": "Maize",
+    "disease": "Gray_leaf_spot",
+    "display_name": "Maize (Corn): Gray Leaf Spot",
+    "description": "Rectangular tan-to-gray necrotic lesions bounded by leaf veins caused by Cercospora zeae-maydis.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 16,
+    "label": "Maize___Common_rust",
+    "crop": "Maize",
+    "disease": "Common_rust",
+    "display_name": "Maize (Corn): Common Rust",
+    "description": "Golden-brown to cinnamon colored powdery pustules on both leaf surfaces caused by Puccinia sorghi.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 17,
+    "label": "Maize___Northern_leaf_blight",
+    "crop": "Maize",
+    "disease": "Northern_leaf_blight",
+    "display_name": "Maize (Corn): Northern Leaf Blight",
+    "description": "Cigar-shaped elliptical grayish-green or tan lesions caused by Exserohilum turcicum.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 18,
+    "label": "Maize___Healthy",
+    "crop": "Maize",
+    "disease": "Healthy",
+    "display_name": "Maize (Corn): Healthy",
+    "description": "Broad, smooth green blades free from fungal pustules and blights.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 19,
+    "label": "Apple___Apple_scab",
+    "crop": "Apple",
+    "disease": "Apple_scab",
+    "display_name": "Apple: Apple Scab",
+    "description": "Olive-green to velvety dark brown lesions on foliage caused by Venturia inaequalis.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 20,
+    "label": "Apple___Black_rot",
+    "crop": "Apple",
+    "disease": "Black_rot",
+    "display_name": "Apple: Black Rot",
+    "description": "Circular frog-eye leaf spots with purple margins caused by Botryosphaeria obtusa.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 21,
+    "label": "Apple___Cedar_apple_rust",
+    "crop": "Apple",
+    "disease": "Cedar_apple_rust",
+    "display_name": "Apple: Cedar Apple Rust",
+    "description": "Bright yellow-orange or rusty spots with dark central dots caused by Gymnosporangium juniperi-virginianae.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 22,
+    "label": "Apple___Healthy",
+    "crop": "Apple",
+    "disease": "Healthy",
+    "display_name": "Apple: Healthy",
+    "description": "Lush green foliage without fungal discoloration or rust spotting.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 23,
+    "label": "Grape___Black_rot",
+    "crop": "Grape",
+    "disease": "Black_rot",
+    "display_name": "Grape: Black Rot",
+    "description": "Circular reddish-brown spots with dark borders and tiny pycnidia caused by Guignardia bidwellii.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 24,
+    "label": "Grape___Esca_black_measles",
+    "crop": "Grape",
+    "disease": "Esca_black_measles",
+    "display_name": "Grape: Esca (Black Measles)",
+    "description": "Tiger-stripe interveinal necrosis and chlorosis caused by a complex of fungal wood pathogens.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 25,
+    "label": "Grape___Leaf_blight",
+    "crop": "Grape",
+    "disease": "Leaf_blight",
+    "display_name": "Grape: Leaf Blight (Isariopsis)",
+    "description": "Irregular reddish-brown lesions with distinct dark borders caused by Pseudocercospora vitis.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 26,
+    "label": "Grape___Healthy",
+    "crop": "Grape",
+    "disease": "Healthy",
+    "display_name": "Grape: Healthy",
+    "description": "Unblemished green palmate leaves with healthy venation and vigor.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 27,
+    "label": "Peach___Bacterial_spot",
+    "crop": "Peach",
+    "disease": "Bacterial_spot",
+    "display_name": "Peach: Bacterial Spot",
+    "description": "Angular purple-brown lesions that drop out leaving a shot-hole appearance, caused by Xanthomonas arboricola.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 28,
+    "label": "Peach___Healthy",
+    "crop": "Peach",
+    "disease": "Healthy",
+    "display_name": "Peach: Healthy",
+    "description": "Long lanceolate green leaves without shot-holes or bacterial cankers.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 29,
+    "label": "Strawberry___Leaf_scorch",
+    "crop": "Strawberry",
+    "disease": "Leaf_scorch",
+    "display_name": "Strawberry: Leaf Scorch",
+    "description": "Small purplish spots enlarging into dark brown patches that scorch leaf edges, caused by Diplocarpon earlianum.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 30,
+    "label": "Strawberry___Healthy",
+    "crop": "Strawberry",
+    "disease": "Healthy",
+    "display_name": "Strawberry: Healthy",
+    "description": "Trifoliate dark green serrated leaves free from marginal necrosis or scorch.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 31,
+    "label": "Cherry___Powdery_mildew",
+    "crop": "Cherry",
+    "disease": "Powdery_mildew",
+    "display_name": "Cherry: Powdery Mildew",
+    "description": "White talcum-like powdery fungal growth and leaf curling caused by Podosphaera clandestina.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 32,
+    "label": "Cherry___Healthy",
+    "crop": "Cherry",
+    "disease": "Healthy",
+    "display_name": "Cherry: Healthy",
+    "description": "Smooth ovate leaves without fungal mildew or distortion.",
+    "is_healthy": true
+  },
+  {
+    "class_id": 33,
+    "label": "Rice___Bacterial_leaf_blight",
+    "crop": "Rice",
+    "disease": "Bacterial_leaf_blight",
+    "display_name": "Rice (Paddy): Bacterial Leaf Blight",
+    "description": "Water-soaked to yellowish-white wavy stripes along leaf margins caused by Xanthomonas oryzae pv. oryzae.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 34,
+    "label": "Rice___Brown_spot",
+    "crop": "Rice",
+    "disease": "Brown_spot",
+    "display_name": "Rice (Paddy): Brown Spot",
+    "description": "Oval to circular dark brown lesions with gray or whitish centers caused by Bipolaris oryzae.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 35,
+    "label": "Rice___Leaf_blast",
+    "crop": "Rice",
+    "disease": "Leaf_blast",
+    "display_name": "Rice (Paddy): Leaf Blast",
+    "description": "Spindle or diamond-shaped lesions with gray centers and reddish-brown borders caused by Magnaporthe oryzae.",
+    "is_healthy": false
+  },
+  {
+    "class_id": 36,
+    "label": "Rice___Healthy",
+    "crop": "Rice",
+    "disease": "Healthy",
+    "display_name": "Rice (Paddy): Healthy",
+    "description": "Erect, slender emerald-green blades without lesions or marginal chlorosis.",
+    "is_healthy": true
+  }
+]

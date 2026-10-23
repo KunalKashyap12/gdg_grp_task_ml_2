@@ -1,0 +1,399 @@
+{
+  "total_tested": 39,
+  "mean_confidence": 0.5360871794871793,
+  "max_confidence": 0.9847,
+  "mean_entropy": 1.5093641025641027,
+  "high_confidence_false_positives_gt_80": 6,
+  "records": [
+    {
+      "name": "Blank: Pure Black",
+      "type": "blank",
+      "predicted_label": "Rice___Leaf_blast",
+      "predicted_display": "Rice (Paddy): Leaf Blast",
+      "calibrated_confidence": 0.3192,
+      "confidence_percent": "31.92%",
+      "top1_top2_margin": 0.2043,
+      "entropy": 2.4401
+    },
+    {
+      "name": "Blank: Pure White",
+      "type": "blank",
+      "predicted_label": "Rice___Bacterial_leaf_blight",
+      "predicted_display": "Rice (Paddy): Bacterial Leaf Blight",
+      "calibrated_confidence": 0.5915,
+      "confidence_percent": "59.15%",
+      "top1_top2_margin": 0.3425,
+      "entropy": 1.3087
+    },
+    {
+      "name": "Blank: Pure Gray",
+      "type": "blank",
+      "predicted_label": "Maize___Healthy",
+      "predicted_display": "Maize (Corn): Healthy",
+      "calibrated_confidence": 0.2912,
+      "confidence_percent": "29.12%",
+      "top1_top2_margin": 0.1282,
+      "entropy": 2.2078
+    },
+    {
+      "name": "Extreme Blur Noise",
+      "type": "blurry",
+      "predicted_label": "Rice___Leaf_blast",
+      "predicted_display": "Rice (Paddy): Leaf Blast",
+      "calibrated_confidence": 0.5115,
+      "confidence_percent": "51.15%",
+      "top1_top2_margin": 0.2828,
+      "entropy": 1.4814
+    },
+    {
+      "name": "Non-Leaf: Checkerboard Grid",
+      "type": "non_leaf",
+      "predicted_label": "Rice___Brown_spot",
+      "predicted_display": "Rice (Paddy): Brown Spot",
+      "calibrated_confidence": 0.4108,
+      "confidence_percent": "41.08%",
+      "top1_top2_margin": 0.0701,
+      "entropy": 1.7123
+    },
+    {
+      "name": "Non-Leaf: Random Color Noise",
+      "type": "non_leaf",
+      "predicted_label": "Rice___Healthy",
+      "predicted_display": "Rice (Paddy): Healthy",
+      "calibrated_confidence": 0.1986,
+      "confidence_percent": "19.86%",
+      "top1_top2_margin": 0.0515,
+      "entropy": 2.628
+    },
+    {
+      "name": "Non-Leaf: Solid Red",
+      "type": "non_leaf",
+      "predicted_label": "Rice___Brown_spot",
+      "predicted_display": "Rice (Paddy): Brown Spot",
+      "calibrated_confidence": 0.5405,
+      "confidence_percent": "54.05%",
+      "top1_top2_margin": 0.4321,
+      "entropy": 1.925
+    },
+    {
+      "name": "Non-Leaf: Solid Blue",
+      "type": "non_leaf",
+      "predicted_label": "Rice___Brown_spot",
+      "predicted_display": "Rice (Paddy): Brown Spot",
+      "calibrated_confidence": 0.291,
+      "confidence_percent": "29.10%",
+      "top1_top2_margin": 0.0007,
+      "entropy": 2.0399
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Strawberry___Leaf_scorch",
+      "predicted_display": "Strawberry: Leaf Scorch",
+      "calibrated_confidence": 0.399,
+      "confidence_percent": "39.90%",
+      "top1_top2_margin": 0.2134,
+      "entropy": 1.9067
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Rice___Healthy",
+      "predicted_display": "Rice (Paddy): Healthy",
+      "calibrated_confidence": 0.5723,
+      "confidence_percent": "57.23%",
+      "top1_top2_margin": 0.3829,
+      "entropy": 1.3615
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Grape___Black_rot",
+      "predicted_display": "Grape: Black Rot",
+      "calibrated_confidence": 0.9565,
+      "confidence_percent": "95.65%",
+      "top1_top2_margin": 0.9291,
+      "entropy": 0.2255
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Maize___Common_rust",
+      "predicted_display": "Maize (Corn): Common Rust",
+      "calibrated_confidence": 0.4181,
+      "confidence_percent": "41.81%",
+      "top1_top2_margin": 0.1462,
+      "entropy": 1.7818
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Apple___Healthy",
+      "predicted_display": "Apple: Healthy",
+      "calibrated_confidence": 0.4272,
+      "confidence_percent": "42.72%",
+      "top1_top2_margin": 0.2289,
+      "entropy": 1.6888
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Maize___Healthy",
+      "predicted_display": "Maize (Corn): Healthy",
+      "calibrated_confidence": 0.7564,
+      "confidence_percent": "75.64%",
+      "top1_top2_margin": 0.6193,
+      "entropy": 0.9691
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Apple___Healthy",
+      "predicted_display": "Apple: Healthy",
+      "calibrated_confidence": 0.3501,
+      "confidence_percent": "35.01%",
+      "top1_top2_margin": 0.0957,
+      "entropy": 1.8681
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Tomato___Yellow_leaf_curl_virus",
+      "predicted_display": "Tomato: Yellow Leaf Curl Virus",
+      "calibrated_confidence": 0.8178,
+      "confidence_percent": "81.78%",
+      "top1_top2_margin": 0.7058,
+      "entropy": 0.7086
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Rice___Healthy",
+      "predicted_display": "Rice (Paddy): Healthy",
+      "calibrated_confidence": 0.6887,
+      "confidence_percent": "68.87%",
+      "top1_top2_margin": 0.5581,
+      "entropy": 1.0845
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Rice___Brown_spot",
+      "predicted_display": "Rice (Paddy): Brown Spot",
+      "calibrated_confidence": 0.7511,
+      "confidence_percent": "75.11%",
+      "top1_top2_margin": 0.6546,
+      "entropy": 0.9453
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Rice___Bacterial_leaf_blight",
+      "predicted_display": "Rice (Paddy): Bacterial Leaf Blight",
+      "calibrated_confidence": 0.4927,
+      "confidence_percent": "49.27%",
+      "top1_top2_margin": 0.2746,
+      "entropy": 1.405
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Rice___Healthy",
+      "predicted_display": "Rice (Paddy): Healthy",
+      "calibrated_confidence": 0.5457,
+      "confidence_percent": "54.57%",
+      "top1_top2_margin": 0.2763,
+      "entropy": 1.1893
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Strawberry___Healthy",
+      "predicted_display": "Strawberry: Healthy",
+      "calibrated_confidence": 0.685,
+      "confidence_percent": "68.50%",
+      "top1_top2_margin": 0.5425,
+      "entropy": 1.1426
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Grape___Healthy",
+      "predicted_display": "Grape: Healthy",
+      "calibrated_confidence": 0.797,
+      "confidence_percent": "79.70%",
+      "top1_top2_margin": 0.6974,
+      "entropy": 0.816
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Apple___Apple_scab",
+      "predicted_display": "Apple: Apple Scab",
+      "calibrated_confidence": 0.3356,
+      "confidence_percent": "33.56%",
+      "top1_top2_margin": 0.1385,
+      "entropy": 1.9258
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Tomato___Healthy",
+      "predicted_display": "Tomato: Healthy",
+      "calibrated_confidence": 0.8074,
+      "confidence_percent": "80.74%",
+      "top1_top2_margin": 0.7737,
+      "entropy": 0.9835
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Tomato___Healthy",
+      "predicted_display": "Tomato: Healthy",
+      "calibrated_confidence": 0.9847,
+      "confidence_percent": "98.47%",
+      "top1_top2_margin": 0.9764,
+      "entropy": 0.1035
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Rice___Brown_spot",
+      "predicted_display": "Rice (Paddy): Brown Spot",
+      "calibrated_confidence": 0.3606,
+      "confidence_percent": "36.06%",
+      "top1_top2_margin": 0.0976,
+      "entropy": 1.963
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Apple___Cedar_apple_rust",
+      "predicted_display": "Apple: Cedar Apple Rust",
+      "calibrated_confidence": 0.2896,
+      "confidence_percent": "28.96%",
+      "top1_top2_margin": 0.0093,
+      "entropy": 1.9278
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Apple___Apple_scab",
+      "predicted_display": "Apple: Apple Scab",
+      "calibrated_confidence": 0.1838,
+      "confidence_percent": "18.38%",
+      "top1_top2_margin": 0.0341,
+      "entropy": 2.5473
+    },
+    {
+      "name": "Unsupported Crop: Raspberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Rice___Healthy",
+      "predicted_display": "Rice (Paddy): Healthy",
+      "calibrated_confidence": 0.8362,
+      "confidence_percent": "83.62%",
+      "top1_top2_margin": 0.7637,
+      "entropy": 0.761
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Apple___Black_rot",
+      "predicted_display": "Apple: Black Rot",
+      "calibrated_confidence": 0.5133,
+      "confidence_percent": "51.33%",
+      "top1_top2_margin": 0.3591,
+      "entropy": 1.6981
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Apple___Apple_scab",
+      "predicted_display": "Apple: Apple Scab",
+      "calibrated_confidence": 0.5269,
+      "confidence_percent": "52.69%",
+      "top1_top2_margin": 0.2891,
+      "entropy": 1.4411
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Tomato___Healthy",
+      "predicted_display": "Tomato: Healthy",
+      "calibrated_confidence": 0.9593,
+      "confidence_percent": "95.93%",
+      "top1_top2_margin": 0.9242,
+      "entropy": 0.1982
+    },
+    {
+      "name": "Unsupported Crop: Squash Powdery mildew leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Strawberry___Healthy",
+      "predicted_display": "Strawberry: Healthy",
+      "calibrated_confidence": 0.273,
+      "confidence_percent": "27.30%",
+      "top1_top2_margin": 0.0093,
+      "entropy": 1.7493
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Pepper___Healthy",
+      "predicted_display": "Bell Pepper: Healthy",
+      "calibrated_confidence": 0.605,
+      "confidence_percent": "60.50%",
+      "top1_top2_margin": 0.5429,
+      "entropy": 1.7773
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Potato___Healthy",
+      "predicted_display": "Potato: Healthy",
+      "calibrated_confidence": 0.3436,
+      "confidence_percent": "34.36%",
+      "top1_top2_margin": 0.1767,
+      "entropy": 2.2117
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Tomato___Yellow_leaf_curl_virus",
+      "predicted_display": "Tomato: Yellow Leaf Curl Virus",
+      "calibrated_confidence": 0.6009,
+      "confidence_percent": "60.09%",
+      "top1_top2_margin": 0.515,
+      "entropy": 1.6567
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Apple___Apple_scab",
+      "predicted_display": "Apple: Apple Scab",
+      "calibrated_confidence": 0.4788,
+      "confidence_percent": "47.88%",
+      "top1_top2_margin": 0.1924,
+      "entropy": 1.5109
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Tomato___Yellow_leaf_curl_virus",
+      "predicted_display": "Tomato: Yellow Leaf Curl Virus",
+      "calibrated_confidence": 0.4098,
+      "confidence_percent": "40.98%",
+      "top1_top2_margin": 0.2128,
+      "entropy": 1.9536
+    },
+    {
+      "name": "Unsupported Crop: Blueberry leaf",
+      "type": "unsupported_crop",
+      "predicted_label": "Pepper___Healthy",
+      "predicted_display": "Bell Pepper: Healthy",
+      "calibrated_confidence": 0.587,
+      "confidence_percent": "58.70%",
+      "top1_top2_margin": 0.4756,
+      "entropy": 1.6204
+    }
+  ]
+}

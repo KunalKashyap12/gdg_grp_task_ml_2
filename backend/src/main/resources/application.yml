@@ -1,0 +1,29 @@
+# ===================================================================
+# Spring Boot Configuration for FloraScan AI Backend Integration
+# ===================================================================
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: florascan-backend
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# ML Microservice Connection Parameters
+ml:
+  service:
+    # Use "http://localhost:8000" for local development outside Docker
+    # Use "http://ml-service:8000" when running inside Docker Compose
+    url: ${ML_SERVICE_URL:http://localhost:8000}
+    timeout-ms: 10000
+    max-retries: 2
+
+# Logging Configuration
+logging:
+  level:
+    com.florascan.backend: DEBUG
+    org.springframework.web: INFO

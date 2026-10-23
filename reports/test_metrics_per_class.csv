@@ -1,0 +1,38 @@
+class_id,label,crop,disease,display_name,precision,recall,f1_score,support
+0,Tomato___Bacterial_spot,Tomato,Bacterial_spot,Tomato: Bacterial Spot,0.837,0.8556,0.8462,90
+1,Tomato___Early_blight,Tomato,Early_blight,Tomato: Early Blight,0.9024,0.4111,0.5649,90
+2,Tomato___Late_blight,Tomato,Late_blight,Tomato: Late Blight,0.8871,0.6111,0.7237,90
+3,Tomato___Leaf_mold,Tomato,Leaf_mold,Tomato: Leaf Mold,0.973,0.8,0.878,90
+4,Tomato___Septoria_leaf_spot,Tomato,Septoria_leaf_spot,Tomato: Septoria Leaf Spot,0.6852,0.8222,0.7475,90
+5,Tomato___Spider_mites,Tomato,Spider_mites,Tomato: Two-Spotted Spider Mites,0.8315,0.8222,0.8268,90
+6,Tomato___Target_spot,Tomato,Target_spot,Tomato: Target Spot,0.7857,0.7333,0.7586,90
+7,Tomato___Yellow_leaf_curl_virus,Tomato,Yellow_leaf_curl_virus,Tomato: Yellow Leaf Curl Virus,0.9545,0.9333,0.9438,90
+8,Tomato___Mosaic_virus,Tomato,Mosaic_virus,Tomato: Mosaic Virus,0.8028,1.0,0.8906,57
+9,Tomato___Healthy,Tomato,Healthy,Tomato: Healthy,0.8969,0.9667,0.9305,90
+10,Potato___Early_blight,Potato,Early_blight,Potato: Early Blight,0.7965,1.0,0.8867,90
+11,Potato___Late_blight,Potato,Late_blight,Potato: Late Blight,0.8919,0.7333,0.8049,90
+12,Potato___Healthy,Potato,Healthy,Potato: Healthy,0.5455,1.0,0.7059,24
+13,Pepper___Bacterial_spot,Pepper,Bacterial_spot,Bell Pepper: Bacterial Spot,0.89,0.9889,0.9368,90
+14,Pepper___Healthy,Pepper,Healthy,Bell Pepper: Healthy,0.9773,0.9556,0.9663,90
+15,Maize___Gray_leaf_spot,Maize,Gray_leaf_spot,Maize (Corn): Gray Leaf Spot,0.7835,0.9744,0.8686,78
+16,Maize___Common_rust,Maize,Common_rust,Maize (Corn): Common Rust,0.9512,0.8667,0.907,90
+17,Maize___Northern_leaf_blight,Maize,Northern_leaf_blight,Maize (Corn): Northern Leaf Blight,0.9103,0.7889,0.8452,90
+18,Maize___Healthy,Maize,Healthy,Maize (Corn): Healthy,1.0,0.9778,0.9888,90
+19,Apple___Apple_scab,Apple,Apple_scab,Apple: Apple Scab,0.9565,0.9778,0.967,90
+20,Apple___Black_rot,Apple,Black_rot,Apple: Black Rot,1.0,0.9222,0.9595,90
+21,Apple___Cedar_apple_rust,Apple,Cedar_apple_rust,Apple: Cedar Apple Rust,0.84,1.0,0.913,42
+22,Apple___Healthy,Apple,Healthy,Apple: Healthy,0.9651,0.9222,0.9432,90
+23,Grape___Black_rot,Grape,Black_rot,Grape: Black Rot,0.9011,0.9111,0.9061,90
+24,Grape___Esca_black_measles,Grape,Esca_black_measles,Grape: Esca (Black Measles),0.9432,0.9222,0.9326,90
+25,Grape___Leaf_blight,Grape,Leaf_blight,Grape: Leaf Blight (Isariopsis),0.9457,0.9667,0.956,90
+26,Grape___Healthy,Grape,Healthy,Grape: Healthy,0.8649,1.0,0.9275,64
+27,Peach___Bacterial_spot,Peach,Bacterial_spot,Peach: Bacterial Spot,0.9667,0.9667,0.9667,90
+28,Peach___Healthy,Peach,Healthy,Peach: Healthy,0.9649,1.0,0.9821,55
+29,Strawberry___Leaf_scorch,Strawberry,Leaf_scorch,Strawberry: Leaf Scorch,0.9239,0.9444,0.9341,90
+30,Strawberry___Healthy,Strawberry,Healthy,Strawberry: Healthy,0.8933,0.971,0.9306,69
+31,Cherry___Powdery_mildew,Cherry,Powdery_mildew,Cherry: Powdery Mildew,0.9775,0.9667,0.9721,90
+32,Cherry___Healthy,Cherry,Healthy,Cherry: Healthy,0.9574,1.0,0.9783,90
+33,Rice___Bacterial_leaf_blight,Rice,Bacterial_leaf_blight,Rice (Paddy): Bacterial Leaf Blight,0.7037,0.6552,0.6786,29
+34,Rice___Brown_spot,Rice,Brown_spot,Rice (Paddy): Brown Spot,0.64,0.5517,0.5926,29
+35,Rice___Leaf_blast,Rice,Leaf_blast,Rice (Paddy): Leaf Blast,0.7222,0.5909,0.65,22
+36,Rice___Healthy,Rice,Healthy,Rice (Paddy): Healthy,0.5278,0.95,0.6786,20

@@ -1,0 +1,160 @@
+{
+  "total_images": 1000,
+  "ground_truth": "Potato___Late_blight",
+  "top1_accuracy_pct": 78.0,
+  "top3_accuracy_pct": 96.9,
+  "crop_accuracy_pct": 94.4,
+  "disease_accuracy_pct": 81.9,
+  "selective_accuracy_on_accepted_pct": 85.88,
+  "status_breakdown": {
+    "success_accepted": 793,
+    "low_confidence_flagged": 207,
+    "not_a_leaf_rejected": 0
+  },
+  "confidence_stats": {
+    "mean": 0.8687,
+    "median": 0.9616,
+    "min": 0.1439,
+    "max": 1.0,
+    "std": 0.1825
+  },
+  "timing": {
+    "total_sec": 54.47,
+    "avg_latency_ms": 50.42,
+    "throughput_fps": 18.4
+  },
+  "top_predicted_classes": [
+    [
+      "Potato___Late_blight",
+      780
+    ],
+    [
+      "Potato___Healthy",
+      97
+    ],
+    [
+      "Potato___Early_blight",
+      67
+    ],
+    [
+      "Tomato___Late_blight",
+      39
+    ],
+    [
+      "Tomato___Spider_mites",
+      4
+    ]
+  ],
+  "misclassifications_sample": [
+    {
+      "file": "00b1f292-23dd-44d4-aad3-c1ffb6a6ad5a___RS_LB 4479.JPG",
+      "predicted_label": "Potato___Early_blight",
+      "confidence": 0.3762,
+      "status": "low_confidence",
+      "top_k": [
+        "Potato___Early_blight",
+        "Grape___Leaf_blight",
+        "Potato___Late_blight"
+      ]
+    },
+    {
+      "file": "0441138d-5f9f-4ede-ab9a-49edabc605b3___RS_LB 4235.JPG",
+      "predicted_label": "Potato___Healthy",
+      "confidence": 0.9447,
+      "status": "success",
+      "top_k": [
+        "Potato___Healthy",
+        "Potato___Late_blight",
+        "Potato___Early_blight"
+      ]
+    },
+    {
+      "file": "04b964fd-7033-4cdf-88ef-b1acbcd8183a___RS_LB 2783.JPG",
+      "predicted_label": "Tomato___Spider_mites",
+      "confidence": 0.3315,
+      "status": "low_confidence",
+      "top_k": [
+        "Tomato___Spider_mites",
+        "Tomato___Healthy",
+        "Potato___Healthy"
+      ]
+    },
+    {
+      "file": "04fe5855-ec9c-40b3-9893-ca8addc236bd___RS_LB 4913.JPG",
+      "predicted_label": "Potato___Healthy",
+      "confidence": 0.6045,
+      "status": "low_confidence",
+      "top_k": [
+        "Potato___Healthy",
+        "Tomato___Spider_mites",
+        "Potato___Late_blight"
+      ]
+    },
+    {
+      "file": "050b6d37-4056-4c6c-8359-d7823a488531___RS_LB 3944.JPG",
+      "predicted_label": "Potato___Healthy",
+      "confidence": 0.5848,
+      "status": "low_confidence",
+      "top_k": [
+        "Potato___Healthy",
+        "Potato___Late_blight",
+        "Potato___Early_blight"
+      ]
+    },
+    {
+      "file": "06554e38-28ce-429d-b8e9-520e61e3c58f___RS_LB 2692.JPG",
+      "predicted_label": "Potato___Healthy",
+      "confidence": 0.6433,
+      "status": "low_confidence",
+      "top_k": [
+        "Potato___Healthy",
+        "Potato___Late_blight",
+        "Potato___Early_blight"
+      ]
+    },
+    {
+      "file": "08ce9666-2dda-4fa8-8d58-55bb9fa19484___RS_LB 3318.JPG",
+      "predicted_label": "Potato___Healthy",
+      "confidence": 0.8678,
+      "status": "success",
+      "top_k": [
+        "Potato___Healthy",
+        "Potato___Late_blight",
+        "Tomato___Target_spot"
+      ]
+    },
+    {
+      "file": "0b2bdc8e-90fd-4bb4-bedb-485502fe8a96___RS_LB 4906.JPG",
+      "predicted_label": "Strawberry___Healthy",
+      "confidence": 0.5079,
+      "status": "low_confidence",
+      "top_k": [
+        "Strawberry___Healthy",
+        "Potato___Late_blight",
+        "Tomato___Yellow_leaf_curl_virus"
+      ]
+    },
+    {
+      "file": "0c83302d-4233-4e98-8ecf-755a970495bb___RS_LB 4904.JPG",
+      "predicted_label": "Potato___Healthy",
+      "confidence": 0.3561,
+      "status": "low_confidence",
+      "top_k": [
+        "Potato___Healthy",
+        "Strawberry___Healthy",
+        "Potato___Late_blight"
+      ]
+    },
+    {
+      "file": "0e7f0484-16eb-4183-b702-0a5b4f94d015___RS_LB 4000.JPG",
+      "predicted_label": "Potato___Healthy",
+      "confidence": 0.9621,
+      "status": "success",
+      "top_k": [
+        "Potato___Healthy",
+        "Potato___Late_blight",
+        "Cherry___Healthy"
+      ]
+    }
+  ]
+}

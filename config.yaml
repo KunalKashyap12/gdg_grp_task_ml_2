@@ -1,0 +1,206 @@
+# Crop Leaf Disease Classification Configuration
+# Supports 10 crops modularly so crops and diseases can be added or removed.
+
+system:
+  seed: 42
+  disclaimer: "The output is an AI-assisted indication, NOT a guaranteed agricultural diagnosis."
+
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  manifest_dir: "data/manifests"
+  supported_classes_path: "data/supported_classes.json"
+  max_images_per_class: 600  # Cap per class for balanced training while retaining statistical diversity
+  min_images_per_class: 100  # Threshold for reliable training
+  val_split: 0.15
+  test_split: 0.15
+  phash_threshold: 4         # Perceptual hash Hamming distance for near-duplicate rejection
+
+# Configurable Crop and Disease Definitions
+crops:
+  Tomato:
+    display_name: "Tomato"
+    scientific_name: "Solanum lycopersicum"
+    diseases:
+      - name: "Bacterial_spot"
+        display_name: "Bacterial Spot"
+        description: "Small water-soaked circular lesions on foliage caused by Xanthomonas species."
+      - name: "Early_blight"
+        display_name: "Early Blight"
+        description: "Concentric ring target-like brown necrotic spots caused by Alternaria solani."
+      - name: "Late_blight"
+        display_name: "Late Blight"
+        description: "Rapidly spreading pale to brown lesions with white sporulation caused by Phytophthora infestans."
+      - name: "Leaf_mold"
+        display_name: "Leaf Mold"
+        description: "Pale green to yellow spots with olive green velvety mold patches caused by Passalora fulva."
+      - name: "Septoria_leaf_spot"
+        display_name: "Septoria Leaf Spot"
+        description: "Numerous small circular brown spots with dark margins and gray centers caused by Septoria lycopersici."
+      - name: "Spider_mites"
+        display_name: "Two-Spotted Spider Mites"
+        description: "Fine yellow speckling, stippling, and webbing caused by Tetranychus urticae infestation."
+      - name: "Target_spot"
+        display_name: "Target Spot"
+        description: "Zonate necrotic lesions with light-brown centers caused by Corynespora cassiicola."
+      - name: "Yellow_leaf_curl_virus"
+        display_name: "Yellow Leaf Curl Virus"
+        description: "Upward leaf curling, severe stunting, and interveinal chlorosis transmitted by whiteflies."
+      - name: "Mosaic_virus"
+        display_name: "Mosaic Virus"
+        description: "Mottled light and dark green patterns with distorted foliage caused by Tobacco/Tomato mosaic virus."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Vibrant green leaf foliage without pathological lesions or parasitic infestations."
+
+  Potato:
+    display_name: "Potato"
+    scientific_name: "Solanum tuberosum"
+    diseases:
+      - name: "Early_blight"
+        display_name: "Early Blight"
+        description: "Dark brown necrotic lesions with concentric rings caused by Alternaria solani."
+      - name: "Late_blight"
+        display_name: "Late Blight"
+        description: "Irregular dark water-soaked patches caused by Phytophthora infestans, devastating in cool damp weather."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Healthy vigorous potato foliage without blight or bacterial infection."
+
+  Pepper:
+    display_name: "Bell Pepper"
+    scientific_name: "Capsicum annuum"
+    diseases:
+      - name: "Bacterial_spot"
+        display_name: "Bacterial Spot"
+        description: "Small yellow-green circular lesions turning dark brown with greasy texture caused by Xanthomonas campestris."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Firm, uniform deep green leaves without bacterial spotting or chlorosis."
+
+  Maize:
+    display_name: "Maize (Corn)"
+    scientific_name: "Zea mays"
+    diseases:
+      - name: "Gray_leaf_spot"
+        display_name: "Gray Leaf Spot"
+        description: "Rectangular tan-to-gray necrotic lesions bounded by leaf veins caused by Cercospora zeae-maydis."
+      - name: "Common_rust"
+        display_name: "Common Rust"
+        description: "Golden-brown to cinnamon colored powdery pustules on both leaf surfaces caused by Puccinia sorghi."
+      - name: "Northern_leaf_blight"
+        display_name: "Northern Leaf Blight"
+        description: "Cigar-shaped elliptical grayish-green or tan lesions caused by Exserohilum turcicum."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Broad, smooth green blades free from fungal pustules and blights."
+
+  Apple:
+    display_name: "Apple"
+    scientific_name: "Malus domestica"
+    diseases:
+      - name: "Apple_scab"
+        display_name: "Apple Scab"
+        description: "Olive-green to velvety dark brown lesions on foliage caused by Venturia inaequalis."
+      - name: "Black_rot"
+        display_name: "Black Rot"
+        description: "Circular frog-eye leaf spots with purple margins caused by Botryosphaeria obtusa."
+      - name: "Cedar_apple_rust"
+        display_name: "Cedar Apple Rust"
+        description: "Bright yellow-orange or rusty spots with dark central dots caused by Gymnosporangium juniperi-virginianae."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Lush green foliage without fungal discoloration or rust spotting."
+
+  Grape:
+    display_name: "Grape"
+    scientific_name: "Vitis vinifera"
+    diseases:
+      - name: "Black_rot"
+        display_name: "Black Rot"
+        description: "Circular reddish-brown spots with dark borders and tiny pycnidia caused by Guignardia bidwellii."
+      - name: "Esca_black_measles"
+        display_name: "Esca (Black Measles)"
+        description: "Tiger-stripe interveinal necrosis and chlorosis caused by a complex of fungal wood pathogens."
+      - name: "Leaf_blight"
+        display_name: "Leaf Blight (Isariopsis)"
+        description: "Irregular reddish-brown lesions with distinct dark borders caused by Pseudocercospora vitis."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Unblemished green palmate leaves with healthy venation and vigor."
+
+  Peach:
+    display_name: "Peach"
+    scientific_name: "Prunus persica"
+    diseases:
+      - name: "Bacterial_spot"
+        display_name: "Bacterial Spot"
+        description: "Angular purple-brown lesions that drop out leaving a shot-hole appearance, caused by Xanthomonas arboricola."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Long lanceolate green leaves without shot-holes or bacterial cankers."
+
+  Strawberry:
+    display_name: "Strawberry"
+    scientific_name: "Fragaria ananassa"
+    diseases:
+      - name: "Leaf_scorch"
+        display_name: "Leaf Scorch"
+        description: "Small purplish spots enlarging into dark brown patches that scorch leaf edges, caused by Diplocarpon earlianum."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Trifoliate dark green serrated leaves free from marginal necrosis or scorch."
+
+  Cherry:
+    display_name: "Cherry"
+    scientific_name: "Prunus avium"
+    diseases:
+      - name: "Powdery_mildew"
+        display_name: "Powdery Mildew"
+        description: "White talcum-like powdery fungal growth and leaf curling caused by Podosphaera clandestina."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Smooth ovate leaves without fungal mildew or distortion."
+
+  Rice:
+    display_name: "Rice (Paddy)"
+    scientific_name: "Oryza sativa"
+    source_dataset: "Philippines Rice Diseases Dataset (GNU AGPL 3.0)"
+    photo_style: "Field-acquired photographs with natural sunlight, varying backgrounds, and leaf angles"
+    diseases:
+      - name: "Bacterial_leaf_blight"
+        display_name: "Bacterial Leaf Blight"
+        description: "Water-soaked to yellowish-white wavy stripes along leaf margins caused by Xanthomonas oryzae pv. oryzae."
+      - name: "Brown_spot"
+        display_name: "Brown Spot"
+        description: "Oval to circular dark brown lesions with gray or whitish centers caused by Bipolaris oryzae."
+      - name: "Leaf_blast"
+        display_name: "Leaf Blast"
+        description: "Spindle or diamond-shaped lesions with gray centers and reddish-brown borders caused by Magnaporthe oryzae."
+      - name: "Healthy"
+        display_name: "Healthy"
+        description: "Erect, slender emerald-green blades without lesions or marginal chlorosis."
+
+model:
+  architecture: "mobilenet_v3_large"
+  pretrained: true
+  img_size: 224
+  num_classes: 37
+
+training:
+  batch_size: 32
+  epochs: 15
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  label_smoothing: 0.05
+  early_stopping_patience: 4
+
+calibration:
+  method: "temperature_scaling"
+  max_iter: 100
+  lr: 0.01
+
+inference:
+  onnx_model_path: "models/crop_disease_model.onnx"
+  calibration_path: "models/calibration.json"
+  supported_classes_path: "data/supported_classes.json"

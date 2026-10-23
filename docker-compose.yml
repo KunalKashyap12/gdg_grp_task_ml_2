@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  crop-disease-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crop_disease_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

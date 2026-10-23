@@ -1,0 +1,22 @@
+{
+  "onnx_file": "models/crop_disease_model.onnx",
+  "model_architecture": "mobilenet_v3_large",
+  "onnx_size_mb": 16.2,
+  "parity_verified": true,
+  "max_absolute_diff": 1.1444091796875e-05,
+  "tolerance_atol": 0.0001,
+  "pytorch_cpu_latency_ms": 23.21,
+  "onnx_cpu_latency_ms": 4.68,
+  "speedup_factor": 4.96,
+  "opset_version": 17,
+  "input_shape": [
+    "batch_size",
+    3,
+    224,
+    224
+  ],
+  "output_shape": [
+    "batch_size",
+    37
+  ]
+}

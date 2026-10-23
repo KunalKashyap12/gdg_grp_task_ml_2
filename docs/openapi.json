@@ -1,0 +1,476 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Crop Leaf Disease Classification API",
+    "description": "Production REST API for foliar crop disease classification with calibrated confidence scores and low-confidence threshold filtering across 10 agricultural crops.\n\n**Legal & Safety Disclaimer**: *AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation.*",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "API Root Overview",
+        "operationId": "root_endpoint__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "summary": "Service & Model Liveness Check",
+        "description": "Returns {\"status\": \"ok\", \"model_loaded\": true}.",
+        "operationId": "get_health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/classes": {
+      "get": {
+        "summary": "List Supported Crops & Pathologies",
+        "description": "Returns list of supported 10 crops and 37 disease/healthy classes.",
+        "operationId": "get_classes_api_v1_classes_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1ClassesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/model-info": {
+      "get": {
+        "summary": "Model Architecture & Metrics Metadata",
+        "description": "Returns model architecture, input size, threshold, temperature, and evaluation summary.",
+        "operationId": "get_model_info_api_v1_model_info_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1ModelInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predict": {
+      "post": {
+        "summary": "Predict Crop Disease from Single Leaf Photograph",
+        "description": "Submits a foliar image for calibrated disease identification.\n\nAccepts:\n- multipart/form-data with field 'image'\n- Formats: JPEG, PNG, WebP\n- Max size: 5 MB",
+        "operationId": "predict_foliar_disease_api_v1_predict_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_predict_foliar_disease_api_v1_predict_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Diagnosis successful or low-confidence flagged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1PredictionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corrupt or unreadable image file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File exceeds maximum 5 MB limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported media format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Missing form field 'image'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_predict_foliar_disease_api_v1_predict_post": {
+        "properties": {
+          "image": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "Image",
+            "description": "Crop leaf photo file (JPEG, PNG, or WebP; maximum 5 MB)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "image"
+        ],
+        "title": "Body_predict_foliar_disease_api_v1_predict_post"
+      },
+      "ClassMetadata": {
+        "properties": {
+          "class_id": {
+            "type": "integer",
+            "title": "Class Id"
+          },
+          "crop": {
+            "type": "string",
+            "title": "Crop"
+          },
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "class_id",
+          "crop",
+          "disease",
+          "label",
+          "display_name",
+          "description"
+        ],
+        "title": "ClassMetadata"
+      },
+      "ErrorDetail": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Machine-readable error code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable error explanation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorDetail"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "PredictionItem": {
+        "properties": {
+          "class_id": {
+            "type": "integer",
+            "title": "Class Id",
+            "description": "Zero-indexed class identifier (0-36)"
+          },
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Identified crop name"
+          },
+          "disease": {
+            "type": "string",
+            "title": "Disease",
+            "description": "Pathological condition or Healthy"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Canonical label (Crop___Disease)"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "description": "Calibrated posterior confidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "class_id",
+          "crop",
+          "disease",
+          "label",
+          "confidence"
+        ],
+        "title": "PredictionItem"
+      },
+      "TopKItem": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Candidate class label"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "description": "Calibrated posterior confidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "confidence"
+        ],
+        "title": "TopKItem"
+      },
+      "V1ClassesResponse": {
+        "properties": {
+          "total_classes": {
+            "type": "integer",
+            "title": "Total Classes"
+          },
+          "total_crops": {
+            "type": "integer",
+            "title": "Total Crops"
+          },
+          "crops": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Crops"
+          },
+          "classes": {
+            "items": {
+              "$ref": "#/components/schemas/ClassMetadata"
+            },
+            "type": "array",
+            "title": "Classes"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation."
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_classes",
+          "total_crops",
+          "crops",
+          "classes"
+        ],
+        "title": "V1ClassesResponse"
+      },
+      "V1HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "ok",
+            "example": "ok"
+          },
+          "model_loaded": {
+            "type": "boolean",
+            "title": "Model Loaded",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "V1HealthResponse"
+      },
+      "V1ModelInfoResponse": {
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "input_size": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Input Size"
+          },
+          "num_classes": {
+            "type": "integer",
+            "title": "Num Classes"
+          },
+          "threshold": {
+            "type": "number",
+            "title": "Threshold"
+          },
+          "temperature": {
+            "type": "number",
+            "title": "Temperature"
+          },
+          "metrics_summary": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metrics Summary"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation."
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_name",
+          "model_version",
+          "input_size",
+          "num_classes",
+          "threshold",
+          "temperature",
+          "metrics_summary"
+        ],
+        "title": "V1ModelInfoResponse"
+      },
+      "V1PredictionResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "'success' if confident, 'low_confidence' if below threshold"
+          },
+          "prediction": {
+            "$ref": "#/components/schemas/PredictionItem",
+            "description": "Top diagnosis"
+          },
+          "top_k": {
+            "items": {
+              "$ref": "#/components/schemas/TopKItem"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Top K",
+            "description": "Top-3 candidate predictions"
+          },
+          "low_confidence": {
+            "type": "boolean",
+            "title": "Low Confidence",
+            "description": "True if confidence is below calibrated threshold"
+          },
+          "threshold": {
+            "type": "number",
+            "title": "Threshold",
+            "description": "Configured operating confidence threshold"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Diagnostic assessment or guidance message"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "description": "Serving model version string"
+          },
+          "inference_time_ms": {
+            "type": "number",
+            "title": "Inference Time Ms",
+            "description": "Inference latency in milliseconds"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "description": "Mandatory agricultural disclaimer",
+            "default": "AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation."
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "prediction",
+          "top_k",
+          "low_confidence",
+          "threshold",
+          "message",
+          "model_version",
+          "inference_time_ms"
+        ],
+        "title": "V1PredictionResponse"
+      }
+    }
+  }
+}

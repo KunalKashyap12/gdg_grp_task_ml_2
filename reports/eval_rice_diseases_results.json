@@ -1,0 +1,416 @@
+[
+  {
+    "folder": "Bacterial leaf blight",
+    "is_supported_class": true,
+    "ground_truth_label": "Rice___Bacterial_leaf_blight",
+    "total_images": 40,
+    "top1_accuracy_pct": 87.5,
+    "top3_accuracy_pct": 100.0,
+    "crop_accuracy_pct": 100.0,
+    "disease_accuracy_pct": 87.5,
+    "selective_accuracy_pct": 91.67,
+    "status_breakdown": {
+      "success_accepted": 36,
+      "low_confidence_flagged": 4,
+      "not_a_leaf": 0
+    },
+    "mean_confidence": 0.923,
+    "median_confidence": 0.9722,
+    "elapsed_sec": 16.24,
+    "predicted_crops_distribution": {
+      "Rice": 40
+    },
+    "top_predictions": [
+      [
+        "Rice___Bacterial_leaf_blight",
+        35
+      ],
+      [
+        "Rice___Brown_spot",
+        5
+      ]
+    ],
+    "sample_diagnoses": [
+      {
+        "file": "DSC_0365.JPG",
+        "predicted_label": "Rice___Bacterial_leaf_blight",
+        "confidence": 0.9795,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Brown_spot",
+          "Maize___Northern_leaf_blight"
+        ]
+      },
+      {
+        "file": "DSC_0366.jpg",
+        "predicted_label": "Rice___Bacterial_leaf_blight",
+        "confidence": 0.9584,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Brown_spot",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0367.JPG",
+        "predicted_label": "Rice___Bacterial_leaf_blight",
+        "confidence": 0.7448,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Brown_spot",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0370.jpg",
+        "predicted_label": "Rice___Bacterial_leaf_blight",
+        "confidence": 0.8601,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Brown_spot",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0372.JPG",
+        "predicted_label": "Rice___Bacterial_leaf_blight",
+        "confidence": 0.9848,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Brown_spot",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0379.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.8356,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0393.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.6054,
+        "status": "low_confidence",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0397.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.5665,
+        "status": "low_confidence",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0399.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9462,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0403.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9959,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Leaf_blast",
+          "Rice___Bacterial_leaf_blight"
+        ]
+      }
+    ]
+  },
+  {
+    "folder": "Brown spot",
+    "is_supported_class": true,
+    "ground_truth_label": "Rice___Brown_spot",
+    "total_images": 40,
+    "top1_accuracy_pct": 97.5,
+    "top3_accuracy_pct": 100.0,
+    "crop_accuracy_pct": 100.0,
+    "disease_accuracy_pct": 97.5,
+    "selective_accuracy_pct": 97.5,
+    "status_breakdown": {
+      "success_accepted": 40,
+      "low_confidence_flagged": 0,
+      "not_a_leaf": 0
+    },
+    "mean_confidence": 0.9835,
+    "median_confidence": 0.9994,
+    "elapsed_sec": 10.13,
+    "predicted_crops_distribution": {
+      "Rice": 40
+    },
+    "top_predictions": [
+      [
+        "Rice___Brown_spot",
+        39
+      ],
+      [
+        "Rice___Bacterial_leaf_blight",
+        1
+      ]
+    ],
+    "sample_diagnoses": [
+      {
+        "file": "DSC_0100.jpg",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 1.0,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Healthy"
+        ]
+      },
+      {
+        "file": "DSC_0101.jpg",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9998,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Healthy",
+          "Rice___Leaf_blast"
+        ]
+      },
+      {
+        "file": "DSC_0104.jpg",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9977,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Leaf_blast",
+          "Rice___Bacterial_leaf_blight"
+        ]
+      },
+      {
+        "file": "DSC_0105.jpg",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9719,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Healthy"
+        ]
+      },
+      {
+        "file": "DSC_0106.jpg",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.998,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Leaf_blast",
+          "Rice___Healthy"
+        ]
+      },
+      {
+        "file": "DSC_0112.jpg",
+        "predicted_label": "Rice___Bacterial_leaf_blight",
+        "confidence": 0.9672,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Healthy",
+          "Rice___Brown_spot"
+        ]
+      }
+    ]
+  },
+  {
+    "folder": "Leaf smut",
+    "is_supported_class": false,
+    "ground_truth_label": "Unsupported_Rice_Leaf_Smut",
+    "total_images": 40,
+    "top1_accuracy_pct": null,
+    "top3_accuracy_pct": null,
+    "crop_accuracy_pct": 100.0,
+    "disease_accuracy_pct": null,
+    "selective_accuracy_pct": null,
+    "status_breakdown": {
+      "success_accepted": 34,
+      "low_confidence_flagged": 6,
+      "not_a_leaf": 0
+    },
+    "mean_confidence": 0.9232,
+    "median_confidence": 0.9792,
+    "elapsed_sec": 12.36,
+    "predicted_crops_distribution": {
+      "Rice": 40
+    },
+    "top_predictions": [
+      [
+        "Rice___Brown_spot",
+        36
+      ],
+      [
+        "Rice___Bacterial_leaf_blight",
+        4
+      ]
+    ],
+    "sample_diagnoses": [
+      {
+        "file": "DSC_0293.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.8474,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Peach___Bacterial_spot",
+          "Rice___Bacterial_leaf_blight"
+        ]
+      },
+      {
+        "file": "DSC_0308.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9244,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Peach___Bacterial_spot",
+          "Maize___Northern_leaf_blight"
+        ]
+      },
+      {
+        "file": "DSC_0309.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9837,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Maize___Northern_leaf_blight",
+          "Rice___Bacterial_leaf_blight"
+        ]
+      },
+      {
+        "file": "DSC_0310.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9512,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Potato___Healthy"
+        ]
+      },
+      {
+        "file": "DSC_0312.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9949,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Maize___Northern_leaf_blight"
+        ]
+      },
+      {
+        "file": "DSC_0313.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9877,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Maize___Northern_leaf_blight"
+        ]
+      },
+      {
+        "file": "DSC_0314.JPG",
+        "predicted_label": "Rice___Bacterial_leaf_blight",
+        "confidence": 0.5645,
+        "status": "low_confidence",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Brown_spot",
+          "Maize___Northern_leaf_blight"
+        ]
+      },
+      {
+        "file": "DSC_0315.jpg",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.6128,
+        "status": "low_confidence",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Rice___Bacterial_leaf_blight",
+          "Peach___Bacterial_spot"
+        ]
+      },
+      {
+        "file": "DSC_0316.JPG",
+        "predicted_label": "Rice___Brown_spot",
+        "confidence": 0.9987,
+        "status": "success",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Brown_spot",
+          "Peach___Bacterial_spot",
+          "Rice___Healthy"
+        ]
+      },
+      {
+        "file": "DSC_0317.JPG",
+        "predicted_label": "Rice___Bacterial_leaf_blight",
+        "confidence": 0.6313,
+        "status": "low_confidence",
+        "stage1_crop": "Rice",
+        "top3": [
+          "Rice___Bacterial_leaf_blight",
+          "Rice___Brown_spot",
+          "Maize___Northern_leaf_blight"
+        ]
+      }
+    ]
+  }
+]

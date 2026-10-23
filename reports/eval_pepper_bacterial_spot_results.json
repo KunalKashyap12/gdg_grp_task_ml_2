@@ -1,0 +1,160 @@
+{
+  "total_images": 997,
+  "ground_truth": "Pepper___Bacterial_spot",
+  "top1_accuracy_pct": 96.79,
+  "top3_accuracy_pct": 99.7,
+  "crop_accuracy_pct": 97.59,
+  "disease_accuracy_pct": 97.09,
+  "selective_accuracy_on_accepted_pct": 99.22,
+  "status_breakdown": {
+    "success_accepted": 893,
+    "low_confidence_flagged": 104,
+    "not_a_leaf_rejected": 0
+  },
+  "confidence_stats": {
+    "mean": 0.9302,
+    "median": 0.9932,
+    "min": 0.1084,
+    "max": 1.0,
+    "std": 0.1351
+  },
+  "timing": {
+    "total_sec": 83.32,
+    "avg_latency_ms": 72.68,
+    "throughput_fps": 12.0
+  },
+  "top_predicted_classes": [
+    [
+      "Pepper___Bacterial_spot",
+      965
+    ],
+    [
+      "Pepper___Healthy",
+      8
+    ],
+    [
+      "Potato___Early_blight",
+      6
+    ],
+    [
+      "Peach___Bacterial_spot",
+      3
+    ],
+    [
+      "Apple___Black_rot",
+      3
+    ]
+  ],
+  "misclassifications_sample": [
+    {
+      "file": "0bd0f439-013b-40ed-a6d1-4e67e971d437___JR_B.Spot 3272.JPG",
+      "predicted_label": "Peach___Bacterial_spot",
+      "confidence": 0.9674,
+      "status": "success",
+      "top_k": [
+        "Peach___Bacterial_spot",
+        "Pepper___Bacterial_spot",
+        "Rice___Bacterial_leaf_blight"
+      ]
+    },
+    {
+      "file": "0c1eb1fd-9e3a-4396-81bc-7d1d3eccc5ed___JR_B.Spot 3369.JPG",
+      "predicted_label": "Apple___Cedar_apple_rust",
+      "confidence": 0.397,
+      "status": "low_confidence",
+      "top_k": [
+        "Apple___Cedar_apple_rust",
+        "Tomato___Bacterial_spot",
+        "Peach___Bacterial_spot"
+      ]
+    },
+    {
+      "file": "12342367-f62b-40d0-897b-77bd1edbd3d1___JR_B.Spot 3199.JPG",
+      "predicted_label": "Potato___Early_blight",
+      "confidence": 0.7405,
+      "status": "success",
+      "top_k": [
+        "Potato___Early_blight",
+        "Pepper___Bacterial_spot",
+        "Peach___Bacterial_spot"
+      ]
+    },
+    {
+      "file": "1c0c1501-f362-49d0-9e99-e72006441c8c___JR_B.Spot 8869.JPG",
+      "predicted_label": "Cherry___Healthy",
+      "confidence": 0.657,
+      "status": "low_confidence",
+      "top_k": [
+        "Cherry___Healthy",
+        "Pepper___Bacterial_spot",
+        "Maize___Common_rust"
+      ]
+    },
+    {
+      "file": "27388bbc-c768-427c-94d4-c195af364507___JR_B.Spot 8935.JPG",
+      "predicted_label": "Pepper___Healthy",
+      "confidence": 0.6367,
+      "status": "low_confidence",
+      "top_k": [
+        "Pepper___Healthy",
+        "Pepper___Bacterial_spot",
+        "Tomato___Bacterial_spot"
+      ]
+    },
+    {
+      "file": "28462e1b-741c-4949-884f-e5c35375dab4___JR_B.Spot 3111.JPG",
+      "predicted_label": "Pepper___Healthy",
+      "confidence": 0.3263,
+      "status": "low_confidence",
+      "top_k": [
+        "Pepper___Healthy",
+        "Pepper___Bacterial_spot",
+        "Tomato___Yellow_leaf_curl_virus"
+      ]
+    },
+    {
+      "file": "30559581-e3ea-4ac4-8e8b-ff8bbc44b014___JR_B.Spot 8832.JPG",
+      "predicted_label": "Apple___Black_rot",
+      "confidence": 0.7525,
+      "status": "success",
+      "top_k": [
+        "Apple___Black_rot",
+        "Pepper___Bacterial_spot",
+        "Rice___Leaf_blast"
+      ]
+    },
+    {
+      "file": "378ed86f-f435-44e8-93b3-3e05aa569492___JR_B.Spot 8864.JPG",
+      "predicted_label": "Grape___Healthy",
+      "confidence": 0.6104,
+      "status": "low_confidence",
+      "top_k": [
+        "Grape___Healthy",
+        "Pepper___Bacterial_spot",
+        "Potato___Healthy"
+      ]
+    },
+    {
+      "file": "3ddc56a6-7b13-43ae-841a-c6f6818d001b___JR_B.Spot 3190.JPG",
+      "predicted_label": "Potato___Early_blight",
+      "confidence": 0.4967,
+      "status": "low_confidence",
+      "top_k": [
+        "Potato___Early_blight",
+        "Pepper___Bacterial_spot",
+        "Cherry___Healthy"
+      ]
+    },
+    {
+      "file": "3e71a4e5-32e9-404e-815c-95208f7a79fd___JR_B.Spot 3258.JPG",
+      "predicted_label": "Pepper___Healthy",
+      "confidence": 0.6557,
+      "status": "low_confidence",
+      "top_k": [
+        "Pepper___Healthy",
+        "Pepper___Bacterial_spot",
+        "Potato___Early_blight"
+      ]
+    }
+  ]
+}

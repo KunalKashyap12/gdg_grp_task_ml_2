@@ -1,0 +1,14 @@
+condition,top1_accuracy,top3_accuracy,macro_f1,accuracy_delta_pct,time_sec
+baseline,0.8767,0.9764,0.8708,0.0,48.75
+low_brightness,0.848,0.9679,0.8413,-2.87,35.48
+high_brightness,0.8328,0.9713,0.8285,-4.39,33.25
+overexposure,0.4747,0.7061,0.4567,-40.2,35.32
+shadows,0.8733,0.9764,0.8684,-0.34,32.82
+gaussian_blur,0.8699,0.9764,0.8679,-0.68,33.3
+motion_blur,0.7804,0.9274,0.7706,-9.63,37.05
+low_resolution,0.3311,0.5895,0.3192,-54.56,31.44
+heavy_jpeg,0.848,0.978,0.842,-2.87,30.69
+noise,0.3041,0.5405,0.3306,-57.26,26.54
+severe_rotation,0.8885,0.9814,0.886,1.18,29.26
+cluttered_background,0.8378,0.9696,0.8288,-3.89,50.15
+partial_leaf_crop,0.4949,0.7568,0.4987,-38.18,32.87
