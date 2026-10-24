@@ -22,6 +22,38 @@ IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
 
 
+def resolve_image_path(path: str) -> str:
+    """
+    Robustly resolves an image path whether it is relative, absolute,
+    or contains legacy/other-machine workspace roots.
+    """
+    if not path or not isinstance(path, (str, os.PathLike)):
+        raise ValueError(f"Invalid path type: {type(path)}")
+
+    path_str = str(path)
+    if os.path.exists(path_str):
+        return path_str
+
+    # Normalize slashes
+    norm = path_str.replace("\\", "/")
+
+    # Check relative to current working directory
+    rel_norm = os.path.normpath(path_str)
+    if os.path.exists(rel_norm):
+        return rel_norm
+
+    # Check for 'data/' prefix
+    for marker in ["data/processed", "data/plantdoc_field_test", "data/samples", "data/raw", "data/"]:
+        if marker in norm:
+            idx = norm.find(marker)
+            candidate = norm[idx:]
+            candidate_norm = os.path.normpath(candidate)
+            if os.path.exists(candidate_norm):
+                return candidate_norm
+
+    raise FileNotFoundError(f"Image not found at path: {path}")
+
+
 def get_train_transforms(img_size=224):
     """
     Rich domain-robust augmentation pipeline using Albumentations:
@@ -105,7 +137,7 @@ class CropLeafDataset(torch.utils.data.Dataset):
         return len(self.df)
 
     def __getitem__(self, idx):
-        path = self.paths[idx]
+        path = resolve_image_path(self.paths[idx])
         target = self.labels[idx]
 
         with Image.open(path) as img:

@@ -16,7 +16,7 @@ import seaborn as sns
 import torch
 
 
-def analyze_class_balance(audit_csv="reports/phase1_dataset_audit.csv", train_manifest="data/manifests/train_manifest.csv"):
+def analyze_class_balance(audit_csv="reports/phase1_dataset_audit.csv", train_manifest="data/manifests/train.csv"):
     print("[*] Phase 3: Analyzing class balance and calculating loss weights...")
     os.makedirs("reports", exist_ok=True)
     os.makedirs("data", exist_ok=True)
@@ -25,8 +25,9 @@ def analyze_class_balance(audit_csv="reports/phase1_dataset_audit.csv", train_ma
     audit_df = pd.read_csv(audit_csv)
     train_df = pd.read_csv(train_manifest)
 
-    # 1. Merge and tabulate counts
-    train_counts = train_df["label"].value_counts().to_dict()
+    # 1. Merge and tabulate counts (support both 'class_label' and 'label')
+    lbl_col = "class_label" if "class_label" in train_df.columns else "label"
+    train_counts = train_df[lbl_col].value_counts().to_dict()
     audit_df["train_count"] = audit_df["label"].map(train_counts).fillna(0).astype(int)
 
     total_train = len(train_df)

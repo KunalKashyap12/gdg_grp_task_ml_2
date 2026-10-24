@@ -29,7 +29,7 @@ import json
 import time
 import numpy as np
 import pandas as pd
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageOps
 import cv2
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -43,7 +43,7 @@ from albumentations.pytorch import ToTensorV2
 
 sys.path.insert(0, os.path.abspath("."))
 from src.train.models import build_model
-from src.data.transforms import IMAGENET_MEAN, IMAGENET_STD, get_val_transforms
+from src.data.transforms import IMAGENET_MEAN, IMAGENET_STD, get_val_transforms, resolve_image_path
 
 
 class StressDataset(Dataset):
@@ -58,9 +58,10 @@ class StressDataset(Dataset):
         return len(self.df)
 
     def __getitem__(self, idx):
-        path = self.filepaths[idx]
+        path = resolve_image_path(self.filepaths[idx])
         target = self.targets[idx]
         with Image.open(path) as img:
+            img = ImageOps.exif_transpose(img)
             img_np = np.array(img.convert("RGB"))
 
         if self.transform is not None:

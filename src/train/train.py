@@ -22,7 +22,7 @@ import json
 import yaml
 import numpy as np
 import pandas as pd
-from PIL import Image
+from PIL import Image, ImageOps
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
@@ -33,7 +33,7 @@ from tqdm import tqdm
 
 sys.path.insert(0, os.path.abspath("."))
 from src.train.models import build_model, freeze_backbone
-from src.data.transforms import get_train_transforms, get_val_transforms
+from src.data.transforms import get_train_transforms, get_val_transforms, resolve_image_path
 
 
 def set_seed(seed=42):
@@ -54,10 +54,11 @@ class ManifestDataset(Dataset):
         return len(self.df)
 
     def __getitem__(self, idx):
-        path = self.filepaths[idx]
+        path = resolve_image_path(self.filepaths[idx])
         target = self.class_ids[idx]
 
         with Image.open(path) as img:
+            img = ImageOps.exif_transpose(img)
             img_np = np.array(img.convert("RGB"))
 
         if self.transform is not None:

@@ -23,7 +23,7 @@ import json
 import time
 import numpy as np
 import pandas as pd
-from PIL import Image
+from PIL import Image, ImageOps
 import cv2
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -39,11 +39,12 @@ from sklearn.metrics import (
 
 sys.path.insert(0, os.path.abspath("."))
 from src.train.models import build_model
-from src.data.transforms import get_val_transforms
+from src.data.transforms import get_val_transforms, resolve_image_path
 
 
 class TestDataset(Dataset):
     """Dataset for test images using canonical validation transforms."""
+    __test__ = False
     def __init__(self, df, path_col="filepath", label_col="class_id", transform=None):
         self.df = df.reset_index(drop=True)
         self.path_col = path_col
@@ -56,10 +57,11 @@ class TestDataset(Dataset):
         return len(self.df)
 
     def __getitem__(self, idx):
-        path = self.filepaths[idx]
+        path = resolve_image_path(self.filepaths[idx])
         target = self.targets[idx]
 
         with Image.open(path) as img:
+            img = ImageOps.exif_transpose(img)
             img_np = np.array(img.convert("RGB"))
 
         if self.transform is not None:
@@ -76,7 +78,15 @@ class GradCAM:
     def __init__(self, model, target_layer=None):
         self.model = model
         if target_layer is None:
-            if hasattr(model, "features"):
+            # Dynamically locate the last 2D convolutional layer with spatial feature maps
+            last_conv = None
+            for module in model.modules():
+                if isinstance(module, nn.Conv2d):
+                    last_conv = module
+
+            if last_conv is not None:
+                self.target_layer = last_conv
+            elif hasattr(model, "features"):
                 self.target_layer = model.features[-1]
             elif hasattr(model, "layer4"):
                 self.target_layer = model.layer4[-1]
