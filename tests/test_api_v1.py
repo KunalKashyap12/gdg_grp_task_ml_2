@@ -212,6 +212,60 @@ def test_v1_predict_dark_graphic_wallpaper_and_portrait_rejected(client):
     assert data["message"] == "Not a leaf. Please upload a new image."
 
 
+def test_v1_predict_ultrawide_desktop_wallpaper_rejected(client):
+    """
+    Ensures ultrawide wallpapers (e.g., 21:9 or 5120x2160, aspect ratio > 2.05)
+    are strictly rejected as not_a_leaf.
+    """
+    import numpy as np
+    # 512x216 image (aspect ratio 2.37)
+    img_arr = np.full((216, 512, 3), 100, dtype=np.uint8)
+    # Add some green pixels at the bottom
+    img_arr[180:, :] = [40, 120, 40]
+
+    buf = io.BytesIO()
+    Image.fromarray(img_arr).save(buf, format="JPEG")
+    img_bytes = buf.getvalue()
+
+    files = {"image": ("ultrawide_wallpaper.jpg", img_bytes, "image/jpeg")}
+    res = client.post("/api/v1/predict", files=files)
+
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "not_a_leaf"
+    assert data["is_leaf"] is False
+    assert data["message"] == "Not a leaf. Please upload a new image."
+
+
+def test_v1_predict_scenic_landscape_wallpaper_rejected(client):
+    """
+    Ensures scenic landscape photos (mountains, haze, misty sky in upper frame,
+    distant greenery without central foliar subject) are strictly rejected as not_a_leaf.
+    """
+    import numpy as np
+    # 300x300 image (1:1 ratio)
+    img_arr = np.zeros((300, 300, 3), dtype=np.uint8)
+    # Bright hazy/misty sky in top 40% (high value, low saturation)
+    img_arr[:120, :] = [210, 215, 220]
+    # Mountain rocks in middle (gray/brown)
+    img_arr[120:230, :] = [90, 85, 80]
+    # Distant green forest at bottom 20%
+    img_arr[230:, :] = [30, 95, 35]
+
+    buf = io.BytesIO()
+    Image.fromarray(img_arr).save(buf, format="JPEG")
+    img_bytes = buf.getvalue()
+
+    files = {"image": ("scenic_mountain_wallpaper.jpg", img_bytes, "image/jpeg")}
+    res = client.post("/api/v1/predict", files=files)
+
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "not_a_leaf"
+    assert data["is_leaf"] is False
+    assert data["message"] == "Not a leaf. Please upload a new image."
+
+
 def test_v1_predict_with_valid_crop_hint(client):
     img_bytes = create_image_bytes(color=(30, 140, 30))
     files = {"image": ("leaf.jpg", img_bytes, "image/jpeg")}

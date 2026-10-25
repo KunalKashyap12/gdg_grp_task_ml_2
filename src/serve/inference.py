@@ -152,8 +152,17 @@ class CropDiseaseInferenceEngine:
             if arr.size == 0 or arr.ndim != 3:
                 return False, "not_a_leaf", "Not a leaf. Please upload a new image."
 
-            # Downscale for ultra-fast gatekeeping (<1ms)
             h_orig, w_orig = arr.shape[:2]
+            aspect_ratio = max(w_orig / h_orig, h_orig / w_orig)
+
+            # 1. Aspect Ratio Rejection:
+            # Macro foliar photographs have standard photographic aspect ratios: 1:1, 4:3, 3:2, or 16:9.
+            # Ratios > 2.05:1 (such as 21:9 ultrawide 2.37:1 desktop wallpapers or banners) or < 0.45:1
+            # are characteristic of desktop wallpapers, web banners, or panoramic landscapes.
+            if aspect_ratio > 2.05:
+                return False, "not_a_leaf", "Not a leaf. Please upload a new image."
+
+            # Downscale for ultra-fast gatekeeping (<1ms)
             if max(h_orig, w_orig) > 256:
                 scale = 256.0 / max(h_orig, w_orig)
                 new_w, new_h = max(1, int(w_orig * scale)), max(1, int(h_orig * scale))
@@ -166,6 +175,7 @@ class CropDiseaseInferenceEngine:
             if float(np.std(small_arr)) < 3.0:
                 return False, "low_confidence", LOW_CONF_MESSAGE
 
+            sh, sw = small_arr.shape[:2]
             r = small_arr[:, :, 0].astype(np.float32)
             g = small_arr[:, :, 1].astype(np.float32)
             b = small_arr[:, :, 2].astype(np.float32)
@@ -200,34 +210,33 @@ class CropDiseaseInferenceEngine:
             dark_mask = (v < 35)
             dark_fraction = float(np.mean(dark_mask))
 
+            # Central region vegetative foliar presence (macro leaf subject test)
+            ch1, ch2 = int(sh * 0.20), int(sh * 0.80)
+            cw1, cw2 = int(sw * 0.20), int(sw * 0.80)
+            center_veg = float(np.mean((green_mask | yellow_mask)[ch1:ch2, cw1:cw2]))
+
             # 1. Botanical Vegetation Anchor Test:
-            # A living crop leaf MUST possess plant tissue (chlorophyll green or chlorotic yellow).
-            # Necrotic lesions only exist ON plant leaves. Without vegetative tissue, necrotic colors
-            # are non-botanical artifacts (human skin, red graphic text, reddish clothing, paint, etc.).
-            if vegetative_fraction < 0.03 and exg_fraction < 0.03:
+            # A genuine crop leaf MUST possess vegetative plant tissue (chlorophyll green or chlorotic yellow).
+            # Wallpapers, posters, and non-foliar objects have negligible foliage.
+            if vegetative_fraction < 0.18 and exg_fraction < 0.12:
                 return False, "not_a_leaf", "Not a leaf. Please upload a new image."
 
             # 2. Human Portrait / Face / Selfie Filter:
             if skin_fraction > 0.08 and green_fraction < 0.05:
                 return False, "not_a_leaf", "Not a leaf. Please upload a new image."
 
-            # 3. Dark Wallpaper / Graphic Rejection:
-            if dark_fraction > 0.50 and vegetative_fraction < 0.08:
+            # 3. Dark Wallpaper / Digital Graphic Rejection:
+            if dark_fraction > 0.50 and vegetative_fraction < 0.15:
                 return False, "not_a_leaf", "Not a leaf. Please upload a new image."
 
-            # 4. Technical line-drawing / monochromatic blueprint / wallpaper rejection:
-            # High proportion of desaturated pixels (>70%) without sufficient foliar green
-            if low_sat_fraction > 0.70 and green_fraction < 0.04:
+            # 4. Monochromatic / Blueprint / Technical Drawing Rejection:
+            if low_sat_fraction > 0.65 and green_fraction < 0.08:
                 return False, "not_a_leaf", "Not a leaf. Please upload a new image."
 
-            # 5. Non-botanical objects with negligible foliar tissue
-            # Necrotic tissue only contributes when anchored to a vegetative leaf
-            foliar_mask = green_mask | yellow_mask
-            if vegetative_fraction >= 0.02:
-                foliar_mask = foliar_mask | necrotic_mask
-
-            foliar_fraction = float(np.mean(foliar_mask))
-            if foliar_fraction < 0.04:
+            # 5. Macro Foliar Leaf Subject Requirement:
+            # When photographing a leaf for crop disease diagnosis, leaf foliage must occupy the center.
+            # Scenic landscapes, distant horizons, or non-botanical scenery lack central foliar presence.
+            if center_veg < 0.30 and vegetative_fraction < 0.35:
                 return False, "not_a_leaf", "Not a leaf. Please upload a new image."
 
             return True, "valid", "Valid foliar leaf image"
@@ -382,10 +391,18 @@ class CropDiseaseInferenceEngine:
             final_conf = float(calibrated_probs[best_idx])
             sorted_cal = np.sort(calibrated_probs)[::-1]
             cal_margin = float(sorted_cal[0] - sorted_cal[1]) if len(sorted_cal) > 1 else 1.0
+
+            # Raw uncalibrated metrics for out-of-distribution (OOD) protection
+            unscaled_probs = self.softmax(raw_logits)
+            raw_top_conf = float(np.max(unscaled_probs))
+            raw_max_logit = float(np.max(raw_logits))
+
             is_low_conf = (
                 (final_conf < self.threshold) or
                 (entropy > self.entropy_threshold) or
-                (cal_margin < self.margin_threshold)
+                (cal_margin < self.margin_threshold) or
+                (raw_top_conf < 0.25) or
+                (raw_max_logit < 2.0)
             )
             # Top-k items from global calibrated distribution in strict descending order
             top_k_count = min(max(1, top_k), self.num_classes)
