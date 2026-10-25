@@ -348,30 +348,41 @@ def get_model_info():
     }
 )
 async def predict_foliar_disease(
-    image: UploadFile = File(..., description="Crop leaf photo file (JPEG, PNG, or WebP; maximum 5 MB)"),
-    crop: Optional[str] = Form(None, description="Optional botanical crop hint (e.g., Apple, Tomato, Potato, etc.)")
+    image: Optional[UploadFile] = File(None, description="Crop leaf photo file (JPEG, PNG, or WebP; maximum 5 MB)"),
+    file: Optional[UploadFile] = File(None, description="Alternative field name for crop leaf photo"),
+    crop: Optional[str] = Form(None, description="Optional botanical crop hint (e.g., Apple, Tomato, Potato, etc.)"),
+    crop_hint: Optional[str] = Form(None, description="Alternative field name for botanical crop hint")
 ):
     """
     Submits a foliar image for calibrated disease identification.
     
     Accepts:
-    - multipart/form-data with field 'image'
+    - multipart/form-data with field 'image' (or 'file')
     - Formats: JPEG, PNG, WebP
     - Max size: 5 MB
-    - Optional 'crop': Target crop name to condition prediction distribution
+    - Optional 'crop' (or 'crop_hint'): Target crop name to condition prediction distribution
     """
     t0 = time.time()
     MAX_BYTES = 5 * 1024 * 1024  # 5 MB
 
+    target_file = image or file
+    if target_file is None:
+        raise StarletteHTTPException(
+            status_code=getattr(status, "HTTP_422_UNPROCESSABLE_CONTENT", 422),
+            detail="Missing required form field 'image'."
+        )
+
+    active_crop = crop or crop_hint
+
     # 1. Validate Media Extension & MIME Type
-    filename = (image.filename or "").lower()
+    filename = (target_file.filename or "").lower()
     valid_exts = (".jpg", ".jpeg", ".png", ".webp")
     valid_mimes = ("image/jpeg", "image/png", "image/webp")
     has_valid_ext = any(filename.endswith(ext) for ext in valid_exts)
-    has_valid_mime = (image.content_type in valid_mimes) if image.content_type else False
+    has_valid_mime = (target_file.content_type in valid_mimes) if target_file.content_type else False
 
     if not has_valid_ext and not has_valid_mime:
-        logger.warning(f"Rejected unsupported extension: {filename} (MIME: {image.content_type})")
+        logger.warning(f"Rejected unsupported extension: {filename} (MIME: {target_file.content_type})")
         raise StarletteHTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             detail=f"Unsupported file format '{filename}'. Allowed formats: JPEG, PNG, WebP."
@@ -379,7 +390,7 @@ async def predict_foliar_disease(
 
     # 2. Read Bytes and Enforce 5 MB Limit
     try:
-        contents = await image.read()
+        contents = await target_file.read()
     except Exception as e:
         raise StarletteHTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unable to read uploaded file stream.")
 
@@ -408,19 +419,19 @@ async def predict_foliar_disease(
 
     # 4. Validate Crop Hint if Provided
     engine = get_inference_engine()
-    if crop and isinstance(crop, str):
-        hint_clean = crop.strip().lower()
+    if active_crop and isinstance(active_crop, str):
+        hint_clean = active_crop.strip().lower()
         if hint_clean not in ["auto", "all", "none", "", "auto-detect", "auto_detect"]:
             known_crops = [c.lower() for c in engine.crops]
             if hint_clean not in known_crops:
                 raise StarletteHTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Unsupported crop hint '{crop}'. Supported crops: {', '.join(engine.crops)}"
+                    detail=f"Unsupported crop hint '{active_crop}'. Supported crops: {', '.join(engine.crops)}"
                 )
 
     # 5. Calibrated Prediction & Thresholding
     try:
-        result = engine.predict_v1(contents, top_k=3, crop_hint=crop)
+        result = engine.predict_v1(contents, top_k=3, crop_hint=active_crop)
         elapsed_ms = (time.time() - t0) * 1000.0
         logger.info(f"Prediction: {result['prediction']['label']} ({result['status']}, {result['prediction']['confidence']*100:.1f}%) in {elapsed_ms:.1f}ms")
         return result

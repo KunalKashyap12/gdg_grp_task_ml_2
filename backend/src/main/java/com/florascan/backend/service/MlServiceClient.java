@@ -66,11 +66,11 @@ public class MlServiceClient {
                 }
             };
 
-            body.add("file", fileResource);
+            body.add("image", fileResource);
             body.add("top_k", topK != null ? topK : 3);
 
             if (cropHint != null && !cropHint.isBlank()) {
-                body.add("crop_hint", cropHint.trim());
+                body.add("crop", cropHint.trim());
             }
 
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);

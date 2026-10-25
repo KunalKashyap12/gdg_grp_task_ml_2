@@ -1,0 +1,10 @@
+{
+  "java.project.exclusionFilters": [
+    "**/backend/**",
+    "backend/**"
+  ],
+  "files.exclude": {
+    "**/.pytest_cache": true,
+    "**/__pycache__": true
+  }
+}
