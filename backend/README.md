@@ -8,7 +8,7 @@ This directory contains the production-grade Java Spring Boot integration packag
 
 ```
 backend/
-├── pom-snippet.xml                      # Required Maven dependencies
+├── pom.xml                              # Maven build & dependency configuration
 ├── README.md                            # This integration guide
 └── src/
     └── main/

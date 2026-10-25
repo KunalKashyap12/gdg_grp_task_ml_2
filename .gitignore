@@ -46,3 +46,11 @@ test_dl/
 models/*.pt
 models/*.onnx
 !models/crop_disease_model.onnx
+
+# Java / Maven
+target/
+**/target/
+.classpath
+.project
+.settings/
+*.class

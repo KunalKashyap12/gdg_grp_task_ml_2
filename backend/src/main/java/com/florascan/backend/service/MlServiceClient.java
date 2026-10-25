@@ -88,9 +88,10 @@ public class MlServiceClient {
 
         } catch (HttpClientErrorException ex) {
             log.error("ML service rejected request (4xx): {} - {}", ex.getStatusCode(), ex.getResponseBodyAsString());
+            HttpStatus status = HttpStatus.resolve(ex.getStatusCode().value());
             throw new MlServiceException(
                     "ML validation error: " + ex.getResponseBodyAsString(),
-                    (HttpStatus) ex.getStatusCode(),
+                    status != null ? status : HttpStatus.BAD_REQUEST,
                     "ML_CLIENT_ERROR"
             );
         } catch (HttpServerErrorException ex) {

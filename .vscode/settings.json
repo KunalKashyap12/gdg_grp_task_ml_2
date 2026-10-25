@@ -1,10 +1,12 @@
 {
-  "java.project.exclusionFilters": [
-    "**/backend/**",
-    "backend/**"
-  ],
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.import.maven.enabled": true,
+  "java.jdt.ls.lombokSupport.enabled": true,
+  "java.errors.incompleteClasspath.severity": "ignore",
+  "maven.executable.path": "C:\\Users\\HP\\maven\\apache-maven-3.9.9\\bin\\mvn.cmd",
   "files.exclude": {
     "**/.pytest_cache": true,
     "**/__pycache__": true
-  }
+  },
+  "java.compile.nullAnalysis.mode": "automatic"
 }

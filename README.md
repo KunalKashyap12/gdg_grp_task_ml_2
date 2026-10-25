@@ -75,12 +75,16 @@ gdg-grp-task-222/
 ├── api/                             # Production REST API (v1)
 │   ├── main.py                      # FastAPI endpoints (/predict, /health, /classes, /model-info)
 │   └── schemas.py                   # Pydantic v2 schemas and unified error envelopes
+├── backend/                         # Spring Boot Java microservice client & controller
+│   ├── pom.xml                      # Maven configuration with Spring Boot & Lombok
+│   └── src/main/java/               # Java client, controller, DTOs & exception handling
 ├── data/                            # Registries & manifests
 │   ├── manifests/                   # Leakage-free train.csv, val.csv, test.csv, plantdoc.csv
 │   ├── supported_classes.json       # 37-class metadata registry
 │   └── class_weights.json           # Inverse-frequency class weights
 ├── docs/                            # Cards, contracts & specifications
 │   ├── API_CONTRACT.md              # Backend developer integration guide with curl examples
+│   ├── BACKEND_INTEGRATION_GUIDE.md # End-to-end Spring Boot to ML service integration manual
 │   ├── openapi.json                 # Auto-generated OpenAPI v3.1 schema
 │   ├── MODEL_CARD.md                # Comprehensive Model Card
 │   ├── DATASET_CARD.md              # Comprehensive Dataset Card

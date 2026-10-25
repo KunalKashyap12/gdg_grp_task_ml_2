@@ -42,15 +42,16 @@ public class CropDiagnosisController {
             @RequestParam(value = "crop_hint", required = false) String cropHint,
             @RequestParam(value = "top_k", defaultValue = "3") int topK) {
 
+        String originalFilename = file.getOriginalFilename();
         log.info("Received crop diagnosis request: filename='{}', size={} bytes, cropHint='{}', topK={}",
-                file.getOriginalFilename(), file.getSize(), cropHint, topK);
+                originalFilename, file.getSize(), cropHint, topK);
 
         // Basic client-side validation
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Uploaded image cannot be empty (0 bytes).");
         }
 
-        String filename = (file.getOriginalFilename() != null) ? file.getOriginalFilename().toLowerCase() : "";
+        String filename = (originalFilename != null) ? originalFilename.toLowerCase() : "";
         if (!filename.endsWith(".jpg") && !filename.endsWith(".jpeg") && !filename.endsWith(".png") && !filename.endsWith(".webp")) {
             throw new IllegalArgumentException("Unsupported file format. Please upload JPG, PNG, or WEBP.");
         }
