@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .error(ErrorResponse.ErrorDetail.builder()
                         .code("FILE_TOO_LARGE")
-                        .message("Uploaded image exceeds the maximum permitted payload size.")
+                        .message("Uploaded image exceeds the maximum permitted size of 5 MB.")
                         .build())
                 .build();
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(errorResponse);

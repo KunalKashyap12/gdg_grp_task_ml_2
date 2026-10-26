@@ -1,0 +1,12 @@
+perturbation,data_type,samples,accuracy,accuracy_drop_pct_points
+Clean Baseline,lab-style data (PlantVillage+Rice held-out test split),2829,0.8841,0.0
+Brightness +40%,lab-style data (perturbed),2829,0.8636,2.05
+Brightness -40%,lab-style data (perturbed),2829,0.877,0.71
+Contrast +40%,lab-style data (perturbed),2829,0.8607,2.33
+Contrast -40%,lab-style data (perturbed),2829,0.8908,-0.67
+Gaussian Blur (radius=2),lab-style data (perturbed),2829,0.8519,3.22
+JPEG Quality 20,lab-style data (perturbed),2829,0.8551,2.9
+Downscale-Upscale (Low-Res 4x),lab-style data (perturbed),2829,0.7883,9.58
+Rotation (25 deg),lab-style data (perturbed),2829,0.8837,0.04
+Cluttered Noise Background,lab-style data (perturbed),2829,0.8508,3.32
+PlantDoc Field Benchmark (Domain Shift),real phone photos / field photos (PlantDoc 25 mapped classes),3996,0.1034,78.07

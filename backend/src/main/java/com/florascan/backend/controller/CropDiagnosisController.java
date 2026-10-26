@@ -51,6 +51,11 @@ public class CropDiagnosisController {
             throw new IllegalArgumentException("Uploaded image cannot be empty (0 bytes).");
         }
 
+        // Enforce 5 MB limit to match ML service
+        if (file.getSize() > 5 * 1024 * 1024) {
+            throw new org.springframework.web.multipart.MaxUploadSizeExceededException(5 * 1024 * 1024);
+        }
+
         String filename = (originalFilename != null) ? originalFilename.toLowerCase() : "";
         if (!filename.endsWith(".jpg") && !filename.endsWith(".jpeg") && !filename.endsWith(".png") && !filename.endsWith(".webp")) {
             throw new IllegalArgumentException("Unsupported file format. Please upload JPG, PNG, or WEBP.");

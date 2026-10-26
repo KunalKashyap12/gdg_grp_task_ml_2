@@ -28,4 +28,9 @@ public class MlServiceProperties {
      * Maximum number of retry attempts if ML service is temporarily unresponsive.
      */
     private int maxRetries = 2;
+
+    /**
+     * Mock mode flag to return synthetic predictions when true.
+     */
+    private boolean mockEnabled = false;
 }

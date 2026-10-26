@@ -1,0 +1,39 @@
+
+--- Part 1: PyTorch vs ONNX Logits Parity (50+ Images) ---
+Images tested: 60
+Maximum absolute difference between PyTorch and ONNX logits: 0.00001287
+Mean absolute difference across 60 images: 0.00000717
+Numerical parity check: PASSED (diff < 1e-4)
+
+--- Part 2: REST API Endpoints & Status Codes ---
+GET /health: Status 200
+  Response: {'status': 'healthy', 'model_loaded': True, 'num_classes': 37, 'supported_crops_count': 10, 'calibration_active': True, 'temperature': 0.4792, 'disclaimer': 'AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation.'}
+GET /api/v1/health: Status 200
+  Response: {'status': 'ok', 'model_loaded': True}
+GET /api/v1/classes: Status 200
+  total_crops: 10, total_classes: 37, disclaimer present: True
+GET /api/v1/model-info: Status 200
+  Response: {'model_name': 'mobilenet_v3_large', 'model_version': '1.0.0', 'input_size': [3, 224, 224], 'num_classes': 37, 'threshold': 0.74, 'temperature': 0.4792, 'metrics_summary': {'test_top1_accuracy': 0.8841, 'test_selective_accuracy': 0.9509, 'test_coverage_pct': 84.23, 'latency_ms': 4.68}, 'disclaimer': 'AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation.'}
+
+--- Part 3: Predict Endpoint Edge Cases & Status Codes ---
+Valid JPG upload: Status 200
+  Response: {'status': 'success', 'is_leaf': True, 'prediction': {'class_id': 19, 'crop': 'Apple', 'disease': 'Apple_scab', 'label': 'Apple___Apple_scab', 'confidence': 0.9729}, 'top_k': [{'label': 'Apple___Apple_scab', 'confidence': 0.9729}, {'label': 'Apple___Healthy', 'confidence': 0.0167}, {'label': 'Cherry___Healthy', 'confidence': 0.0049}], 'low_confidence': False, 'threshold': 0.74, 'message': 'Stage 1: Apple leaf identified (99.3%). Stage 2: Apple scab diagnosed (98.0% confidence, 98.3% foliar pathology).', 'model_version': '1.0.0', 'inference_time_ms': 65.26, 'stage1_leaf': {'identified_crop': 'Apple', 'confidence': 0.9929, 'is_conditioned': False, 'candidates': [{'crop': 'Apple', 'confidence': 0.9929}, {'crop': 'Cherry', 'confidence': 0.005}, {'crop': 'Strawberry', 'confidence': 0.001}]}, 'stage2_disease': {'disease': 'Apple_scab', 'confidence': 0.9798, 'is_healthy': False, 'pathology_mass': 0.9832, 'candidates': [{'disease': 'Apple_scab', 'label': 'Apple___Apple_scab', 'confidence': 0.9798}, {'disease': 'Healthy', 'label': 'Apple___Healthy', 'confidence': 0.0168}, {'disease': 'Black_rot', 'label': 'Apple___Black_rot', 'confidence': 0.0032}]}, 'crop_conditioned': None, 'disclaimer': 'AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation.'}
+Valid PNG upload: Status 200
+  Status in body: low_confidence, label: Grape___Black_rot
+Oversized file (6 MB): Status 413
+  Response: {'detail': 'Uploaded image exceeds maximum allowed size of 5 MB (6.00 MB received).', 'error': {'code': 'FILE_TOO_LARGE', 'message': 'Uploaded image exceeds maximum allowed size of 5 MB (6.00 MB received).'}}
+Wrong file type (.pdf): Status 415
+  Response: {'detail': "Unsupported file format 'document.pdf'. Allowed formats: JPEG, PNG, WebP.", 'error': {'code': 'UNSUPPORTED_MEDIA_TYPE', 'message': "Unsupported file format 'document.pdf'. Allowed formats: JPEG, PNG, WebP."}}
+Corrupt image file: Status 400
+  Response: {'detail': 'Uploaded file is corrupt or not a valid image format.', 'error': {'code': 'BAD_REQUEST', 'message': 'Uploaded file is corrupt or not a valid image format.'}}
+Empty file upload (0 bytes): Status 400
+  Response: {'detail': 'Uploaded file is empty (0 bytes).', 'error': {'code': 'BAD_REQUEST', 'message': 'Uploaded file is empty (0 bytes).'}}
+Missing required field 'image': Status 422
+  Response: {'detail': "Missing required form field 'image'.", 'error': {'code': 'VALIDATION_ERROR', 'message': "Missing required form field 'image'."}}
+
+--- Part 4: Latency Benchmark (50 Requests) ---
+50 requests completed successfully.
+Latency Median: 29.30 ms
+Latency p95:    37.75 ms
+Latency p99:    39.80 ms
+Latency Min:    23.53 ms, Max: 41.64 ms

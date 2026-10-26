@@ -1,0 +1,30 @@
+{
+  "model_name": "mobilenet_v3_large",
+  "model_version": "1.0.0",
+  "input_size": [
+    3,
+    224,
+    224
+  ],
+  "num_classes": 37,
+  "temperature": 0.4792,
+  "confidence_threshold": 0.74,
+  "margin_threshold": 0.15,
+  "entropy_threshold": 1.6,
+  "target_accuracy_on_accepted": 0.95,
+  "validation_metrics": {
+    "coverage": 0.8265,
+    "selective_accuracy": 0.954
+  },
+  "test_metrics": {
+    "raw_accuracy": 0.8841,
+    "coverage": 0.8423,
+    "selective_accuracy": 0.9509
+  },
+  "plantdoc_metrics": {
+    "coverage": 0.3388,
+    "rejected_pct": 66.12,
+    "selective_accuracy": 0.1839
+  },
+  "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation."
+}

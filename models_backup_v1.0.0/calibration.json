@@ -1,0 +1,21 @@
+{
+  "temperature": 0.4792,
+  "method": "temperature_scaling",
+  "validation": {
+    "samples": 2813,
+    "uncalibrated_ece": 0.2154,
+    "calibrated_ece": 0.018,
+    "uncalibrated_mce": 0.3792,
+    "calibrated_mce": 0.1338,
+    "relative_reduction_pct": 91.65
+  },
+  "test": {
+    "samples": 2829,
+    "uncalibrated_ece": 0.2081,
+    "calibrated_ece": 0.0195,
+    "uncalibrated_mce": 0.3958,
+    "calibrated_mce": 0.246,
+    "relative_reduction_pct": 90.62
+  },
+  "disclaimer": "The output is an AI-assisted indication, NOT a guaranteed agricultural diagnosis."
+}
