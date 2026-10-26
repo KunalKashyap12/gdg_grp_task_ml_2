@@ -26,7 +26,7 @@ class ErrorResponse(BaseModel):
 # Success Prediction Schemas (/api/v1/predict)
 # -------------------------------------------------------------
 class PredictionItem(BaseModel):
-    class_id: int = Field(..., description="Zero-indexed class identifier (0-36)")
+    class_id: int = Field(..., description="Zero-indexed class identifier")
     crop: str = Field(..., description="Identified crop name")
     disease: str = Field(..., description="Pathological condition or Healthy")
     label: str = Field(..., description="Canonical label (Crop___Disease)")
@@ -54,7 +54,7 @@ class Stage2Disease(BaseModel):
 
 
 class V1PredictionResponse(BaseModel):
-    status: str = Field(..., description="'success' if confident, 'low_confidence' if below threshold, 'not_a_leaf' if non-leaf/wallpaper")
+    status: str = Field(..., description="'success' if confident, 'low_confidence' if below threshold, 'not_a_leaf' if non-leaf/wallpaper, 'unsupported_crop' if unsupported plant species")
     is_leaf: bool = Field(default=True, description="True if input is identified as a botanical plant leaf")
     prediction: PredictionItem = Field(..., description="Top diagnosis")
     top_k: List[TopKItem] = Field(..., min_length=1, description="Top-3 candidate predictions")

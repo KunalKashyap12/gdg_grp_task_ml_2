@@ -1,0 +1,54 @@
+{
+  "model_name": "mobilenet_v3_large",
+  "model_version": "1.1.0",
+  "input_size": [
+    3,
+    224,
+    224
+  ],
+  "num_classes": 38,
+  "supported_classes": 37,
+  "internal_reject_classes": 1,
+  "temperature": 0.6517,
+  "confidence_threshold": 0.7,
+  "margin_threshold": 0.15,
+  "entropy_threshold": 1.5,
+  "threshold_sweep": [
+    {
+      "threshold": 0.5,
+      "coverage": 0.925904317386231,
+      "selective_accuracy": 0.9262759924385633
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.8841890315052509,
+      "selective_accuracy": 0.9449026723853514
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.8655192532088681,
+      "selective_accuracy": 0.9531513313110886
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.8421820303383898,
+      "selective_accuracy": 0.9636300658122618
+    },
+    {
+      "threshold": 0.74,
+      "coverage": 0.8270128354725788,
+      "selective_accuracy": 0.9696649029982364
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.7955075845974329,
+      "selective_accuracy": 0.976897689768977
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.7663360560093349,
+      "selective_accuracy": 0.9832508564902931
+    }
+  ],
+  "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis."
+}

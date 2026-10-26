@@ -10,12 +10,16 @@
 ## 1. Model Details
 
 - **Model Identifier**: MobileNetV3-Large Foliar Pathology Classifier
-- **Version**: `1.0.0`
+- **Production Version**: `1.1.0` (with `1.0.0` preserved as fallback in `models_backup_v1.0.0/`)
 - **Architecture**: MobileNetV3-Large with hardswish activations, squeeze-and-excitation attention blocks, and modified linear projection head.
-- **Parameters**: 4.25 Million parameters (16.20 MB ONNX / 16.40 MB PyTorch).
+- **Parameters**: 4.25 Million parameters (~16.2 MB ONNX / 17.2 MB PyTorch checkpoint).
 - **Input Specifications**: RGB Tensor of shape `[B, 3, 224, 224]`, normalized with ImageNet mean `(0.485, 0.456, 0.406)` and standard deviation `(0.229, 0.224, 0.225)`.
-- **Output**: 37 class logits scaled via Platt Temperature Scaling ($T = 0.4792$) and filtered via low-confidence cutoff ($\theta = 0.74$).
-- **Runtime Engines**: PyTorch 2.14+, ONNX Runtime 1.31+ (Opset 17).
+- **Output Architecture**:
+  - *v1.0.0*: 37 class logits.
+  - *v1.1.0*: 38 class logits (37 supported botanical classes + 1 internal reject class `Unsupported___Unsupported_crop` for out-of-scope foliage rejection).
+- **Confidence Calibration**: Post-hoc Temperature Scaling ($T$) fitted on held-out validation sets via negative log-likelihood minimization.
+- **Safety Thresholding**: Configured confidence cutoff $\theta$, margin threshold ($0.15$), and predictive entropy filter ($1.50$) to reject ambiguous or unsupported leaves.
+- **Runtime Engines**: PyTorch 2.14+, ONNX Runtime 1.23+ (Opset 14/17).
 - **License**: Apache 2.0.
 
 ---
@@ -45,30 +49,34 @@
 
 ---
 
-## 4. Quantitative Performance Metrics
+## 4. Quantitative Performance Metrics & Version Comparison
 
-### Held-Out Leakage-Free Test Set (2,829 images, 37 classes)
+### Benchmark Comparison: v1.0.0 vs v1.1.0
 
-| Evaluation Metric | Score | Note |
-| :--- | :--- | :--- |
-| **Top-1 Overall Accuracy** | **88.41%** | Exact class identification across 37 classes |
-| **Top-3 Accuracy** | **97.74%** | Correct diagnosis contained in top-3 candidates |
-| **Crop Identification Accuracy** | **96.29%** | Botanical species discrimination (e.g. Potato vs Pepper) |
-| **Disease Discrimination Accuracy** | **89.36%** | Pathological condition discrimination |
-| **Macro F1-Score** | **86.19%** | Unweighted mean across all 37 classes |
-| **Weighted F1-Score** | **88.11%** | Class-weighted average |
-| **CPU Latency (ONNX Runtime)** | **4.68 ms** | Sub-5ms latency on CPU (4.96x speedup over PyTorch) |
+| Evaluation Metric | Baseline v1.0.0 | Retrained v1.1.0 | Absolute Delta | Relative Change | Gate Target | Gate Status |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Lab Test Accuracy** | 89.86% | **96.43%** | +6.57% pts | +7.3% | <= -2.0% drop | **PASS** |
+| **Lab Test Macro F1** | 87.77% | **94.97%** | +7.20% pts | +8.2% | Preserve quality | **PASS** |
+| **Field Test Accuracy (PlantDoc)** | 15.48% | **47.68%** | +32.20% pts | +208.0% | > 0.0% gain | **PASS** |
+| **Field Selective Accuracy** | 23.85% | **68.66%** | +44.80% pts | +187.8% | High precision | **PASS** |
+| **Field Test Coverage** | 33.75% | **41.49%** | +7.74% pts | +22.9% | Diagnostic yield | **PASS** |
+| **Overall False-Healthy Rate** | 1.96% | **0.47%** | -1.49% pts | -76.2% | <= 0.0% increase | **PASS** |
+| **Potato False-Healthy Rate** | 4.44% | **0.56%** | -3.89% pts | -87.5% | <= 0.0% increase | **PASS** |
+| **Rice False-Healthy Rate** | 16.25% | **2.50%** | -13.75% pts | -84.6% | <= 0.0% increase | **PASS** |
+| **OOD Conf > 0.80 Fraction** | 27.69% | **0.00%** | -27.69% pts | -100.0% | Substantial drop | **PASS** |
+| **OOD Accepted at Threshold** | 35.38% | **0.00%** | -35.38% pts | -100.0% | Minimize hallucinations | **PASS** |
+| **OOD Identified as Unsupported** | 0.00% | **86.15%** | +86.15% pts | +0.0% | Internal reject class | **PASS** |
 
 ---
 
 ## 5. Confidence Calibration & Thresholding (Platt Scaling)
 
-- **Post-Hoc Temperature Scaling**: Optimized strictly positive temperature $T = 0.4792$ on validation logits via L-BFGS with strong-Wolfe line search.
-- **Expected Calibration Error (ECE)**:
-  - *Validation Set*: Reduced from 21.54% down to **1.80%** (**91.6% relative reduction**).
-  - *Held-Out Test Set*: Reduced from 20.81% down to **1.95%** (**90.6% relative reduction**).
-- **Operating Low-Confidence Threshold ($\theta = 0.74$)**:
-  - Calibrated on validation set to achieve **$\ge 95\%$ accuracy on accepted predictions**.
+- **Post-Hoc Temperature Scaling (v1.1.0)**:
+  - Optimized temperature: **$T = 0.6517$** fitted on the mixed validation set (laboratory + outdoor field + reject classes).
+  - Pre-calibration Validation NLL: 0.4796 $\to$ Post-calibration Validation NLL: **0.3878** (0.0917 reduction).
+- **Operating Low-Confidence Threshold ($\theta = 0.70$)**:
+  - Calibrated on the mixed validation set: achieves **96.36% selective accuracy** at **84.22% coverage** (and 96.97% selective accuracy at 82.70% coverage for $\theta = 0.74$).
+  - Any prediction with confidence $< \theta$, top margin $< 0.15$, or entropy $> 1.50$ safely returns status `"low_confidence"` or `"unsupported_crop"`.
   - Held-out test set performance: **95.09% selective accuracy** at **84.23% coverage**.
   - Any prediction with confidence $< 0.74$ returns status `"low_confidence"` with advice to retake a clear photo.
 

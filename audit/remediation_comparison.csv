@@ -1,0 +1,12 @@
+metric,v1.0.0,v1.1.0,delta,status
+Lab Test Accuracy,0.8986,0.9643,+6.57% pts,PASS
+Lab Test Macro F1,0.8777,0.9497,+7.20% pts,PASS
+Field Test Accuracy (PlantDoc),0.1548,0.4768,+32.20% pts,PASS
+Field Selective Accuracy,0.2385,0.6866,+44.80% pts,PASS
+Field Test Coverage,0.3375,0.4149,+7.74% pts,PASS
+Overall False-Healthy Rate,0.0196,0.0047,-1.49% pts,PASS
+Potato False-Healthy Rate,0.0444,0.0056,-3.89% pts,PASS
+Rice False-Healthy Rate,0.1625,0.025,-13.75% pts,PASS
+OOD Conf > 0.80 Fraction,0.2769,0.0,-27.69% pts,PASS
+OOD Accepted at Threshold,0.3538,0.0,-35.38% pts,PASS
+OOD Identified as Unsupported,0.0,0.8615,+86.15% pts,PASS

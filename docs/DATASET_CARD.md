@@ -60,7 +60,7 @@ flowchart TD
   ```
 - **Visual Style**: Outdoor paddy field photography under natural daylight, direct sun angles, ambient vegetation shadows, and soil backgrounds.
 
-### 3. PlantDoc (Secondary External Domain-Shift Benchmark)
+### 3. PlantDoc (Field Benchmark & Domain Adaptation)
 - **Source**: Indian Institute of Technology (IIT) Kharagpur & Roboflow.
 - **License**: Creative Commons Attribution 4.0 International ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
 - **Download Date**: October 2026.
@@ -74,22 +74,36 @@ flowchart TD
     year={2020}
   }
   ```
-- **Role in Project**: **STRICTLY HELD OUT as an external domain-shift test set**. 3,996 leaf crops across 25 mapped classes. Unmapped categories (e.g. Blueberry, Raspberry, Soybean, Squash) were strictly excluded. Never mixed into training data.
+- **Role in Project**:
+  - **v1.0.0**: Used exclusively as an external benchmark test set.
+  - **v1.1.0 (Field Domain Adaptation & OOD Rejection)**:
+    - **Official PlantDoc TRAIN Split**: Partitioned by whole-scene image group (85% train, 15% validation) to guarantee zero scene leakage. Provides 3,148 field training crops and 522 field validation crops across 25 supported classes.
+    - **Unsupported Crop Rejection Data**: Extracts 613 crops (520 train, 93 val) from unmapped categories (Squash, Blueberry, Raspberry, Soybean) labeled under internal class `Unsupported___Unsupported_crop`.
+    - **Official PlantDoc TEST Split**: **STRICTLY HELD OUT as field test benchmark** (`data/manifests/field_test_heldout.csv` with 323 crops, and `data/manifests/field_test_unsupported.csv` with 65 crops). Never seen during training or tuning.
 
 ---
 
 ## 3. Dataset Inspection & Quality Metrics
 
-- **Total Ingested Images**: 18,789 images
-- **Number of Supported Classes**: 37 classes across 10 crops
+- **Total Ingested Images**: 18,789 raw image files
+- **Cleaning & Filtering**: 20 unreadable/corrupt/tiny images removed in Phase 2 data cleaning, yielding 18,769 verified clean laboratory and rice images.
+- **v1.0.0 Partitions (37 Classes)**:
+  - Train: 13,127 images (70%)
+  - Validation: 2,813 images (15%)
+  - Lab Test: 2,829 images (15%)
+- **v1.1.0 Retraining Partitions (38 Classes: 37 Supported + 1 Internal Reject)**:
+  - Train: 17,458 images (Lab + PlantDoc Train Field Crops + 520 Unsupported Crops + Rice Oversampling)
+  - Validation: 3,428 images (Lab Val + PlantDoc Val Field Crops + 93 Unsupported Crops)
+  - Lab Test (Untouched): 2,829 images
+  - Field Test (Held-Out PlantDoc Test): 323 supported field crops
+  - Field Unsupported Test (Held-Out PlantDoc Test): 65 unsupported crops
 - **Color Mode**: 100% RGB (3-channel)
 - **File Formats**: 100% standard JPEG (`.jpg`/`.jpeg`)
 - **Resolution Distribution**:
   - Modal resolution: $256 \times 256$ pixels (PlantVillage standard)
-  - Minimum resolution: $128 \times 128$ pixels
+  - Minimum resolution: $64 \times 64$ pixels (Enforced bounding box threshold)
   - Maximum resolution: $4000 \times 3000$ pixels (Field photography)
-  - All images verified to have short side $\ge 64$ pixels.
-- **Near-Duplicate Clustering**:
-  - Evaluated with pHash and dHash. Near-duplicate shots of identical leaves were identified and grouped to prevent cross-partition leakage.
-  - Zero exact MD5 duplicates present.
-  - Full audit logged in [`reports/cleaning_log.csv`](file:///c:/Users/HP/OneDrive/Desktop/gdg-grp-task-222/reports/cleaning_log.csv).
+- **Leakage Verification (v1.1.0 Audit)**:
+  - Exact MD5 hash collisions: **0** across Train, Val, Lab Test, and Field Test.
+  - Scene Group-ID collisions: **0** across Train and Val.
+  - Perceptual hash (pHash Hamming distance $\le 3$) collisions: **0** between Train and Held-Out Field Test.

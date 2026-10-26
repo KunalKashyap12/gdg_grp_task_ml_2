@@ -1,0 +1,50 @@
+metric_category,metric_name,value,unit_or_format
+Lab Test Set,top1_accuracy,0.8841,fraction
+Lab Test Set,macro_f1,0.8619,fraction
+Field Test Set,top1_accuracy,0.1034,fraction
+Field Test Set,coverage_at_theta_0.74,0.3318,fraction
+Field Test Set,selective_accuracy_at_theta_0.74,0.1825,fraction
+False-Healthy Rate,overall_false_healthy_rate,0.0293,fraction
+False-Healthy Rate,potato_false_healthy_rate,0.0556,fraction
+False-Healthy Rate,rice_false_healthy_rate,0.1875,fraction
+Out-of-Scope,mean_confidence,0.5961,fraction
+Out-of-Scope,median_confidence,0.5536,fraction
+Out-of-Scope,fraction_conf_gt_0.80,0.2239,fraction
+Out-of-Scope,fraction_accepted_theta_0.74,0.2836,fraction
+Lab Per-Class Recall,recall_Tomato___Bacterial_spot,0.8556,support=90
+Lab Per-Class Recall,recall_Tomato___Early_blight,0.4111,support=90
+Lab Per-Class Recall,recall_Tomato___Late_blight,0.6111,support=90
+Lab Per-Class Recall,recall_Tomato___Leaf_mold,0.8,support=90
+Lab Per-Class Recall,recall_Tomato___Septoria_leaf_spot,0.8222,support=90
+Lab Per-Class Recall,recall_Tomato___Spider_mites,0.8222,support=90
+Lab Per-Class Recall,recall_Tomato___Target_spot,0.7333,support=90
+Lab Per-Class Recall,recall_Tomato___Yellow_leaf_curl_virus,0.9333,support=90
+Lab Per-Class Recall,recall_Tomato___Mosaic_virus,1.0,support=57
+Lab Per-Class Recall,recall_Tomato___Healthy,0.9667,support=90
+Lab Per-Class Recall,recall_Potato___Early_blight,1.0,support=90
+Lab Per-Class Recall,recall_Potato___Late_blight,0.7333,support=90
+Lab Per-Class Recall,recall_Potato___Healthy,1.0,support=24
+Lab Per-Class Recall,recall_Pepper___Bacterial_spot,0.9889,support=90
+Lab Per-Class Recall,recall_Pepper___Healthy,0.9556,support=90
+Lab Per-Class Recall,recall_Maize___Gray_leaf_spot,0.9744,support=78
+Lab Per-Class Recall,recall_Maize___Common_rust,0.8667,support=90
+Lab Per-Class Recall,recall_Maize___Northern_leaf_blight,0.7889,support=90
+Lab Per-Class Recall,recall_Maize___Healthy,0.9778,support=90
+Lab Per-Class Recall,recall_Apple___Apple_scab,0.9778,support=90
+Lab Per-Class Recall,recall_Apple___Black_rot,0.9222,support=90
+Lab Per-Class Recall,recall_Apple___Cedar_apple_rust,1.0,support=42
+Lab Per-Class Recall,recall_Apple___Healthy,0.9222,support=90
+Lab Per-Class Recall,recall_Grape___Black_rot,0.9111,support=90
+Lab Per-Class Recall,recall_Grape___Esca_black_measles,0.9222,support=90
+Lab Per-Class Recall,recall_Grape___Leaf_blight,0.9667,support=90
+Lab Per-Class Recall,recall_Grape___Healthy,1.0,support=64
+Lab Per-Class Recall,recall_Peach___Bacterial_spot,0.9667,support=90
+Lab Per-Class Recall,recall_Peach___Healthy,1.0,support=55
+Lab Per-Class Recall,recall_Strawberry___Leaf_scorch,0.9444,support=90
+Lab Per-Class Recall,recall_Strawberry___Healthy,0.971,support=69
+Lab Per-Class Recall,recall_Cherry___Powdery_mildew,0.9667,support=90
+Lab Per-Class Recall,recall_Cherry___Healthy,1.0,support=90
+Lab Per-Class Recall,recall_Rice___Bacterial_leaf_blight,0.6552,support=29
+Lab Per-Class Recall,recall_Rice___Brown_spot,0.5517,support=29
+Lab Per-Class Recall,recall_Rice___Leaf_blast,0.5909,support=22
+Lab Per-Class Recall,recall_Rice___Healthy,0.95,support=20

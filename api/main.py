@@ -140,7 +140,7 @@ def root_endpoint(request: Request):
         return FileResponse(html_file, media_type="text/html")
     return {
         "service": "Crop Leaf Disease Classification API",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "documentation": "/docs",
         "web_ui": "/ui",
         "api_v1": {
@@ -351,7 +351,8 @@ async def predict_foliar_disease(
     image: Optional[UploadFile] = File(None, description="Crop leaf photo file (JPEG, PNG, or WebP; maximum 5 MB)"),
     file: Optional[UploadFile] = File(None, description="Alternative field name for crop leaf photo"),
     crop: Optional[str] = Form(None, description="Optional botanical crop hint (e.g., Apple, Tomato, Potato, etc.)"),
-    crop_hint: Optional[str] = Form(None, description="Alternative field name for botanical crop hint")
+    crop_hint: Optional[str] = Form(None, description="Alternative field name for botanical crop hint"),
+    top_k: Optional[int] = Form(3, description="Number of candidate predictions to return")
 ):
     """
     Submits a foliar image for calibrated disease identification.
@@ -422,6 +423,16 @@ async def predict_foliar_disease(
     if active_crop and isinstance(active_crop, str):
         hint_clean = active_crop.strip().lower()
         if hint_clean not in ["auto", "all", "none", "", "auto-detect", "auto_detect"]:
+            crop_aliases = {
+                "corn": "Maize",
+                "paddy": "Rice",
+                "bell pepper": "Pepper",
+                "bell_pepper": "Pepper",
+                "sweet pepper": "Pepper"
+            }
+            if hint_clean in crop_aliases:
+                active_crop = crop_aliases[hint_clean]
+                hint_clean = active_crop.lower()
             known_crops = [c.lower() for c in engine.crops]
             if hint_clean not in known_crops:
                 raise StarletteHTTPException(
@@ -431,7 +442,8 @@ async def predict_foliar_disease(
 
     # 5. Calibrated Prediction & Thresholding
     try:
-        result = engine.predict_v1(contents, top_k=3, crop_hint=active_crop)
+        effective_top_k = int(top_k) if top_k is not None else 3
+        result = engine.predict_v1(contents, top_k=effective_top_k, crop_hint=active_crop)
         elapsed_ms = (time.time() - t0) * 1000.0
         logger.info(f"Prediction: {result['prediction']['label']} ({result['status']}, {result['prediction']['confidence']*100:.1f}%) in {elapsed_ms:.1f}ms")
         return result

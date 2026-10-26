@@ -104,7 +104,7 @@ public class MlServiceClient {
             return buildMockPrediction(cropHint);
         }
 
-        String targetUrl = properties.getUrl() + "/api/v1/predict";
+        String targetUrl = getBaseUrl() + "/api/v1/predict";
         log.info("Dispatching leaf inference request to ML Service: {}", targetUrl);
 
         try {
@@ -289,7 +289,7 @@ public class MlServiceClient {
      * @return HealthResponse with model status and calibration metadata
      */
     public HealthResponse checkHealth() {
-        String healthUrl = properties.getUrl() + "/health";
+        String healthUrl = getBaseUrl() + "/health";
         try {
             return restTemplate.getForObject(healthUrl, HealthResponse.class);
         } catch (Exception ex) {
@@ -299,5 +299,13 @@ public class MlServiceClient {
                     .modelLoaded(false)
                     .build();
         }
+    }
+
+    private String getBaseUrl() {
+        String url = properties.getUrl();
+        if (url == null || url.isBlank()) {
+            return "http://localhost:8000";
+        }
+        return url.endsWith("/") ? url.substring(0, url.length() - 1) : url;
     }
 }

@@ -18,7 +18,8 @@ public class GlobalExceptionHandler {
                         .message(ex.getMessage())
                         .build())
                 .build();
-        return ResponseEntity.status(ex.getHttpStatus()).body(errorResponse);
+        HttpStatus status = ex.getHttpStatus() != null ? ex.getHttpStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+        return ResponseEntity.status(status.value()).body(errorResponse);
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)

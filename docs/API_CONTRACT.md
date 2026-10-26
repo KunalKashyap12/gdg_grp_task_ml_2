@@ -47,10 +47,11 @@ curl -X POST "http://localhost:8000/api/v1/predict" \
 ```
 
 #### Example 1: Successful High-Confidence Diagnosis (`200 OK`)
-When calibrated confidence $\ge 0.74$:
+When calibrated confidence $\ge \theta$ (e.g. $\theta = 0.70$):
 ```json
 {
   "status": "success",
+  "is_leaf": true,
   "prediction": {
     "class_id": 1,
     "crop": "Tomato",
@@ -73,19 +74,20 @@ When calibrated confidence $\ge 0.74$:
     }
   ],
   "low_confidence": false,
-  "threshold": 0.74,
-  "message": "Disease identified successfully with high calibrated confidence.",
-  "model_version": "1.0.0",
+  "threshold": 0.70,
+  "message": "Stage 1: Tomato leaf identified (98.4%). Stage 2: Early blight diagnosed (91.2% confidence, 98.5% foliar pathology).",
+  "model_version": "1.1.0",
   "inference_time_ms": 4.68,
   "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation."
 }
 ```
 
 #### Example 2: Low-Confidence / Ambiguous Image (`200 OK`)
-When calibrated confidence $< 0.74$ or input exhibits high entropy (blurry, bad lighting, out-of-domain leaf, or unsupported crop):
+When calibrated confidence $< \theta$ or input exhibits low margin (<0.15) or high entropy (>1.50):
 ```json
 {
   "status": "low_confidence",
+  "is_leaf": true,
   "prediction": {
     "class_id": 10,
     "crop": "Potato",
@@ -108,13 +110,84 @@ When calibrated confidence $< 0.74$ or input exhibits high entropy (blurry, bad 
     }
   ],
   "low_confidence": true,
-  "threshold": 0.74,
+  "threshold": 0.70,
   "message": "Unable to identify reliably. Retake a clear, well-lit, close-up photo of a single leaf.",
-  "model_version": "1.0.0",
+  "model_version": "1.1.0",
   "inference_time_ms": 4.62,
   "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation."
 }
 ```
+
+#### Example 3: Non-Leaf Gatekeeper Rejection (`200 OK`)
+When the image is detected as non-foliar (wallpaper, graphic, skin/portrait, panoramic scenery, or blueprint):
+```json
+{
+  "status": "not_a_leaf",
+  "is_leaf": false,
+  "prediction": {
+    "class_id": 0,
+    "crop": "Unknown",
+    "disease": "Not_a_leaf",
+    "label": "None",
+    "confidence": 0.0
+  },
+  "top_k": [
+    {"label": "None", "confidence": 0.0},
+    {"label": "None", "confidence": 0.0},
+    {"label": "None", "confidence": 0.0}
+  ],
+  "low_confidence": true,
+  "threshold": 0.70,
+  "message": "Not a leaf. Please upload a new image.",
+  "model_version": "1.1.0",
+  "inference_time_ms": 1.25,
+  "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation."
+}
+```
+
+#### Example 4: Unsupported Crop Variety (`200 OK`)
+When the leaf belongs to a crop outside the 10 supported varieties (e.g. Squash, Blueberry, Soybean, Raspberry):
+```json
+{
+  "status": "unsupported_crop",
+  "is_leaf": true,
+  "prediction": {
+    "class_id": 37,
+    "crop": "Unsupported",
+    "disease": "Unsupported_crop",
+    "label": "Unsupported___Unsupported_crop",
+    "confidence": 0.8842
+  },
+  "top_k": [
+    {"label": "Unsupported___Unsupported_crop", "confidence": 0.8842},
+    {"label": "Grape___Leaf_blight", "confidence": 0.0412},
+    {"label": "Tomato___Septoria_leaf_spot", "confidence": 0.0210}
+  ],
+  "low_confidence": true,
+  "threshold": 0.70,
+  "message": "This plant or crop is not currently supported by FloraScan. Supported crops: Apple, Cherry, Grape, Maize, Peach, Pepper, Potato, Rice, Strawberry, Tomato.",
+  "model_version": "1.1.0",
+  "inference_time_ms": 4.85,
+  "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis. Consult a local agricultural expert for confirmation."
+}
+```
+
+### Crop Name Normalization & Aliases:
+The backend and ML service seamlessly support common agricultural parlance and colloquial aliases:
+| User / Backend Input | Normalized Crop | Supported Status |
+| :--- | :--- | :---: |
+| `corn`, `Corn`, `maize`, `Maize` | `Maize` | Supported |
+| `paddy`, `Paddy`, `rice`, `Rice` | `Rice` | Supported |
+| `bell pepper`, `sweet pepper`, `pepper`, `Pepper` | `Pepper` | Supported |
+| `Apple`, `Cherry`, `Grape`, `Peach`, `Potato`, `Strawberry`, `Tomato` | Preserved | Supported |
+| Other crops (e.g. `Banana`, `Wheat`, `Soybean`) | N/A | HTTP 400 Bad Request or flagged as `unsupported_crop` |
+
+### Recommended In-App Photography Guidance for Farmers:
+To achieve the highest diagnostic precision and avoid `low_confidence` rejections:
+1. **Single Leaf Focus**: Photograph one detached or isolated leaf flat against your palm or a neutral background.
+2. **Close-Up Framing**: Fill at least 70% of the camera viewfinder with the affected leaf lamina.
+3. **Diffused Daylight**: Avoid harsh direct noon sunlight glare or deep dark shadows; diffused morning or evening daylight produces the best color fidelity.
+4. **Sharp Focus on Lesions**: Tap the screen to focus directly on visible spots, pustules, or discoloration.
 
 #### Example Error Responses:
 

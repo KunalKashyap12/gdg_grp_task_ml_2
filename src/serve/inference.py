@@ -30,9 +30,15 @@ SUCCESS_MESSAGE = "Disease identified successfully with high calibrated confiden
 class CropDiseaseInferenceEngine:
     """Production ONNX inference engine with calibrated confidences and hierarchical two-stage classification."""
     def __init__(self,
-                 onnx_model_path="models/crop_disease_model.onnx",
+                 onnx_model_path=None,
                  classes_path="data/supported_classes.json",
-                 config_path="models/model_config.json"):
+                 config_path=None):
+
+        model_dir = os.environ.get("MODEL_DIR", "models")
+        if onnx_model_path is None:
+            onnx_model_path = os.path.join(model_dir, "crop_disease_model.onnx")
+        if config_path is None:
+            config_path = os.path.join(model_dir, "model_config.json")
 
         if not os.path.exists(onnx_model_path):
             raise FileNotFoundError(f"ONNX model missing: {onnx_model_path}")
@@ -84,6 +90,22 @@ class CropDiseaseInferenceEngine:
         )
         self.input_name = self.session.get_inputs()[0].name
         self.output_name = self.session.get_outputs()[0].name
+
+        # Detect internal reject class (38 outputs in v1.1.0 vs 37 in v1.0.0)
+        out_shape = self.session.get_outputs()[0].shape
+        self.output_dim = out_shape[-1] if len(out_shape) > 1 and isinstance(out_shape[-1], int) else 37
+        self.has_reject_class = (self.output_dim >= 38)
+        self.reject_class_id = 37
+        self.reject_label = "Unsupported___Unsupported_crop"
+        if self.has_reject_class:
+            self.class_map[self.reject_class_id] = {
+                "class_id": self.reject_class_id,
+                "crop": "Unsupported",
+                "disease": "Unsupported_crop",
+                "label": self.reject_label,
+                "display_name": "Unsupported Crop",
+                "description": "Out-of-scope plant foliage"
+            }
 
     def softmax(self, logits):
         """Numerically stable softmax."""
@@ -314,6 +336,60 @@ class CropDiseaseInferenceEngine:
         calibrated_logits = raw_logits / self.temperature
         calibrated_probs = self.softmax(calibrated_logits)
 
+        # 2b. Internal Reject Class Handling (v1.1.0 38th class)
+        if self.has_reject_class:
+            top_all_idx = int(np.argmax(calibrated_probs))
+            if top_all_idx == self.reject_class_id:
+                latency_ms = (time.perf_counter() - t0) * 1000.0
+                reject_conf = float(calibrated_probs[self.reject_class_id])
+                
+                # Top-k items: reject class followed by top supported classes
+                top_k_count = min(max(1, top_k), self.num_classes)
+                sorted_all = np.argsort(calibrated_probs)[::-1]
+                top_k_items = [
+                    {"label": self.reject_label, "confidence": round(reject_conf, 4)}
+                ]
+                for idx in sorted_all:
+                    if int(idx) < self.num_classes and len(top_k_items) < top_k_count:
+                        meta = self.class_map[int(idx)]
+                        top_k_items.append({
+                            "label": meta["label"],
+                            "confidence": round(float(calibrated_probs[idx]), 4)
+                        })
+
+                return {
+                    "status": "unsupported_crop",
+                    "is_leaf": True,
+                    "prediction": {
+                        "class_id": self.reject_class_id,
+                        "crop": "Unsupported",
+                        "disease": "Unsupported_crop",
+                        "label": self.reject_label,
+                        "confidence": round(reject_conf, 4)
+                    },
+                    "top_k": top_k_items,
+                    "stage1_leaf": {
+                        "identified_crop": "Unsupported",
+                        "confidence": round(reject_conf, 4),
+                        "is_conditioned": False,
+                        "candidates": [{"crop": "Unsupported", "confidence": round(reject_conf, 4)}]
+                    },
+                    "stage2_disease": {
+                        "disease": "Unsupported_crop",
+                        "confidence": round(reject_conf, 4),
+                        "is_healthy": False,
+                        "pathology_mass": 0.0,
+                        "candidates": []
+                    },
+                    "low_confidence": True,
+                    "threshold": self.threshold,
+                    "crop_conditioned": None,
+                    "message": "This plant or crop is not currently supported by FloraScan. Supported crops: Apple, Cherry, Grape, Maize, Peach, Pepper, Potato, Rice, Strawberry, Tomato.",
+                    "model_version": self.model_version,
+                    "inference_time_ms": round(latency_ms, 2),
+                    "disclaimer": MANDATORY_DISCLAIMER
+                }
+
         # 3. Check for User Crop Confirmation / Conditioning
         target_crop = None
         if crop_hint and isinstance(crop_hint, str):
@@ -397,6 +473,13 @@ class CropDiseaseInferenceEngine:
             raw_top_conf = float(np.max(unscaled_probs))
             raw_max_logit = float(np.max(raw_logits))
 
+            # Safety rules for unsupported crop and low confidence
+            sorted_all_indices = np.argsort(calibrated_probs)[::-1]
+            is_near_unsupported = False
+            if self.has_reject_class and len(sorted_all_indices) > 1:
+                if sorted_all_indices[1] == self.reject_class_id and cal_margin < 0.20:
+                    is_near_unsupported = True
+
             is_low_conf = (
                 (final_conf < self.threshold) or
                 (entropy > self.entropy_threshold) or
@@ -416,12 +499,16 @@ class CropDiseaseInferenceEngine:
                 })
 
         # Status and messages
-        status = "low_confidence" if is_low_conf else "success"
         clean_dis = best_meta["disease"].replace("_", " ")
-
-        if is_low_conf:
+        if not is_conditioned and is_near_unsupported:
+            status = "unsupported_crop"
+            message = "Unable to confirm supported crop reliably. The leaf exhibits characteristics of an unsupported plant variety."
+            is_low_conf = True
+        elif is_low_conf:
+            status = "low_confidence"
             message = LOW_CONF_MESSAGE
         else:
+            status = "success"
             if is_conditioned:
                 if is_healthy:
                     message = f"Conditioned on {active_crop} foliage: Healthy plant baseline confirmed ({best_sub_prob*100:.1f}% confidence)."
@@ -508,8 +595,41 @@ class CropDiseaseInferenceEngine:
         calibrated_logits = raw_logits / self.temperature
         calibrated_probs = self.softmax(calibrated_logits)
 
+        if self.has_reject_class:
+            top_all_idx = int(np.argmax(calibrated_probs))
+            if top_all_idx == self.reject_class_id:
+                latency_ms = (time.perf_counter() - t0) * 1000.0
+                return {
+                    "is_leaf": True,
+                    "status": "unsupported_crop",
+                    "message": "This plant or crop is not currently supported by FloraScan.",
+                    "prediction": {
+                        "class_id": self.reject_class_id,
+                        "crop": "Unsupported",
+                        "disease": "Unsupported_crop",
+                        "label": self.reject_label,
+                        "calibrated_confidence": round(float(calibrated_probs[self.reject_class_id]), 4)
+                    },
+                    "top_candidates": [{
+                        "rank": 1,
+                        "class_id": self.reject_class_id,
+                        "crop": "Unsupported",
+                        "disease": "Unsupported_crop",
+                        "label": self.reject_label,
+                        "calibrated_confidence": round(float(calibrated_probs[self.reject_class_id]), 4)
+                    }],
+                    "calibration": {
+                        "is_calibrated": True,
+                        "temperature": self.temperature
+                    },
+                    "performance": {
+                        "latency_ms": round(latency_ms, 2)
+                    },
+                    "disclaimer": MANDATORY_DISCLAIMER
+                }
+
         effective_top_k = min(max(1, top_k), self.num_classes)
-        top_k_indices = np.argsort(calibrated_probs)[::-1][:effective_top_k]
+        top_k_indices = np.argsort(calibrated_probs[:self.num_classes])[::-1][:effective_top_k]
         best_idx = int(top_k_indices[0])
         best_meta = self.class_map[best_idx]
         best_conf = float(calibrated_probs[best_idx])
@@ -553,8 +673,13 @@ class CropDiseaseInferenceEngine:
 _engine_instance = None
 
 
-def get_inference_engine():
+def get_inference_engine(model_dir=None):
     global _engine_instance
+    if model_dir is not None:
+        current_env = os.environ.get("MODEL_DIR", "models")
+        if current_env != model_dir:
+            os.environ["MODEL_DIR"] = model_dir
+            _engine_instance = None
     if _engine_instance is None:
         _engine_instance = CropDiseaseInferenceEngine()
     return _engine_instance
