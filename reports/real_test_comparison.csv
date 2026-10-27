@@ -1,0 +1,22 @@
+filename,v100_status,v100_label,v100_conf,v110_status,v110_label,v110_conf,v111_status,v111_label,v111_conf
+Screenshot 2026-10-26 152351.png,success,Potato___Early_blight,0.9807,success,Potato___Early_blight,0.9831,success,Potato___Early_blight,0.9942
+a-capsicum.png,low_confidence,Strawberry___Leaf_scorch,0.7073,low_confidence,Potato___Early_blight,0.3945,low_confidence,Ambiguous (Early blight symptoms on Potato),0.3305
+a-capsicum1.png,success,Pepper___Bacterial_spot,0.7472,low_confidence,Pepper___Bacterial_spot,0.5076,low_confidence,Pepper___Bacterial_spot,0.5812
+a-cheery-leaf.png,low_confidence,Rice___Healthy,0.5653,low_confidence,Ambiguous (Common rust symptoms on Maize),0.1642,low_confidence,Ambiguous (Healthy symptoms on Peach),0.1961
+a-grapes-leaf.png,low_confidence,Grape___Healthy,0.3697,low_confidence,Grape___Healthy,0.6089,success,Grape___Healthy,0.8004
+a-grapes-leafa.png,low_confidence,Grape___Black_rot,0.6231,low_confidence,Grape___Healthy,0.2553,low_confidence,Ambiguous (Late blight symptoms on Tomato),0.2954
+a-maize-leaf.png,low_confidence,Rice___Bacterial_leaf_blight,0.2487,success,Maize___Common_rust,0.8784,success,Maize___Common_rust,0.8467
+a-maize-leaf1.png,low_confidence,Maize___Gray_leaf_spot,0.573,success,Maize___Gray_leaf_spot,0.9795,success,Maize___Gray_leaf_spot,0.9842
+a-maize-leaf2.png,low_confidence,Maize___Gray_leaf_spot,0.6153,success,Maize___Common_rust,0.9256,success,Maize___Common_rust,0.9928
+a-peach-leaf.png,success,Peach___Bacterial_spot,0.742,low_confidence,Apple___Apple_scab,0.202,low_confidence,Ambiguous (Apple scab symptoms on Apple),0.3938
+a-peach-leaf1.png,low_confidence,Rice___Leaf_blast,0.5974,low_confidence,Ambiguous (Healthy symptoms on Grape),0.3077,low_confidence,Grape___Healthy,0.3503
+a-potato-leaf.png,low_confidence,Rice___Leaf_blast,0.2906,low_confidence,Potato___Late_blight,0.3319,low_confidence,Potato___Late_blight,0.5055
+a-potato.png,low_confidence,Rice___Brown_spot,0.3053,low_confidence,Potato___Late_blight,0.2505,low_confidence,Potato___Late_blight,0.4046
+a-rice-leaf.png,success,Rice___Leaf_blast,0.9169,success,Rice___Leaf_blast,0.9667,success,Rice___Leaf_blast,0.9935
+a-rice.png,success,Rice___Bacterial_leaf_blight,0.9779,low_confidence,Rice___Bacterial_leaf_blight,0.4949,low_confidence,Rice___Bacterial_leaf_blight,0.5339
+a-strawberry.png,low_confidence,Rice___Leaf_blast,0.3513,low_confidence,Tomato___Septoria_leaf_spot,0.5199,low_confidence,Tomato___Late_blight,0.4481
+a-strawberry1.png,low_confidence,Rice___Brown_spot,0.512,low_confidence,Strawberry___Leaf_scorch,0.6468,success,Strawberry___Leaf_scorch,0.7497
+a-tomato-leaf.png,low_confidence,Tomato___Septoria_leaf_spot,0.3457,low_confidence,Tomato___Septoria_leaf_spot,0.3718,low_confidence,Tomato___Early_blight,0.4514
+a-wheat-leaf.png,low_confidence,Maize___Common_rust,0.5724,success,Maize___Common_rust,0.9624,success,Maize___Common_rust,0.981
+apple-fungal-leaf.png,low_confidence,Grape___Black_rot,0.6324,low_confidence,Grape___Black_rot,0.5296,low_confidence,Grape___Healthy,0.4061
+apple-leaf.png,success,Apple___Cedar_apple_rust,0.9232,low_confidence,Apple___Healthy,0.6426,low_confidence,Apple___Healthy,0.5526

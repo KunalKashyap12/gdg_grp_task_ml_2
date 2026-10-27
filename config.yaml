@@ -201,7 +201,7 @@ calibration:
   lr: 0.01
 
 inference:
-  model_dir: "models_v1.1.0"
-  onnx_model_path: "models_v1.1.0/crop_disease_model.onnx"
-  calibration_path: "models_v1.1.0/calibration.json"
+  model_dir: "models"
+  onnx_model_path: "models/crop_disease_model.onnx"
+  calibration_path: "models/calibration.json"
   supported_classes_path: "data/supported_classes.json"

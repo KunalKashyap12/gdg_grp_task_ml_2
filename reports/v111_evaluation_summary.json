@@ -1,0 +1,41 @@
+{
+  "model_version": "1.1.1",
+  "temperature": 0.7205,
+  "confidence_threshold": 0.7,
+  "albumentations_pipeline": {
+    "lab_accuracy": 0.9713679745493107,
+    "lab_macro_f1": 0.9643347461660983,
+    "lab_coverage": 0.9452103216684341,
+    "lab_selective_accuracy": 0.9884068810770381,
+    "field_accuracy": 0.541795665634675,
+    "field_macro_f1": 0.4602206845830222,
+    "field_coverage": 0.5046439628482973,
+    "field_selective_accuracy": 0.7116564417177914
+  },
+  "pil_pipeline": {
+    "lab_accuracy": 0.9713679745493107,
+    "lab_macro_f1": 0.9640748709062231,
+    "field_accuracy": 0.5510835913312694,
+    "field_macro_f1": 0.4717031491626527
+  },
+  "false_healthy_rates": {
+    "overall": 0.0027945971122496508,
+    "potato": 0.0,
+    "rice": 0.0125
+  },
+  "novel_ood_benchmark": {
+    "total_images": 107,
+    "safely_rejected": 102,
+    "rejection_rate": 0.9532710280373832,
+    "unsupported_crop_count": 1,
+    "low_confidence_count": 44,
+    "false_positive_count": 5
+  },
+  "acceptance": {
+    "lab_accuracy_drop": -0.014467974549310703,
+    "field_accuracy_drop": -0.07429566563467493,
+    "lab_pass": true,
+    "field_pass": true,
+    "overall_accepted": true
+  }
+}

@@ -132,6 +132,7 @@ class ModelWithTemperature(nn.Module):
 
     def calibrate(self, val_loader, device="cpu"):
         """Extracts validation logits and tunes temperature parameter using LBFGS."""
+        self.to(device)
         self.model.eval()
         logits_list = []
         labels_list = []

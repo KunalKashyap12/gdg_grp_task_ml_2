@@ -1,0 +1,49 @@
+{
+  "model_name": "mobilenet_v3_large",
+  "model_version": "1.1.1",
+  "input_size": [
+    3,
+    224,
+    224
+  ],
+  "num_classes": 38,
+  "supported_classes": 37,
+  "internal_reject_classes": 1,
+  "temperature": 0.7205,
+  "confidence_threshold": 0.7,
+  "margin_threshold": 0.15,
+  "entropy_threshold": 1.5,
+  "threshold_sweep": [
+    {
+      "threshold": 0.5,
+      "coverage": 0.9331065759637188,
+      "selective_accuracy": 0.9343863912515188
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.9013605442176871,
+      "selective_accuracy": 0.950314465408805
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.8877551020408163,
+      "selective_accuracy": 0.9578544061302682
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.8664965986394558,
+      "selective_accuracy": 0.9653254824991822
+    },
+    {
+      "threshold": 0.74,
+      "coverage": 0.8494897959183674,
+      "selective_accuracy": 0.972972972972973
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.822562358276644,
+      "selective_accuracy": 0.9782908339076499
+    }
+  ],
+  "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis."
+}

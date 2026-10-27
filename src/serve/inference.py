@@ -34,11 +34,23 @@ class CropDiseaseInferenceEngine:
                  classes_path="data/supported_classes.json",
                  config_path=None):
 
-        model_dir = os.environ.get("MODEL_DIR", "models")
-        if onnx_model_path is None:
-            onnx_model_path = os.path.join(model_dir, "crop_disease_model.onnx")
-        if config_path is None:
-            config_path = os.path.join(model_dir, "model_config.json")
+        if onnx_model_path is None or config_path is None:
+            model_dir = os.environ.get("MODEL_DIR")
+            if not model_dir and os.path.exists("config.yaml"):
+                try:
+                    import yaml
+                    with open("config.yaml", "r", encoding="utf-8") as f:
+                        cfg = yaml.safe_load(f)
+                    model_dir = cfg.get("inference", {}).get("model_dir")
+                except Exception:
+                    pass
+            if not model_dir:
+                model_dir = "models"
+
+            if onnx_model_path is None:
+                onnx_model_path = os.path.join(model_dir, "crop_disease_model.onnx")
+            if config_path is None:
+                config_path = os.path.join(model_dir, "model_config.json")
 
         if not os.path.exists(onnx_model_path):
             raise FileNotFoundError(f"ONNX model missing: {onnx_model_path}")
@@ -129,6 +141,14 @@ class CropDiseaseInferenceEngine:
             {"crop": c, "confidence": round(p, 4)}
             for c, p in sorted_crops[:3]
         ]
+        # Cross-link Prunus stone fruit sister species (Peach & Cherry)
+        has_peach = any(c["crop"] == "Peach" for c in crop_candidates)
+        has_cherry = any(c["crop"] == "Cherry" for c in crop_candidates)
+        if has_peach and not has_cherry:
+            crop_candidates.append({"crop": "Cherry", "confidence": round(crop_probs.get("Cherry", 0.0), 4)})
+        elif has_cherry and not has_peach:
+            crop_candidates.append({"crop": "Peach", "confidence": round(crop_probs.get("Peach", 0.0), 4)})
+
         return top_crop, top_crop_prob, crop_candidates, sorted_crops
 
     def validate_leaf_image(self, image_input):
@@ -404,13 +424,18 @@ class CropDiseaseInferenceEngine:
         # Evaluated on calibrated distribution for mathematical coherence
         top_crop, top_crop_prob, crop_candidates, sorted_crops = self.predict_crop_species(calibrated_logits)
         crop_probs_map = dict(sorted_crops)
+        is_species_ambiguous = (not target_crop) and (top_crop_prob < 0.35 or (len(sorted_crops) > 1 and (top_crop_prob - sorted_crops[1][1] < 0.08)))
 
         # Active crop for Stage 2 (user confirmation overrides auto-detect)
+        hint_disagreement = False
         if target_crop:
             active_crop = target_crop
             is_conditioned = True
             stage1_conf = crop_probs_map.get(active_crop, 0.0)
-            effective_threshold = 0.35
+            # Check for strong disagreement between user hint and model botanical identification
+            if (top_crop != active_crop) and (stage1_conf < 0.20 or top_crop_prob > 0.70):
+                hint_disagreement = True
+            effective_threshold = self.threshold
         else:
             active_crop = top_crop
             is_conditioned = False
@@ -453,7 +478,7 @@ class CropDiseaseInferenceEngine:
 
         if is_conditioned:
             final_conf = best_sub_prob
-            is_low_conf = (best_sub_prob < 0.35)
+            is_low_conf = (best_sub_prob < self.threshold) or hint_disagreement
             # Top-k items strictly from conditioned crop in descending order
             top_k_count = min(max(1, top_k), len(active_indices))
             top_k_items = [
@@ -500,9 +525,39 @@ class CropDiseaseInferenceEngine:
 
         # Status and messages
         clean_dis = best_meta["disease"].replace("_", " ")
-        if not is_conditioned and is_near_unsupported:
+        pred_crop = best_meta["crop"]
+        pred_disease = best_meta["disease"]
+        pred_label = best_meta["label"]
+        stage1_crop = active_crop
+
+        if not is_conditioned and is_species_ambiguous:
+            status = "low_confidence"
+            is_low_conf = True
+            pred_crop = "Ambiguous"
+            pred_disease = "Unverified"
+            pred_label = f"Ambiguous ({clean_dis} symptoms on {active_crop})"
+            stage1_crop = "Ambiguous"
+            message = (
+                f"Plant species is ambiguous (top matches: {', '.join([c['crop'] for c in crop_candidates[:3]])} all below safety threshold). "
+                f"Foliar lesions resemble {clean_dis}, but host tree cannot be confirmed. Please select your verified crop above to diagnose."
+            )
+        elif not is_conditioned and is_near_unsupported:
             status = "unsupported_crop"
             message = "Unable to confirm supported crop reliably. The leaf exhibits characteristics of an unsupported plant variety."
+            is_low_conf = True
+        elif is_conditioned and is_healthy and stage1_conf < 0.15 and raw_logits[best_idx] <= 0.5:
+            status = "low_confidence"
+            is_low_conf = True
+            pred_disease = "Unmodeled_disease_or_leaf_spot"
+            pred_label = f"{active_crop}___Unmodeled_pathology"
+            message = (
+                f"Conditioned on {active_crop} foliage: Foliar lesions / necrotic spotting detected, but symptoms do not match "
+                f"supported {active_crop} diseases ({', '.join([self.class_map[i]['disease'] for i in active_indices])}). "
+                f"Foliage cannot be verified healthy. Note: Diseases such as Cherry Leaf Spot (Blumeriella jaapii) are outside the baseline."
+            )
+        elif is_conditioned and hint_disagreement:
+            status = "low_confidence"
+            message = f"AI-assisted indication only: Provided crop hint '{active_crop}' conflicts with detected foliage ({top_crop}, {top_crop_prob*100:.1f}% confidence). Diagnostic confidence is low."
             is_low_conf = True
         elif is_low_conf:
             status = "low_confidence"
@@ -527,20 +582,21 @@ class CropDiseaseInferenceEngine:
             "is_leaf": True,
             "prediction": {
                 "class_id": best_idx,
-                "crop": best_meta["crop"],
-                "disease": best_meta["disease"],
-                "label": best_meta["label"],
+                "crop": pred_crop,
+                "disease": pred_disease,
+                "label": pred_label,
                 "confidence": round(final_conf, 4)
             },
             "top_k": top_k_items,
             "stage1_leaf": {
-                "identified_crop": active_crop,
+                "identified_crop": stage1_crop,
                 "confidence": round(stage1_conf, 4),
                 "is_conditioned": is_conditioned,
+                "is_ambiguous": is_species_ambiguous,
                 "candidates": crop_candidates
             },
             "stage2_disease": {
-                "disease": best_meta["disease"],
+                "disease": pred_disease,
                 "confidence": round(best_sub_prob, 4),
                 "is_healthy": is_healthy,
                 "pathology_mass": round(pathology_mass, 4),
@@ -676,7 +732,7 @@ _engine_instance = None
 def get_inference_engine(model_dir=None):
     global _engine_instance
     if model_dir is not None:
-        current_env = os.environ.get("MODEL_DIR", "models")
+        current_env = os.environ.get("MODEL_DIR")
         if current_env != model_dir:
             os.environ["MODEL_DIR"] = model_dir
             _engine_instance = None

@@ -1,0 +1,9 @@
+{
+  "total_tested": 103,
+  "safely_flagged_count": 90,
+  "safely_flagged_fraction": 0.8737864077669902,
+  "unsupported_crop_count": 3,
+  "low_confidence_count": 59,
+  "not_a_leaf_count": 28,
+  "false_positive_success_count": 13
+}

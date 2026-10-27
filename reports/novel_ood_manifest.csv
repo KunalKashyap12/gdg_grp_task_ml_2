@@ -1,0 +1,108 @@
+filename,filepath,description,category
+plant_000.jpg,scratch/novel_ood_104\plant_000.jpg,Pine needles,garden_plant
+plant_001.jpg,scratch/novel_ood_104\plant_001.jpg,Fern leaves,garden_plant
+plant_002.jpg,scratch/novel_ood_104\plant_002.jpg,Cactus,garden_plant
+plant_003.jpg,scratch/novel_ood_104\plant_003.jpg,Dandelion weed,weed
+plant_004.jpg,scratch/novel_ood_104\plant_004.jpg,Wild grass,weed
+plant_005.jpg,scratch/novel_ood_104\plant_005.jpg,Sunflower petal/leaf,garden_plant
+plant_006.jpg,scratch/novel_ood_104\plant_006.jpg,Wildflower blossom,garden_plant
+plant_007.jpg,scratch/novel_ood_104\plant_007.jpg,Monstera houseplant,houseplant
+plant_008.jpg,scratch/novel_ood_104\plant_008.jpg,Green foliage garden,garden_plant
+plant_009.jpg,scratch/novel_ood_104\plant_009.jpg,Lush jungle leaves,garden_plant
+plant_010.jpg,scratch/novel_ood_104\plant_010.jpg,Autumn maple leaf,tree_leaf
+plant_011.jpg,scratch/novel_ood_104\plant_011.jpg,Forest moss and fern,weed
+plant_012.jpg,scratch/novel_ood_104\plant_012.jpg,Succulent plant,houseplant
+plant_013.jpg,scratch/novel_ood_104\plant_013.jpg,Potted aloe plant,houseplant
+plant_014.jpg,scratch/novel_ood_104\plant_014.jpg,Palm frond,garden_plant
+plant_015.jpg,scratch/novel_ood_104\plant_015.jpg,Tree bark and ivy,weed
+plant_016.jpg,scratch/novel_ood_104\plant_016.jpg,Lawn clover patch,weed
+plant_017.jpg,scratch/novel_ood_104\plant_017.jpg,Sunlit forest foliage,garden_plant
+plant_018.jpg,scratch/novel_ood_104\plant_018.jpg,Bamboo leaves,garden_plant
+plant_019.jpg,scratch/novel_ood_104\plant_019.jpg,Banana leaf,other_crop
+plant_020.jpg,scratch/novel_ood_104\plant_020.jpg,Orchid flower and leaf,houseplant
+plant_022.jpg,scratch/novel_ood_104\plant_022.jpg,Rose shrub with leaves,garden_plant
+plant_023.jpg,scratch/novel_ood_104\plant_023.jpg,Alpine moss,weed
+plant_024.jpg,scratch/novel_ood_104\plant_024.jpg,Oak tree leaf canopy,tree_leaf
+plant_025.jpg,scratch/novel_ood_104\plant_025.jpg,Tulip garden leaves,garden_plant
+plant_026.jpg,scratch/novel_ood_104\plant_026.jpg,Lotus pad in water,garden_plant
+plant_027.jpg,scratch/novel_ood_104\plant_027.jpg,Wheat field blades,other_crop
+plant_028.jpg,scratch/novel_ood_104\plant_028.jpg,Fiddle leaf fig,houseplant
+plant_029.jpg,scratch/novel_ood_104\plant_029.jpg,Mint / herb leaves,garden_plant
+object_000.jpg,scratch/novel_ood_104\object_000.jpg,Smartphone,object
+object_001.jpg,scratch/novel_ood_104\object_001.jpg,Wristwatch,object
+object_002.jpg,scratch/novel_ood_104\object_002.jpg,Headphones,object
+object_003.jpg,scratch/novel_ood_104\object_003.jpg,Red sneaker shoe,object
+object_004.jpg,scratch/novel_ood_104\object_004.jpg,Camera lens,object
+object_005.jpg,scratch/novel_ood_104\object_005.jpg,Sunglasses,object
+object_006.jpg,scratch/novel_ood_104\object_006.jpg,Leather shoes,object
+object_007.jpg,scratch/novel_ood_104\object_007.jpg,Earphones,object
+object_008.jpg,scratch/novel_ood_104\object_008.jpg,Smart watch,object
+object_009.jpg,scratch/novel_ood_104\object_009.jpg,Perfume bottle,object
+object_010.jpg,scratch/novel_ood_104\object_010.jpg,Classic watch,object
+object_011.jpg,scratch/novel_ood_104\object_011.jpg,Wooden chair,object
+object_012.jpg,scratch/novel_ood_104\object_012.jpg,Apple MacBook laptop,object
+object_013.jpg,scratch/novel_ood_104\object_013.jpg,Computer mouse,object
+object_014.jpg,scratch/novel_ood_104\object_014.jpg,Mechanical keyboard,object
+object_015.jpg,scratch/novel_ood_104\object_015.jpg,Golden retriever dog,animal
+object_016.jpg,scratch/novel_ood_104\object_016.jpg,Tabby cat,animal
+object_017.jpg,scratch/novel_ood_104\object_017.jpg,Dog portrait,animal
+object_018.jpg,scratch/novel_ood_104\object_018.jpg,Beagle dog face,animal
+object_019.jpg,scratch/novel_ood_104\object_019.jpg,Cat with glasses,animal
+object_021.jpg,scratch/novel_ood_104\object_021.jpg,Wooden table texture,texture
+object_022.jpg,scratch/novel_ood_104\object_022.jpg,Geometric wallpaper,texture
+object_023.jpg,scratch/novel_ood_104\object_023.jpg,Blue abstract wallpaper,texture
+object_024.jpg,scratch/novel_ood_104\object_024.jpg,Gradient color wallpaper,texture
+novel_053.jpg,scratch/novel_ood_104\novel_053.jpg,Coffee branch and beans,novel_crop
+novel_054.jpg,scratch/novel_ood_104\novel_054.jpg,Cotton boll in field,novel_crop
+novel_055.jpg,scratch/novel_ood_104\novel_055.jpg,Sugarcane stalk and leaves,novel_crop
+novel_056.jpg,scratch/novel_ood_104\novel_056.jpg,Cassava root and foliage,novel_crop
+novel_057.jpg,scratch/novel_ood_104\novel_057.jpg,Papaya tree foliage,novel_crop
+novel_058.jpg,scratch/novel_ood_104\novel_058.jpg,Mango foliage and fruit,novel_crop
+novel_060.jpg,scratch/novel_ood_104\novel_060.jpg,Barley grain ears,novel_crop
+novel_061.jpg,scratch/novel_ood_104\novel_061.jpg,Oat field stalks,novel_crop
+novel_062.jpg,scratch/novel_ood_104\novel_062.jpg,Sorghum heads,novel_crop
+novel_064.jpg,scratch/novel_ood_104\novel_064.jpg,Ginger plant leaves,novel_crop
+novel_066.jpg,scratch/novel_ood_104\novel_066.jpg,Black pepper vines,novel_crop
+novel_067.jpg,scratch/novel_ood_104\novel_067.jpg,Cocoa pod on tree,novel_crop
+novel_068.jpg,scratch/novel_ood_104\novel_068.jpg,Stinging nettle leaves,wild_weed
+novel_069.jpg,scratch/novel_ood_104\novel_069.jpg,Milk thistle blossom,wild_weed
+novel_070.jpg,scratch/novel_ood_104\novel_070.jpg,Burdock plant leaves,wild_weed
+novel_071.jpg,scratch/novel_ood_104\novel_071.jpg,Broadleaf plantain,wild_weed
+novel_072.jpg,scratch/novel_ood_104\novel_072.jpg,Field chickweed,wild_weed
+novel_073.jpg,scratch/novel_ood_104\novel_073.jpg,Horsetail rush,wild_weed
+novel_074.jpg,scratch/novel_ood_104\novel_074.jpg,Common ragweed in meadow,wild_weed
+novel_075.jpg,scratch/novel_ood_104\novel_075.jpg,Ground ivy patch,wild_weed
+novel_076.jpg,scratch/novel_ood_104\novel_076.jpg,Morning glory bindweed,wild_weed
+novel_077.jpg,scratch/novel_ood_104\novel_077.jpg,Wild chamomile flowers,wild_weed
+novel_079.jpg,scratch/novel_ood_104\novel_079.jpg,Alpine sorrel foliage,wild_weed
+novel_080.jpg,scratch/novel_ood_104\novel_080.jpg,Forest bracken fern,wild_weed
+novel_081.jpg,scratch/novel_ood_104\novel_081.jpg,Common dandelion clock,wild_weed
+novel_082.jpg,scratch/novel_ood_104\novel_082.jpg,Wild field grasses,wild_weed
+novel_083.jpg,scratch/novel_ood_104\novel_083.jpg,Eucalyptus foliage,tree_leaf
+novel_084.jpg,scratch/novel_ood_104\novel_084.jpg,Weeping willow fronds,tree_leaf
+novel_085.jpg,scratch/novel_ood_104\novel_085.jpg,Silver birch leaves,tree_leaf
+novel_086.jpg,scratch/novel_ood_104\novel_086.jpg,Cypress branch,tree_leaf
+novel_087.jpg,scratch/novel_ood_104\novel_087.jpg,Magnolia leaves,tree_leaf
+novel_089.jpg,scratch/novel_ood_104\novel_089.jpg,Elm leaf canopy,tree_leaf
+novel_090.jpg,scratch/novel_ood_104\novel_090.jpg,Poplar tree leaves,tree_leaf
+novel_091.jpg,scratch/novel_ood_104\novel_091.jpg,Beech forest canopy,tree_leaf
+novel_092.jpg,scratch/novel_ood_104\novel_092.jpg,Redwood needle cluster,tree_leaf
+novel_093.jpg,scratch/novel_ood_104\novel_093.jpg,Ceramic coffee mug,object
+novel_094.jpg,scratch/novel_ood_104\novel_094.jpg,Travel backpack,object
+novel_095.jpg,scratch/novel_ood_104\novel_095.jpg,Stainless water bottle,object
+novel_096.jpg,scratch/novel_ood_104\novel_096.jpg,Road bicycle frame,object
+novel_097.jpg,scratch/novel_ood_104\novel_097.jpg,Modern desk lamp,object
+novel_098.jpg,scratch/novel_ood_104\novel_098.jpg,Hardcover book,object
+novel_099.jpg,scratch/novel_ood_104\novel_099.jpg,Stainless scissors,object
+novel_100.jpg,scratch/novel_ood_104\novel_100.jpg,Ceramic dinner plate,object
+novel_102.jpg,scratch/novel_ood_104\novel_102.jpg,Hand screwdriver tool,object
+novel_extra_00.jpg,scratch/novel_ood_104\novel_extra_00.jpg,Succulent rosette,garden_plant
+novel_extra_01.jpg,scratch/novel_ood_104\novel_extra_01.jpg,Coffee beans sack,novel_crop
+novel_extra_02.jpg,scratch/novel_ood_104\novel_extra_02.jpg,Palm leaves texture,garden_plant
+novel_extra_03.jpg,scratch/novel_ood_104\novel_extra_03.jpg,Cosmetics container,object
+novel_extra_04.jpg,scratch/novel_ood_104\novel_extra_04.jpg,Lipstick tube,object
+novel_extra_05.jpg,scratch/novel_ood_104\novel_extra_05.jpg,Makeup brush,object
+novel_extra_06.jpg,scratch/novel_ood_104\novel_extra_06.jpg,Wired headphones,object
+novel_extra_07.jpg,scratch/novel_ood_104\novel_extra_07.jpg,Glass bottle,object
+novel_extra_08.jpg,scratch/novel_ood_104\novel_extra_08.jpg,Leather wallet,object
+novel_extra_09.jpg,scratch/novel_ood_104\novel_extra_09.jpg,Handbag purse,object

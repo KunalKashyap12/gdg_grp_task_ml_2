@@ -1,0 +1,161 @@
+{
+  "model_version": "1.2.0",
+  "temperature": 0.803,
+  "confidence_threshold": 0.7,
+  "lab_test": {
+    "n": 2829,
+    "accuracy": 0.974902792506186,
+    "ci_lower": 0.9684628261568596,
+    "ci_upper": 0.9800547855324223,
+    "macro_f1": 0.9679244770737174,
+    "coverage": 0.9522799575821845,
+    "selective_accuracy": 0.9907201187824796
+  },
+  "field_test": {
+    "n": 323,
+    "accuracy": 0.541795665634675,
+    "ci_lower": 0.4872857516615662,
+    "ci_upper": 0.5953231113256962,
+    "macro_f1": 0.4564733417377607,
+    "coverage": 0.4953560371517028,
+    "selective_accuracy": 0.73125
+  },
+  "false_healthy": {
+    "overall": 0.0009315323707498836,
+    "potato": 0.0,
+    "rice": 0.0125
+  },
+  "novel_ood": {
+    "n": 105,
+    "safely_flagged_count": 99,
+    "safely_flagged_rate": 0.9428571428571428,
+    "status_breakdown": {
+      "not_a_leaf": 52,
+      "low_confidence": 43,
+      "success": 6,
+      "unsupported_crop": 4
+    }
+  },
+  "real_photos": [
+    {
+      "filename": "a-capsicum.png",
+      "status": "low_confidence",
+      "prediction": "Pepper___Bacterial_spot",
+      "confidence": 0.2625
+    },
+    {
+      "filename": "a-capsicum1.png",
+      "status": "low_confidence",
+      "prediction": "Pepper___Bacterial_spot",
+      "confidence": 0.4856
+    },
+    {
+      "filename": "a-cheery-leaf.png",
+      "status": "low_confidence",
+      "prediction": "Peach___Healthy",
+      "confidence": 0.2835
+    },
+    {
+      "filename": "a-grapes-leaf.png",
+      "status": "success",
+      "prediction": "Grape___Healthy",
+      "confidence": 0.8069
+    },
+    {
+      "filename": "a-grapes-leafa.png",
+      "status": "low_confidence",
+      "prediction": "Grape___Healthy",
+      "confidence": 0.3748
+    },
+    {
+      "filename": "a-maize-leaf.png",
+      "status": "success",
+      "prediction": "Maize___Common_rust",
+      "confidence": 0.7571
+    },
+    {
+      "filename": "a-maize-leaf1.png",
+      "status": "success",
+      "prediction": "Maize___Gray_leaf_spot",
+      "confidence": 0.9727
+    },
+    {
+      "filename": "a-maize-leaf2.png",
+      "status": "success",
+      "prediction": "Maize___Common_rust",
+      "confidence": 0.9928
+    },
+    {
+      "filename": "a-peach-leaf.png",
+      "status": "low_confidence",
+      "prediction": "Ambiguous (Septoria leaf spot symptoms on Tomato)",
+      "confidence": 0.2099
+    },
+    {
+      "filename": "a-peach-leaf1.png",
+      "status": "low_confidence",
+      "prediction": "Ambiguous (Cedar apple rust symptoms on Apple)",
+      "confidence": 0.1802
+    },
+    {
+      "filename": "a-potato-leaf.png",
+      "status": "low_confidence",
+      "prediction": "Potato___Late_blight",
+      "confidence": 0.6344
+    },
+    {
+      "filename": "a-potato.png",
+      "status": "low_confidence",
+      "prediction": "Potato___Late_blight",
+      "confidence": 0.5541
+    },
+    {
+      "filename": "a-rice-leaf.png",
+      "status": "success",
+      "prediction": "Rice___Leaf_blast",
+      "confidence": 0.9935
+    },
+    {
+      "filename": "a-rice.png",
+      "status": "low_confidence",
+      "prediction": "Rice___Bacterial_leaf_blight",
+      "confidence": 0.6338
+    },
+    {
+      "filename": "a-strawberry.png",
+      "status": "low_confidence",
+      "prediction": "Tomato___Late_blight",
+      "confidence": 0.5315
+    },
+    {
+      "filename": "a-strawberry1.png",
+      "status": "low_confidence",
+      "prediction": "Strawberry___Leaf_scorch",
+      "confidence": 0.5947
+    },
+    {
+      "filename": "a-tomato-leaf.png",
+      "status": "low_confidence",
+      "prediction": "Tomato___Septoria_leaf_spot",
+      "confidence": 0.509
+    },
+    {
+      "filename": "a-wheat-leaf.png",
+      "status": "success",
+      "prediction": "Maize___Common_rust",
+      "confidence": 0.9779
+    },
+    {
+      "filename": "apple-fungal-leaf.png",
+      "status": "low_confidence",
+      "prediction": "Grape___Healthy",
+      "confidence": 0.2465
+    },
+    {
+      "filename": "apple-leaf.png",
+      "status": "success",
+      "prediction": "Apple___Healthy",
+      "confidence": 0.7224
+    }
+  ]
+}

@@ -74,14 +74,21 @@ ml:
 * **URL**: `POST http://localhost:8080/api/crops/diagnose`
 * **Content-Type**: `multipart/form-data`
 * **Parameters**:
-  * `file`: Leaf image file (`.jpg`, `.jpeg`, `.png`, `.webp`) — *Required*
-  * `crop_hint`: User crop selection, e.g. `"Tomato"`, `"Potato"`, `"Pepper"` — *Optional*
+  * `file`: Leaf image file (`.jpg`, `.jpeg`, `.png`, `.webp`, max 5 MB) — *Required*
+  * `crop_hint`: User crop selection, e.g. `"Tomato"`, `"Potato"`, `"Pepper"`, `"Corn"` / `"Maize"`, `"Paddy"` / `"Rice"` — *Optional (synonyms automatically mapped)*
   * `top_k`: Number of differential diagnoses (default: `3`) — *Optional*
+
+#### Possible Status Values:
+- `success`: Model classified the leaf with confidence above threshold.
+- `low_confidence`: Leaf image identified, but confidence fell below the operational threshold ($\theta = 0.70$) or exhibited high diagnostic ambiguity.
+- `not_a_leaf`: Non-foliar image, wallpaper, or noise detected and filtered by the botanical gatekeeper.
+- `unsupported_crop`: The plant leaf belongs to an out-of-scope species not currently supported by FloraScan.
 
 #### Example cURL Request:
 ```bash
 curl -X POST "http://localhost:8080/api/crops/diagnose" \
      -F "file=@sample_leaf.jpg" \
+     -F "crop_hint=corn" \
      -F "top_k=3"
 ```
 
@@ -91,22 +98,22 @@ curl -X POST "http://localhost:8080/api/crops/diagnose" \
   "status": "success",
   "is_leaf": true,
   "prediction": {
-    "class_id": 13,
-    "crop": "Pepper",
-    "disease": "Bacterial_spot",
-    "label": "Pepper___Bacterial_spot",
-    "confidence": 0.9674
+    "class_id": 16,
+    "crop": "Corn",
+    "disease": "Common rust",
+    "label": "Maize___Common_rust",
+    "confidence": 0.9252
   },
   "top_k": [
-    { "label": "Pepper___Bacterial_spot", "confidence": 0.9674 },
-    { "label": "Pepper___Healthy", "confidence": 0.0215 },
-    { "label": "Tomato___Bacterial_spot", "confidence": 0.0081 }
+    { "label": "Maize___Common_rust", "confidence": 0.9252 },
+    { "label": "Maize___Gray_leaf_spot", "confidence": 0.0418 },
+    { "label": "Maize___Northern_leaf_blight", "confidence": 0.0210 }
   ],
   "low_confidence": false,
-  "threshold": 0.74,
-  "message": "Stage 1: Pepper leaf identified (97.6%). Stage 2: Bacterial spot diagnosed (96.7% confidence).",
-  "model_version": "1.0.0",
-  "inference_time_ms": 72.5,
+  "threshold": 0.70,
+  "message": "Diagnosis complete: Common rust identified with 92.52% confidence.",
+  "model_version": "1.1.0",
+  "inference_time_ms": 32.5,
   "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis."
 }
 ```

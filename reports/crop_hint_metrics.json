@@ -1,0 +1,104 @@
+{
+  "lab": {
+    "unconditioned_th_0.35": {
+      "cov": 0.9971721456344999,
+      "sel_acc": 0.9588798298475718,
+      "wrong_diag": 0.04112017015242822
+    },
+    "unconditioned_th_0.5": {
+      "cov": 0.9777306468716861,
+      "sel_acc": 0.967823571945047,
+      "wrong_diag": 0.032176428054953
+    },
+    "unconditioned_th_0.7": {
+      "cov": 0.9222340049487452,
+      "sel_acc": 0.9846684553468762,
+      "wrong_diag": 0.015331544653123802
+    },
+    "correct_hint_th_0.35": {
+      "cov": 0.999293036408625,
+      "sel_acc": 0.9628581535196321,
+      "wrong_diag": 0.037141846480367884
+    },
+    "correct_hint_th_0.5": {
+      "cov": 0.9897490279250618,
+      "sel_acc": 0.9682142857142857,
+      "wrong_diag": 0.031785714285714285
+    },
+    "correct_hint_th_0.7": {
+      "cov": 0.9416755037115588,
+      "sel_acc": 0.9842342342342343,
+      "wrong_diag": 0.015765765765765764
+    },
+    "wrong_hint_naive_th_0.35": {
+      "cov": 0.9706610109579357,
+      "sel_acc": 0.0,
+      "wrong_diag": 1.0
+    },
+    "wrong_hint_naive_th_0.5": {
+      "cov": 0.8020501944149876,
+      "sel_acc": 0.0,
+      "wrong_diag": 1.0
+    },
+    "wrong_hint_naive_th_0.7": {
+      "cov": 0.4485683987274655,
+      "sel_acc": 0.0,
+      "wrong_diag": 1.0
+    }
+  },
+  "field": {
+    "unconditioned_th_0.35": {
+      "cov": 0.7492260061919505,
+      "sel_acc": 0.5495867768595041,
+      "wrong_diag": 0.45041322314049587
+    },
+    "unconditioned_th_0.5": {
+      "cov": 0.5975232198142415,
+      "sel_acc": 0.6062176165803109,
+      "wrong_diag": 0.39378238341968913
+    },
+    "unconditioned_th_0.7": {
+      "cov": 0.4117647058823529,
+      "sel_acc": 0.6616541353383458,
+      "wrong_diag": 0.3383458646616541
+    },
+    "correct_hint_th_0.35": {
+      "cov": 0.9535603715170279,
+      "sel_acc": 0.6785714285714286,
+      "wrong_diag": 0.32142857142857145
+    },
+    "correct_hint_th_0.5": {
+      "cov": 0.848297213622291,
+      "sel_acc": 0.7299270072992701,
+      "wrong_diag": 0.27007299270072993
+    },
+    "correct_hint_th_0.7": {
+      "cov": 0.6470588235294118,
+      "sel_acc": 0.8038277511961722,
+      "wrong_diag": 0.19617224880382775
+    },
+    "wrong_hint_naive_th_0.35": {
+      "cov": 0.9845201238390093,
+      "sel_acc": 0.0,
+      "wrong_diag": 1.0
+    },
+    "wrong_hint_naive_th_0.5": {
+      "cov": 0.8668730650154799,
+      "sel_acc": 0.0,
+      "wrong_diag": 1.0
+    },
+    "wrong_hint_naive_th_0.7": {
+      "cov": 0.5572755417956656,
+      "sel_acc": 0.0,
+      "wrong_diag": 1.0
+    }
+  },
+  "safe_guard": {
+    "lab_correct_cov": 0.9402615765288088,
+    "lab_correct_sel_acc": 0.9842105263157894,
+    "lab_wrong_leakage": 0.0021208907741251328,
+    "field_correct_cov": 0.5263157894736842,
+    "field_correct_sel_acc": 0.7823529411764706,
+    "field_wrong_leakage": 0.02476780185758514
+  }
+}

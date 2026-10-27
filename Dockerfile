@@ -26,9 +26,7 @@ COPY data/samples/ /app/data/samples/
 COPY src/ /app/src/
 COPY api/ /app/api/
 COPY frontend/ /app/frontend/
-COPY models/crop_disease_model.onnx /app/models/
-COPY models/calibration.json /app/models/
-COPY models/model_config.json /app/models/
+COPY models/ /app/models/
 
 # Expose standard FastAPI port
 EXPOSE 8000

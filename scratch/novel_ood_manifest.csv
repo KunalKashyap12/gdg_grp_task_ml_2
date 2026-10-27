@@ -1,0 +1,45 @@
+filename,filepath,description,category
+novel_000.jpg,scratch/novel_ood_104\novel_000.jpg,Coffee branch and beans,novel_crop
+novel_001.jpg,scratch/novel_ood_104\novel_001.jpg,Cotton boll in field,novel_crop
+novel_002.jpg,scratch/novel_ood_104\novel_002.jpg,Sugarcane stalk and leaves,novel_crop
+novel_003.jpg,scratch/novel_ood_104\novel_003.jpg,Cassava root and foliage,novel_crop
+novel_004.jpg,scratch/novel_ood_104\novel_004.jpg,Papaya tree foliage,novel_crop
+novel_005.jpg,scratch/novel_ood_104\novel_005.jpg,Mango foliage and fruit,novel_crop
+novel_007.jpg,scratch/novel_ood_104\novel_007.jpg,Barley grain ears,novel_crop
+novel_008.jpg,scratch/novel_ood_104\novel_008.jpg,Oat field stalks,novel_crop
+novel_009.jpg,scratch/novel_ood_104\novel_009.jpg,Sorghum heads,novel_crop
+novel_011.jpg,scratch/novel_ood_104\novel_011.jpg,Ginger plant leaves,novel_crop
+novel_013.jpg,scratch/novel_ood_104\novel_013.jpg,Black pepper vines,novel_crop
+novel_014.jpg,scratch/novel_ood_104\novel_014.jpg,Cocoa pod on tree,novel_crop
+novel_015.jpg,scratch/novel_ood_104\novel_015.jpg,Stinging nettle leaves,wild_weed
+novel_016.jpg,scratch/novel_ood_104\novel_016.jpg,Milk thistle blossom,wild_weed
+novel_017.jpg,scratch/novel_ood_104\novel_017.jpg,Burdock plant leaves,wild_weed
+novel_018.jpg,scratch/novel_ood_104\novel_018.jpg,Broadleaf plantain,wild_weed
+novel_019.jpg,scratch/novel_ood_104\novel_019.jpg,Field chickweed,wild_weed
+novel_020.jpg,scratch/novel_ood_104\novel_020.jpg,Horsetail rush,wild_weed
+novel_021.jpg,scratch/novel_ood_104\novel_021.jpg,Common ragweed in meadow,wild_weed
+novel_022.jpg,scratch/novel_ood_104\novel_022.jpg,Ground ivy patch,wild_weed
+novel_023.jpg,scratch/novel_ood_104\novel_023.jpg,Morning glory bindweed,wild_weed
+novel_024.jpg,scratch/novel_ood_104\novel_024.jpg,Wild chamomile flowers,wild_weed
+novel_026.jpg,scratch/novel_ood_104\novel_026.jpg,Alpine sorrel foliage,wild_weed
+novel_027.jpg,scratch/novel_ood_104\novel_027.jpg,Forest bracken fern,wild_weed
+novel_028.jpg,scratch/novel_ood_104\novel_028.jpg,Common dandelion clock,wild_weed
+novel_029.jpg,scratch/novel_ood_104\novel_029.jpg,Wild field grasses,wild_weed
+novel_030.jpg,scratch/novel_ood_104\novel_030.jpg,Eucalyptus foliage,tree_leaf
+novel_031.jpg,scratch/novel_ood_104\novel_031.jpg,Weeping willow fronds,tree_leaf
+novel_032.jpg,scratch/novel_ood_104\novel_032.jpg,Silver birch leaves,tree_leaf
+novel_033.jpg,scratch/novel_ood_104\novel_033.jpg,Cypress branch,tree_leaf
+novel_034.jpg,scratch/novel_ood_104\novel_034.jpg,Magnolia leaves,tree_leaf
+novel_036.jpg,scratch/novel_ood_104\novel_036.jpg,Elm leaf canopy,tree_leaf
+novel_037.jpg,scratch/novel_ood_104\novel_037.jpg,Poplar tree leaves,tree_leaf
+novel_038.jpg,scratch/novel_ood_104\novel_038.jpg,Beech forest canopy,tree_leaf
+novel_039.jpg,scratch/novel_ood_104\novel_039.jpg,Redwood needle cluster,tree_leaf
+novel_040.jpg,scratch/novel_ood_104\novel_040.jpg,Ceramic coffee mug,object
+novel_041.jpg,scratch/novel_ood_104\novel_041.jpg,Travel backpack,object
+novel_042.jpg,scratch/novel_ood_104\novel_042.jpg,Stainless water bottle,object
+novel_043.jpg,scratch/novel_ood_104\novel_043.jpg,Road bicycle frame,object
+novel_044.jpg,scratch/novel_ood_104\novel_044.jpg,Modern desk lamp,object
+novel_045.jpg,scratch/novel_ood_104\novel_045.jpg,Hardcover book,object
+novel_046.jpg,scratch/novel_ood_104\novel_046.jpg,Stainless scissors,object
+novel_047.jpg,scratch/novel_ood_104\novel_047.jpg,Ceramic dinner plate,object
+novel_049.jpg,scratch/novel_ood_104\novel_049.jpg,Hand screwdriver tool,object

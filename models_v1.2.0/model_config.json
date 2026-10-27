@@ -1,0 +1,57 @@
+{
+  "model_name": "mobilenet_v3_large",
+  "model_version": "1.2.0",
+  "input_size": [
+    3,
+    224,
+    224
+  ],
+  "num_classes": 38,
+  "supported_classes": 37,
+  "internal_reject_classes": 1,
+  "temperature": 0.803,
+  "confidence_threshold": 0.7,
+  "margin_threshold": 0.15,
+  "entropy_threshold": 1.5,
+  "threshold_sweep": [
+    {
+      "threshold": 0.5,
+      "coverage": 0.9359410430839002,
+      "selective_accuracy": 0.9376135675348274
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.9061791383219955,
+      "selective_accuracy": 0.9540193931811073
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.8925736961451247,
+      "selective_accuracy": 0.9590346141632264
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.8761337868480725,
+      "selective_accuracy": 0.9650598511808476
+    },
+    {
+      "threshold": 0.74,
+      "coverage": 0.8642290249433107,
+      "selective_accuracy": 0.9694981961298786
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.838718820861678,
+      "selective_accuracy": 0.9783710713078743
+    }
+  ],
+  "optuna_best_params": {
+    "lr_head": 0.0004345454109729479,
+    "lr_backbone": 3.823475224675187e-06,
+    "weight_decay": 0.000684792009557478,
+    "label_smoothing": 0.03394938606520418,
+    "unfreeze_blocks": 3,
+    "batch_size": 64
+  },
+  "disclaimer": "AI-assisted indication only, not a guaranteed agricultural diagnosis."
+}

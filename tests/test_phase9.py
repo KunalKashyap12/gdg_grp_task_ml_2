@@ -28,7 +28,8 @@ def test_onnx_model_file_and_validity():
 def test_numerical_parity_pytorch_vs_onnx():
     # Load PyTorch model
     ckpt = torch.load("models/best_model.pt", map_location="cpu")
-    pt_model = build_model("mobilenet_v3_large", num_classes=37, pretrained=False)
+    num_classes = ckpt["state_dict"]["classifier.3.bias"].shape[0]
+    pt_model = build_model("mobilenet_v3_large", num_classes=num_classes, pretrained=False)
     pt_model.load_state_dict(ckpt["state_dict"])
     pt_model.eval()
 
@@ -47,6 +48,8 @@ def test_numerical_parity_pytorch_vs_onnx():
 def test_inference_engine_prediction_schema():
     engine = get_inference_engine()
     test_img = Image.new("RGB", (250, 250), color=(100, 180, 50))
+    # Warmup to account for initial ONNX session buffer allocation
+    _ = engine.predict(test_img, top_k=3)
     res = engine.predict(test_img, top_k=3)
 
     assert "prediction" in res

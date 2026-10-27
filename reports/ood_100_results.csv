@@ -1,0 +1,104 @@
+path,description,category,status,confidence,predicted_label,is_safely_flagged
+scratch/ood_100_images\orange_000.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.2393,Peach___Healthy,True
+scratch/ood_100_images\orange_001.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3103,Peach___Bacterial_spot,True
+scratch/ood_100_images\orange_002.jpg,Orange (Citrus Greening),other_crop,success,0.9214,Pepper___Healthy,False
+scratch/ood_100_images\orange_003.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5358,Potato___Healthy,True
+scratch/ood_100_images\orange_004.jpg,Orange (Citrus Greening),other_crop,success,0.8739,Tomato___Yellow_leaf_curl_virus,False
+scratch/ood_100_images\orange_005.jpg,Orange (Citrus Greening),other_crop,success,0.7769,Pepper___Healthy,False
+scratch/ood_100_images\orange_006.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3829,Pepper___Healthy,True
+scratch/ood_100_images\orange_007.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3079,Pepper___Healthy,True
+scratch/ood_100_images\orange_008.jpg,Orange (Citrus Greening),other_crop,success,0.7522,Pepper___Healthy,False
+scratch/ood_100_images\orange_009.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5364,Peach___Healthy,True
+scratch/ood_100_images\orange_010.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.4022,Pepper___Healthy,True
+scratch/ood_100_images\orange_011.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.6056,Pepper___Bacterial_spot,True
+scratch/ood_100_images\orange_012.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3949,Pepper___Healthy,True
+scratch/ood_100_images\orange_013.jpg,Orange (Citrus Greening),other_crop,success,0.8127,Pepper___Healthy,False
+scratch/ood_100_images\orange_014.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.6284,Pepper___Healthy,True
+scratch/ood_100_images\orange_015.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3087,Cherry___Powdery_mildew,True
+scratch/ood_100_images\orange_016.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.6154,Pepper___Healthy,True
+scratch/ood_100_images\orange_017.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.4008,Potato___Healthy,True
+scratch/ood_100_images\orange_018.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3305,Pepper___Healthy,True
+scratch/ood_100_images\orange_019.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.382,Pepper___Bacterial_spot,True
+scratch/ood_100_images\orange_020.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.527,Pepper___Healthy,True
+scratch/ood_100_images\orange_021.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.4878,Pepper___Healthy,True
+scratch/ood_100_images\orange_022.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.4492,Pepper___Healthy,True
+scratch/ood_100_images\orange_023.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5587,Pepper___Healthy,True
+scratch/ood_100_images\orange_024.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5509,Pepper___Healthy,True
+scratch/ood_100_images\orange_025.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.2302,Pepper___Healthy,True
+scratch/ood_100_images\orange_026.jpg,Orange (Citrus Greening),other_crop,success,0.8909,Pepper___Healthy,False
+scratch/ood_100_images\orange_027.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.1913,Tomato___Spider_mites,True
+scratch/ood_100_images\orange_028.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5961,Pepper___Healthy,True
+scratch/ood_100_images\orange_029.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5285,Pepper___Healthy,True
+scratch/ood_100_images\orange_030.jpg,Orange (Citrus Greening),other_crop,success,0.8246,Tomato___Yellow_leaf_curl_virus,False
+scratch/ood_100_images\orange_031.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.4375,Pepper___Healthy,True
+scratch/ood_100_images\orange_032.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5355,Pepper___Bacterial_spot,True
+scratch/ood_100_images\orange_033.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.2958,Pepper___Bacterial_spot,True
+scratch/ood_100_images\orange_034.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.2751,Pepper___Healthy,True
+scratch/ood_100_images\orange_035.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3614,Cherry___Healthy,True
+scratch/ood_100_images\orange_036.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.6581,Pepper___Healthy,True
+scratch/ood_100_images\orange_037.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.1693,Pepper___Healthy,True
+scratch/ood_100_images\orange_038.jpg,Orange (Citrus Greening),other_crop,success,0.7728,Pepper___Healthy,False
+scratch/ood_100_images\orange_039.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3123,Cherry___Powdery_mildew,True
+scratch/ood_100_images\orange_040.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5953,Pepper___Healthy,True
+scratch/ood_100_images\orange_041.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3889,Pepper___Healthy,True
+scratch/ood_100_images\orange_042.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.6911,Pepper___Healthy,True
+scratch/ood_100_images\orange_043.jpg,Orange (Citrus Greening),other_crop,success,0.7222,Pepper___Healthy,False
+scratch/ood_100_images\orange_044.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.2634,Pepper___Healthy,True
+scratch/ood_100_images\orange_045.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.3778,Pepper___Healthy,True
+scratch/ood_100_images\orange_046.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5093,Pepper___Healthy,True
+scratch/ood_100_images\orange_047.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.6977,Pepper___Healthy,True
+scratch/ood_100_images\orange_048.jpg,Orange (Citrus Greening),other_crop,success,0.74,Pepper___Healthy,False
+scratch/ood_100_images\orange_049.jpg,Orange (Citrus Greening),other_crop,low_confidence,0.5392,Pepper___Healthy,True
+scratch/ood_100_images\plant_000.jpg,Pine needles,garden_plant,low_confidence,0.3299,Maize___Healthy,True
+scratch/ood_100_images\plant_001.jpg,Fern leaves,garden_plant,low_confidence,0.3782,Tomato___Healthy,True
+scratch/ood_100_images\plant_002.jpg,Cactus,garden_plant,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_003.jpg,Dandelion weed,weed,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_004.jpg,Wild grass,weed,low_confidence,0.1994,Rice___Bacterial_leaf_blight,True
+scratch/ood_100_images\plant_005.jpg,Sunflower petal/leaf,garden_plant,low_confidence,0.241,Grape___Healthy,True
+scratch/ood_100_images\plant_006.jpg,Wildflower blossom,garden_plant,low_confidence,0.2951,Apple___Cedar_apple_rust,True
+scratch/ood_100_images\plant_007.jpg,Monstera houseplant,houseplant,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_008.jpg,Green foliage garden,garden_plant,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_009.jpg,Lush jungle leaves,garden_plant,low_confidence,0.2426,Rice___Brown_spot,True
+scratch/ood_100_images\plant_010.jpg,Autumn maple leaf,tree_leaf,low_confidence,0.2944,Maize___Northern_leaf_blight,True
+scratch/ood_100_images\plant_011.jpg,Forest moss and fern,weed,low_confidence,0.3296,Maize___Gray_leaf_spot,True
+scratch/ood_100_images\plant_012.jpg,Succulent plant,houseplant,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_013.jpg,Potted aloe plant,houseplant,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_014.jpg,Palm frond,garden_plant,low_confidence,0.622,Rice___Healthy,True
+scratch/ood_100_images\plant_015.jpg,Tree bark and ivy,weed,low_confidence,0.5869,Rice___Healthy,True
+scratch/ood_100_images\plant_016.jpg,Lawn clover patch,weed,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_017.jpg,Sunlit forest foliage,garden_plant,unsupported_crop,0.1148,Maize___Common_rust,True
+scratch/ood_100_images\plant_018.jpg,Bamboo leaves,garden_plant,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_019.jpg,Banana leaf,other_crop,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_020.jpg,Orchid flower and leaf,houseplant,low_confidence,0.1492,Rice___Leaf_blast,True
+scratch/ood_100_images\plant_022.jpg,Rose shrub with leaves,garden_plant,low_confidence,0.1918,Tomato___Late_blight,True
+scratch/ood_100_images\plant_023.jpg,Alpine moss,weed,low_confidence,0.3509,Maize___Common_rust,True
+scratch/ood_100_images\plant_024.jpg,Oak tree leaf canopy,tree_leaf,unsupported_crop,0.2767,Unsupported___Unsupported_crop,True
+scratch/ood_100_images\plant_025.jpg,Tulip garden leaves,garden_plant,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_026.jpg,Lotus pad in water,garden_plant,not_a_leaf,0.0,None,True
+scratch/ood_100_images\plant_027.jpg,Wheat field blades,other_crop,success,0.7851,Grape___Esca_black_measles,False
+scratch/ood_100_images\plant_028.jpg,Fiddle leaf fig,houseplant,success,0.8687,Tomato___Early_blight,False
+scratch/ood_100_images\plant_029.jpg,Mint / herb leaves,garden_plant,low_confidence,0.3018,Potato___Healthy,True
+scratch/ood_100_images\object_000.jpg,Smartphone,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_001.jpg,Wristwatch,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_002.jpg,Headphones,object,success,0.9473,Peach___Healthy,False
+scratch/ood_100_images\object_003.jpg,Red sneaker shoe,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_004.jpg,Camera lens,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_005.jpg,Sunglasses,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_006.jpg,Leather shoes,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_007.jpg,Earphones,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_008.jpg,Smart watch,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_009.jpg,Perfume bottle,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_010.jpg,Classic watch,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_011.jpg,Wooden chair,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_012.jpg,Apple MacBook laptop,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_013.jpg,Computer mouse,object,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_014.jpg,Mechanical keyboard,object,low_confidence,0.517,Rice___Brown_spot,True
+scratch/ood_100_images\object_015.jpg,Golden retriever dog,animal,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_016.jpg,Tabby cat,animal,low_confidence,0.1593,Tomato___Mosaic_virus,True
+scratch/ood_100_images\object_017.jpg,Dog portrait,animal,low_confidence,0.1925,Tomato___Late_blight,True
+scratch/ood_100_images\object_018.jpg,Beagle dog face,animal,low_confidence,0.3737,Potato___Healthy,True
+scratch/ood_100_images\object_019.jpg,Cat with glasses,animal,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_021.jpg,Wooden table texture,texture,not_a_leaf,0.0,None,True
+scratch/ood_100_images\object_022.jpg,Geometric wallpaper,texture,low_confidence,0.4071,Rice___Bacterial_leaf_blight,True
+scratch/ood_100_images\object_023.jpg,Blue abstract wallpaper,texture,unsupported_crop,0.4996,Unsupported___Unsupported_crop,True
+scratch/ood_100_images\object_024.jpg,Gradient color wallpaper,texture,not_a_leaf,0.0,None,True

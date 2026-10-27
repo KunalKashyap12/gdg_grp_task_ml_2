@@ -1,21 +1,24 @@
 {
-  "temperature": 0.4792,
+  "model_version": "1.1.1",
+  "temperature": 0.7205,
+  "calibrated_classes": 38,
+  "fitted_split": "val_v1.1.1 (lab + field + orange mixed)",
   "method": "temperature_scaling",
   "validation": {
-    "samples": 2813,
-    "uncalibrated_ece": 0.2154,
-    "calibrated_ece": 0.018,
-    "uncalibrated_mce": 0.3792,
-    "calibrated_mce": 0.1338,
-    "relative_reduction_pct": 91.65
+    "samples": 3528,
+    "uncalibrated_ece": 0.1874,
+    "calibrated_ece": 0.0212,
+    "uncalibrated_mce": 0.3541,
+    "calibrated_mce": 0.1287,
+    "relative_reduction_pct": 88.69
   },
   "test": {
-    "samples": 2829,
-    "uncalibrated_ece": 0.2081,
-    "calibrated_ece": 0.0195,
-    "uncalibrated_mce": 0.3958,
-    "calibrated_mce": 0.246,
-    "relative_reduction_pct": 90.62
+    "samples": 3528,
+    "uncalibrated_ece": 0.1912,
+    "calibrated_ece": 0.0225,
+    "uncalibrated_mce": 0.3621,
+    "calibrated_mce": 0.1342,
+    "relative_reduction_pct": 88.23
   },
   "disclaimer": "The output is an AI-assisted indication, NOT a guaranteed agricultural diagnosis."
 }

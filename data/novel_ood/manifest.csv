@@ -1,0 +1,106 @@
+filename,filepath,description,category
+ood_000.jpg,data/novel_ood\ood_000.jpg,Pine needles,garden_plant
+ood_001.jpg,data/novel_ood\ood_001.jpg,Fern leaves,garden_plant
+ood_002.jpg,data/novel_ood\ood_002.jpg,Cactus,garden_plant
+ood_003.jpg,data/novel_ood\ood_003.jpg,Dandelion weed,weed
+ood_004.jpg,data/novel_ood\ood_004.jpg,Wild grass,weed
+ood_005.jpg,data/novel_ood\ood_005.jpg,Sunflower petal/leaf,garden_plant
+ood_006.jpg,data/novel_ood\ood_006.jpg,Wildflower blossom,garden_plant
+ood_007.jpg,data/novel_ood\ood_007.jpg,Monstera houseplant,houseplant
+ood_008.jpg,data/novel_ood\ood_008.jpg,Green foliage garden,garden_plant
+ood_009.jpg,data/novel_ood\ood_009.jpg,Lush jungle leaves,garden_plant
+ood_010.jpg,data/novel_ood\ood_010.jpg,Autumn maple leaf,tree_leaf
+ood_011.jpg,data/novel_ood\ood_011.jpg,Forest moss and fern,weed
+ood_012.jpg,data/novel_ood\ood_012.jpg,Succulent plant,houseplant
+ood_013.jpg,data/novel_ood\ood_013.jpg,Potted aloe plant,houseplant
+ood_014.jpg,data/novel_ood\ood_014.jpg,Palm frond,garden_plant
+ood_015.jpg,data/novel_ood\ood_015.jpg,Tree bark and ivy,weed
+ood_016.jpg,data/novel_ood\ood_016.jpg,Lawn clover patch,weed
+ood_017.jpg,data/novel_ood\ood_017.jpg,Sunlit forest foliage,garden_plant
+ood_018.jpg,data/novel_ood\ood_018.jpg,Bamboo leaves,garden_plant
+ood_019.jpg,data/novel_ood\ood_019.jpg,Banana leaf,novel_crop
+ood_020.jpg,data/novel_ood\ood_020.jpg,Orchid flower and leaf,houseplant
+ood_022.jpg,data/novel_ood\ood_022.jpg,Rose shrub with leaves,garden_plant
+ood_023.jpg,data/novel_ood\ood_023.jpg,Alpine moss,weed
+ood_024.jpg,data/novel_ood\ood_024.jpg,Oak tree leaf canopy,tree_leaf
+ood_025.jpg,data/novel_ood\ood_025.jpg,Tulip garden leaves,garden_plant
+ood_026.jpg,data/novel_ood\ood_026.jpg,Lotus pad in water,garden_plant
+ood_027.jpg,data/novel_ood\ood_027.jpg,Wheat field blades,novel_crop
+ood_028.jpg,data/novel_ood\ood_028.jpg,Fiddle leaf fig,houseplant
+ood_029.jpg,data/novel_ood\ood_029.jpg,Mint herb leaves,garden_plant
+ood_030.jpg,data/novel_ood\ood_030.jpg,Coffee branch and beans,novel_crop
+ood_031.jpg,data/novel_ood\ood_031.jpg,Cotton boll in field,novel_crop
+ood_032.jpg,data/novel_ood\ood_032.jpg,Sugarcane stalk and leaves,novel_crop
+ood_033.jpg,data/novel_ood\ood_033.jpg,Cassava root and foliage,novel_crop
+ood_034.jpg,data/novel_ood\ood_034.jpg,Papaya tree foliage,novel_crop
+ood_035.jpg,data/novel_ood\ood_035.jpg,Mango foliage and fruit,novel_crop
+ood_036.jpg,data/novel_ood\ood_036.jpg,Barley grain ears,novel_crop
+ood_037.jpg,data/novel_ood\ood_037.jpg,Oat field stalks,novel_crop
+ood_038.jpg,data/novel_ood\ood_038.jpg,Sorghum heads,novel_crop
+ood_039.jpg,data/novel_ood\ood_039.jpg,Ginger plant leaves,novel_crop
+ood_040.jpg,data/novel_ood\ood_040.jpg,Black pepper vines,novel_crop
+ood_041.jpg,data/novel_ood\ood_041.jpg,Cocoa pod on tree,novel_crop
+ood_042.jpg,data/novel_ood\ood_042.jpg,Stinging nettle leaves,wild_weed
+ood_043.jpg,data/novel_ood\ood_043.jpg,Milk thistle blossom,wild_weed
+ood_044.jpg,data/novel_ood\ood_044.jpg,Burdock plant leaves,wild_weed
+ood_045.jpg,data/novel_ood\ood_045.jpg,Broadleaf plantain,wild_weed
+ood_046.jpg,data/novel_ood\ood_046.jpg,Field chickweed,wild_weed
+ood_047.jpg,data/novel_ood\ood_047.jpg,Horsetail rush,wild_weed
+ood_048.jpg,data/novel_ood\ood_048.jpg,Common ragweed in meadow,wild_weed
+ood_049.jpg,data/novel_ood\ood_049.jpg,Ground ivy patch,wild_weed
+ood_050.jpg,data/novel_ood\ood_050.jpg,Morning glory bindweed,wild_weed
+ood_051.jpg,data/novel_ood\ood_051.jpg,Wild chamomile flowers,wild_weed
+ood_052.jpg,data/novel_ood\ood_052.jpg,Alpine sorrel foliage,wild_weed
+ood_053.jpg,data/novel_ood\ood_053.jpg,Common dandelion clock,wild_weed
+ood_054.jpg,data/novel_ood\ood_054.jpg,Wild field grasses,wild_weed
+ood_055.jpg,data/novel_ood\ood_055.jpg,Weeping willow fronds,tree_leaf
+ood_056.jpg,data/novel_ood\ood_056.jpg,Cherry blossom tree,tree_leaf
+ood_057.jpg,data/novel_ood\ood_057.jpg,Autumn forest birch,tree_leaf
+ood_058.jpg,data/novel_ood\ood_058.jpg,Fir tree needles,tree_leaf
+ood_059.jpg,data/novel_ood\ood_059.jpg,Silver birch leaves,tree_leaf
+ood_060.jpg,data/novel_ood\ood_060.jpg,Smartphone,object
+ood_061.jpg,data/novel_ood\ood_061.jpg,Wristwatch,object
+ood_062.jpg,data/novel_ood\ood_062.jpg,Headphones,object
+ood_063.jpg,data/novel_ood\ood_063.jpg,Red sneaker shoe,object
+ood_064.jpg,data/novel_ood\ood_064.jpg,Camera lens,object
+ood_065.jpg,data/novel_ood\ood_065.jpg,Sunglasses,object
+ood_066.jpg,data/novel_ood\ood_066.jpg,Leather shoes,object
+ood_067.jpg,data/novel_ood\ood_067.jpg,Earphones,object
+ood_068.jpg,data/novel_ood\ood_068.jpg,Smart watch,object
+ood_069.jpg,data/novel_ood\ood_069.jpg,Perfume bottle,object
+ood_070.jpg,data/novel_ood\ood_070.jpg,Classic watch,object
+ood_071.jpg,data/novel_ood\ood_071.jpg,Travel backpack,object
+ood_072.jpg,data/novel_ood\ood_072.jpg,Stainless water bottle,object
+ood_073.jpg,data/novel_ood\ood_073.jpg,Road bicycle frame,object
+ood_074.jpg,data/novel_ood\ood_074.jpg,Modern desk lamp,object
+ood_075.jpg,data/novel_ood\ood_075.jpg,Hardcover book,object
+ood_076.jpg,data/novel_ood\ood_076.jpg,Stainless scissors,object
+ood_077.jpg,data/novel_ood\ood_077.jpg,Ceramic dinner plate,object
+ood_078.jpg,data/novel_ood\ood_078.jpg,Hand screwdriver tool,object
+ood_080.jpg,data/novel_ood\ood_080.jpg,Computer mouse,object
+ood_081.jpg,data/novel_ood\ood_081.jpg,Mechanical keyboard,object
+ood_082.jpg,data/novel_ood\ood_082.jpg,Glass perfume vial,object
+ood_083.jpg,data/novel_ood\ood_083.jpg,Ceramic coffee mug,object
+ood_084.jpg,data/novel_ood\ood_084.jpg,Cosmetic brush set,object
+ood_085.jpg,data/novel_ood\ood_085.jpg,Wall clock dial,object
+ood_086.jpg,data/novel_ood\ood_086.jpg,Laptop notebook,object
+ood_087.jpg,data/novel_ood\ood_087.jpg,Audio headset,object
+ood_088.jpg,data/novel_ood\ood_088.jpg,Fitness tracker band,object
+ood_089.jpg,data/novel_ood\ood_089.jpg,In-ear headphones,object
+ood_090.jpg,data/novel_ood\ood_090.jpg,Rainforest moss,garden_plant
+ood_091.jpg,data/novel_ood\ood_091.jpg,Autumn leaf canopy,tree_leaf
+ood_092.jpg,data/novel_ood\ood_092.jpg,Meadow field blossom,wild_weed
+ood_093.jpg,data/novel_ood\ood_093.jpg,Deciduous branch,tree_leaf
+ood_094.jpg,data/novel_ood\ood_094.jpg,Spruce branch,tree_leaf
+ood_096.jpg,data/novel_ood\ood_096.jpg,Forest oak leaf,tree_leaf
+ood_097.jpg,data/novel_ood\ood_097.jpg,Ivy creeper leaves,weed
+ood_098.jpg,data/novel_ood\ood_098.jpg,Wild grasses blade,weed
+ood_099.jpg,data/novel_ood\ood_099.jpg,Sunlit foliage leaf,garden_plant
+ood_100.jpg,data/novel_ood\ood_100.jpg,Bamboo frond leaf,garden_plant
+ood_101.jpg,data/novel_ood\ood_101.jpg,Houseplant orchid,houseplant
+ood_102.jpg,data/novel_ood\ood_102.jpg,Rose shrub leaf,garden_plant
+ood_103.jpg,data/novel_ood\ood_103.jpg,Rock moss foliage,weed
+ood_104.jpg,data/novel_ood\ood_104.jpg,Spring garden plant,garden_plant
+ood_105.jpg,data/novel_ood\ood_105.jpg,Lily leaf on pond,garden_plant
+ood_106.jpg,data/novel_ood\ood_106.jpg,Fig houseplant leaf,houseplant
+ood_107.jpg,data/novel_ood\ood_107.jpg,Herb bush leaves,garden_plant

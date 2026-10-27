@@ -1,0 +1,6 @@
+{
+  "model_version": "1.2.0",
+  "temperature": 0.803,
+  "calibrated_classes": 38,
+  "fitted_split": "val_v1.1.1 (lab + field + orange mixed)"
+}

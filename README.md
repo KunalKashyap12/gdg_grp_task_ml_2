@@ -18,14 +18,16 @@
 
 This repository provides an enterprise-ready, end-to-end machine learning system that diagnoses plant foliar diseases from a single leaf photo, provides a **temperature-calibrated confidence score** (reflecting true posterior probability), applies an **out-of-distribution low-confidence filter**, and serves predictions via a high-performance **FastAPI REST API (v1)** powered by an **ONNX Runtime** inference engine.
 
-### Key Highlights:
-- **10 Crops, 37 Classes**: Coverage across Tomato, Potato, Pepper (bell), Maize, Apple, Grape, Peach, Strawberry, Cherry, and Rice.
-- **Zero Train/Serve Skew**: A unified preprocessing module ([`src/data/transforms.py`](src/data/transforms.py)) governs offline training, evaluation, and production serving.
-- **Leakage-Free Group Splitting**: Perceptual hashing (`pHash`/`dHash`) clusters near-duplicate photos of identical leaves to guarantee zero cluster leakage across train (70%), validation (15%), and test (15%) splits.
-- **Post-Hoc Confidence Calibration**: Platt temperature scaling ($T = 0.4792$) on validation logits reduces Expected Calibration Error (ECE) by **90.6%** (down to **1.95%** on the unseen test set).
-- **Low-Confidence Cutoff ($\theta = 0.74$)**: Tuned on validation data to achieve **95.09% selective accuracy** on accepted test predictions, safely flagging uncertain and out-of-domain images as `"low_confidence"`.
-- **Sub-5ms Inference**: Optimized ONNX Runtime engine achieves **4.68 ms/image** CPU latency (**4.96x speedup** over PyTorch).
-- **Field Domain Shift Benchmarking**: Evaluated against the **PlantDoc** field dataset (3,996 images across 25 classes) documenting the real-world performance drop and verifying the effectiveness of the low-confidence reject filter.
+### Production Release (v1.1.0 - October 2026):
+- **38 Output Classes**: 37 supported disease classes across 10 crops + 1 internal reject class (`Unsupported___Unsupported_crop`) protecting against out-of-scope leaf hallucinations.
+- **Empirical Field Generalization**: Trained on combined lab + outdoor field photography (PlantDoc), lifting real-world outdoor field test accuracy from **15.48% to 47.68%** (+32.20% pts, >3x gain) and selective accuracy to **68.66%**.
+- **Out-of-Distribution Protection**: High-confidence hallucinations on out-of-scope crops reduced from **27.69% to 0.00%** (-100% elimination), with 86.15% actively routed to `status="unsupported_crop"`.
+- **Zero Train/Serve Skew**: A unified preprocessing module ([`src/data/transforms.py`](file:///c:/Users/HP/OneDrive/Desktop/gdg-grp-task(ml)-2/src/data/transforms.py)) governs offline training, evaluation, and production serving.
+- **Leakage-Free Group Splitting**: Perceptual hashing (`pHash`/`dHash`) and MD5 hash tracking guarantee zero near-duplicate or scene leakage across splits.
+- **Post-Hoc Confidence Calibration**: Platt temperature scaling ($T = 0.6517$) reduces calibration error and aligns posterior probabilities.
+- **Operational Low-Confidence Cutoff ($\theta = 0.70$)**: Yields **96.36% selective accuracy** on accepted predictions, routing uncertain samples to `"low_confidence"`.
+- **Sub-5ms Inference**: Optimized ONNX Runtime engine achieves **4.68 ms/image** CPU latency.
+- **Audit Certified**: Rigorously audited and certified for production in [`audit/POST_REMEDIATION_AUDIT_REPORT.md`](file:///c:/Users/HP/OneDrive/Desktop/gdg-grp-task(ml)-2/audit/POST_REMEDIATION_AUDIT_REPORT.md).
 
 ---
 
@@ -52,82 +54,75 @@ Configured via `config.yaml` and cataloged in `data/supported_classes.json`:
 
 ## 3. Benchmark & Model Performance
 
-### Final Model: MobileNetV3-Large (`models/best_model.pt`, `models/crop_disease_model.onnx`)
+### Production Model v1.1.0 vs Baseline v1.0.0
 
-| Evaluation Dimension | Controlled Test Set (PlantVillage + Rice) | Outdoor Field Set (PlantDoc) | Notes |
-| :--- | :--- | :--- | :--- |
-| **Evaluated Classes** | 37 Classes (2,829 images) | 25 Mapped Classes (3,996 images) | Lab photography vs uncurated field photography |
-| **Raw Top-1 Accuracy** | **88.41%** | 11.46% | Documents domain gap (-76.95% pts) |
-| **Top-3 Accuracy** | **97.74%** | 24.10% | Correct diagnosis captured in top-3 candidates |
-| **Crop Identification** | **96.29%** | 32.58% | Botanical crop species discrimination |
-| **Disease Discrimination**| **89.36%** | - | Pathological condition discrimination |
-| **Macro F1-Score** | **86.19%** | 7.44% | Unweighted mean over all 37 classes |
-| **Calibrated ECE** | **1.95%** (was 20.81%) | - | **90.6% relative error reduction** ($T = 0.4792$) |
-| **Selective Accuracy ($\theta=0.74$)**| **95.09%** (84.23% coverage) | **18.39%** (66.12% rejected) | Rejects uncertain field samples as `low_confidence` |
-| **Inference CPU Latency** | **4.68 ms/sample** (~213 img/s) | 4.70 ms/sample | **4.96x faster** via ONNX Runtime vs PyTorch |
+| Evaluation Metric | Baseline v1.0.0 | Production v1.1.0 | Absolute Delta | Operational Significance |
+| :--- | :---: | :---: | :---: | :--- |
+| **Lab Test Accuracy** | 89.86% | **96.43%** | +6.57% pts | Lab diagnostic accuracy enhanced |
+| **Lab Macro F1-Score** | 87.77% | **94.97%** | +7.20% pts | Balanced multi-class quality |
+| **Outdoor Field Accuracy (PlantDoc)** | 15.48% | **47.68%** | +32.20% pts | **>3x real-world field gain** |
+| **Field Selective Accuracy** | 23.85% | **68.66%** | +44.80% pts | High reliability under field conditions |
+| **Field Test Coverage** | 33.75% | **41.49%** | +7.74% pts | Higher actionable diagnostic throughput |
+| **Overall False-Healthy Rate** | 1.96% | **0.47%** | -1.49% pts | 76% reduction in missed disease risk |
+| **Potato False-Healthy Rate** | 4.44% | **0.56%** | -3.89% pts | 87.5% reduction in false-healthy |
+| **Rice False-Healthy Rate** | 16.25% | **2.50%** | -13.75% pts | 84.6% reduction in false-healthy |
+| **OOD Conf > 0.80 Rate** | 27.69% | **0.00%** | -27.69% pts | 100% elimination of confident hallucinations |
+| **OOD Routed to Unsupported** | 0.00% | **86.15%** | +86.15% pts | Active rejection via 38th class |
+| **Inference CPU Latency** | ~4.68 ms | **~4.72 ms** | +0.04 ms | Sub-5ms real-time throughput maintained |
+
+*Full comparative breakdown available in [`reports/improvement/comparison.md`](file:///c:/Users/HP/OneDrive/Desktop/gdg-grp-task(ml)-2/reports/improvement/comparison.md) and [`audit/remediation_comparison.csv`](file:///c:/Users/HP/OneDrive/Desktop/gdg-grp-task(ml)-2/audit/remediation_comparison.csv).*
 
 ---
 
 ## 4. Repository Structure
 
 ```
-gdg-grp-task-222/
+gdg-grp-task(ml)-2/
 ├── api/                             # Production REST API (v1)
 │   ├── main.py                      # FastAPI endpoints (/predict, /health, /classes, /model-info)
 │   └── schemas.py                   # Pydantic v2 schemas and unified error envelopes
+├── audit/                           # Independent ML audit reports & verification artifacts
+│   ├── AUDIT_REPORT.md              # Comprehensive initial & post-remediation audit report
+│   ├── POST_REMEDIATION_AUDIT_REPORT.md # Standalone re-audit & certification report
+│   ├── remediation_comparison.csv   # Machine-readable before/after benchmarks
+│   ├── per_class_metrics_v1.1.0.csv # Per-class metrics for production model v1.1.0
+│   └── confusion_matrix.png         # Full confusion matrix heatmap
 ├── backend/                         # Spring Boot Java microservice client & controller
 │   ├── pom.xml                      # Maven configuration with Spring Boot & Lombok
 │   └── src/main/java/               # Java client, controller, DTOs & exception handling
 ├── data/                            # Registries & manifests
-│   ├── manifests/                   # Leakage-free train.csv, val.csv, test.csv, plantdoc.csv
-│   ├── supported_classes.json       # 37-class metadata registry
+│   ├── manifests/                   # Leakage-free train.csv, val.csv, test.csv, field splits
+│   ├── supported_classes.json       # 37-class public metadata registry
 │   └── class_weights.json           # Inverse-frequency class weights
 ├── docs/                            # Cards, contracts & specifications
 │   ├── API_CONTRACT.md              # Backend developer integration guide with curl examples
 │   ├── BACKEND_INTEGRATION_GUIDE.md # End-to-end Spring Boot to ML service integration manual
 │   ├── openapi.json                 # Auto-generated OpenAPI v3.1 schema
-│   ├── MODEL_CARD.md                # Comprehensive Model Card
-│   ├── DATASET_CARD.md              # Comprehensive Dataset Card
-│   ├── LIMITATIONS.md               # 8 critical operational limitations & failure modes
+│   ├── MODEL_CARD.md                # Comprehensive Model Card (v1.1.0 & v1.0.0)
+│   ├── DATASET_CARD.md              # Comprehensive Dataset Card with leakage guarantees
+│   ├── LIMITATIONS.md               # Operational limitations & mitigation strategies
 │   └── PREPROCESSING_AUGMENTATION.md # Transforms & zero train/serve skew documentation
-├── models/                          # Serialized model weights & configuration
+├── models_v1.1.0/                   # Production v1.1.0 model weights & calibration (38 classes)
 │   ├── best_model.pt                # PyTorch MobileNetV3-Large checkpoint
 │   ├── crop_disease_model.onnx      # Exported ONNX graph with dynamic batching (16.2 MB)
-│   ├── calibration.json             # Temperature scaling metrics
-│   └── model_config.json            # Serving parameters (threshold 0.74, temperature 0.4792)
-├── notebooks/                       # Colab & Kaggle training notebook
-│   └── crop_disease_model_training_colab.ipynb # Zero-upload GPU training notebook
+│   ├── calibration.json             # Platt temperature scaling parameters (T = 0.6517)
+│   └── model_config.json            # Serving parameters (threshold 0.70)
+├── models_backup_v1.0.0/            # Immutable fallback baseline model v1.0.0
 ├── reports/                         # Visual diagnostics and evaluation artifacts
+│   ├── improvement/                 # Comparative before/after reports (v1.0.0 vs v1.1.0)
 │   ├── evaluation_report.md         # Full test set diagnostic report
-│   ├── robustness_report.md         # Robustness, stress tests & out-of-scope report
-│   ├── confusion_matrix.png         # Raw confusion matrix heatmap
-│   ├── confusion_matrix_normalized.png # Normalized confusion matrix heatmap
-│   ├── calibration_curves.png       # Reliability diagrams before and after calibration
-│   ├── accuracy_vs_coverage.png     # Threshold risk-coverage tradeoff curve
-│   ├── robustness_stress_chart.png  # 12 synthetic perturbation conditions bar chart
-│   ├── gradcam_visualizations.png   # Grad-CAM foliar lesion attention overlays
-│   ├── misclassified_gallery.png    # Diagnostic gallery of misclassified cases
-│   └── test_metrics_per_class.csv   # Per-class precision, recall, F1, and support
+│   └── robustness_report.md         # Robustness, stress tests & out-of-scope report
 ├── src/                             # Core Python package
 │   ├── data/                        # Ingestion, deduplication, transforms, split
 │   ├── train/                       # Model definitions, two-stage fine-tuning
 │   ├── eval/                        # Evaluation, Grad-CAM, PlantDoc benchmarking
 │   ├── calibrate/                   # Temperature scaling & threshold selection
 │   └── serve/                       # ONNX Runtime inference engine & export
-├── tests/                           # Complete test suite
-│   ├── test_api_v1.py               # API v1 endpoint integration tests
-│   ├── test_phase8_robustness.py    # Robustness & stress test verification
-│   ├── test_phase9_confidence.py    # Confidence calibration & threshold verification
-│   ├── test_phase9.py               # ONNX export and parity tests
-│   ├── test_phase7.py               # Evaluation deliverables tests
-│   ├── test_phase5.py               # Leakage-free split tests
-│   ├── test_phase4.py               # Preprocessing & augmentation tests
-│   ├── test_phase3.py               # Class balance & weights tests
-│   └── test_phase1.py               # Crop & class registry tests
+├── tests/                           # Complete test suite (69 passing tests)
 ├── Dockerfile                       # Multi-stage production container build
 ├── docker-compose.yml               # Container orchestration
 ├── requirements.txt                 # Pinned dependencies
-├── config.yaml                      # Centralized configuration
+├── config.yaml                      # Centralized configuration (pointing to models_v1.1.0)
 └── README.md
 ```
 

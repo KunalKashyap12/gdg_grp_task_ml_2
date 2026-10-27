@@ -1,0 +1,147 @@
+{
+  "study_name": "crop_disease_v120",
+  "n_trials": 10,
+  "best_trial_number": 2,
+  "best_macro_f1": 0.8952114415631969,
+  "best_params": {
+    "lr_head": 0.0004345454109729479,
+    "lr_backbone": 3.823475224675187e-06,
+    "weight_decay": 0.000684792009557478,
+    "label_smoothing": 0.03394938606520418,
+    "unfreeze_blocks": 3,
+    "batch_size": 64
+  },
+  "duration_seconds": 2100.299860715866,
+  "trials": [
+    {
+      "number": 0,
+      "value": 0.8902177128419135,
+      "params": {
+        "lr_head": 0.0003574712922600243,
+        "lr_backbone": 7.969454818643937e-05,
+        "weight_decay": 0.001570297088405539,
+        "label_smoothing": 0.07986584841970365,
+        "unfreeze_blocks": 1,
+        "batch_size": 64
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 1,
+      "value": 0.8872826771991263,
+      "params": {
+        "lr_head": 0.0011114989443094978,
+        "lr_backbone": 1.0994335574766194e-06,
+        "weight_decay": 0.008123245085588688,
+        "label_smoothing": 0.10324426408004217,
+        "unfreeze_blocks": 1,
+        "batch_size": 128
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 2,
+      "value": 0.8952114415631969,
+      "params": {
+        "lr_head": 0.0004345454109729479,
+        "lr_backbone": 3.823475224675187e-06,
+        "weight_decay": 0.000684792009557478,
+        "label_smoothing": 0.03394938606520418,
+        "unfreeze_blocks": 3,
+        "batch_size": 64
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 3,
+      "value": 0.8912192851637813,
+      "params": {
+        "lr_head": 0.0005748924681991981,
+        "lr_backbone": 1.5304852121831454e-05,
+        "weight_decay": 1.3783237455007187e-05,
+        "label_smoothing": 0.08075448519014383,
+        "unfreeze_blocks": 3,
+        "batch_size": 64
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 4,
+      "value": 0.8926380553643549,
+      "params": {
+        "lr_head": 0.00028180680291847244,
+        "lr_backbone": 1.5679933916723006e-06,
+        "weight_decay": 0.0011290133559092666,
+        "label_smoothing": 0.06401524937396012,
+        "unfreeze_blocks": 2,
+        "batch_size": 64
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 5,
+      "value": 0.8870298670830313,
+      "params": {
+        "lr_head": 0.0009519754482692679,
+        "lr_backbone": 4.201672054372532e-06,
+        "weight_decay": 0.00036324869566766035,
+        "label_smoothing": 0.07467102793432796,
+        "unfreeze_blocks": 2,
+        "batch_size": 64
+      },
+      "state": "TrialState.PRUNED"
+    },
+    {
+      "number": 6,
+      "value": 0.88355267207159,
+      "params": {
+        "lr_head": 0.0007641361869233315,
+        "lr_backbone": 6.97828126512603e-05,
+        "weight_decay": 1.8427970406864546e-05,
+        "label_smoothing": 0.03959828624191452,
+        "unfreeze_blocks": 3,
+        "batch_size": 128
+      },
+      "state": "TrialState.PRUNED"
+    },
+    {
+      "number": 7,
+      "value": 0.8914140708332513,
+      "params": {
+        "lr_head": 0.0003364867144187955,
+        "lr_backbone": 3.646439558980721e-06,
+        "weight_decay": 0.00042470585622618684,
+        "label_smoothing": 0.034092422497476266,
+        "unfreeze_blocks": 3,
+        "batch_size": 64
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 8,
+      "value": 0.8924140325067453,
+      "params": {
+        "lr_head": 0.0001018959297939515,
+        "lr_backbone": 4.274869455295217e-05,
+        "weight_decay": 0.001319994226153501,
+        "label_smoothing": 0.09290071680409873,
+        "unfreeze_blocks": 1,
+        "batch_size": 128
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 9,
+      "value": 0.8822811864891879,
+      "params": {
+        "lr_head": 0.0008330803890301997,
+        "lr_backbone": 4.589824181495651e-06,
+        "weight_decay": 1.551225912648474e-05,
+        "label_smoothing": 0.05109823217156621,
+        "unfreeze_blocks": 2,
+        "batch_size": 64
+      },
+      "state": "TrialState.PRUNED"
+    }
+  ]
+}

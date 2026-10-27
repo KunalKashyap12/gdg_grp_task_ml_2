@@ -1205,10 +1205,17 @@
 
       if (isLowConf) {
         cropBadge.className = "px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800";
-        cropBadge.innerHTML = `⚠️ Unconfirmed Candidate: ${emoji} ${pred.crop}`;
-        diseaseName.textContent = `Unverified (${cleanDiseaseName})`;
-        pathologyLabel.textContent = `Ambiguous host species: ${pred.label} (${confPct}% < θ 74%)`;
-        diseaseDesc.textContent = `The AI detected foliar lesion patterns resembling ${cleanDiseaseName}, but host tree species could not be verified above the 74.0% safety threshold. Due to visual overlap in fungal symptoms across related crops, please confirm your tree species above.`;
+        if (pred.crop === 'Ambiguous' || data.stage1_leaf?.is_ambiguous) {
+          cropBadge.innerHTML = `⚠️ Ambiguous Host Species (Multiple Candidates)`;
+          diseaseName.textContent = `Unverified Foliar Symptoms`;
+          pathologyLabel.textContent = pred.label || `Multiple species overlap (Top match < 35%)`;
+          diseaseDesc.textContent = data.message || `The AI detected foliar lesion/spotting patterns, but the host plant species cannot be reliably determined. Due to visual overlap in fungal symptoms across related crops (e.g. Cherry, Peach, Maize), please confirm your tree species above.`;
+        } else {
+          cropBadge.innerHTML = `⚠️ Unconfirmed Candidate: ${emoji} ${pred.crop}`;
+          diseaseName.textContent = `Unverified (${cleanDiseaseName})`;
+          pathologyLabel.textContent = `Ambiguous host species: ${pred.label} (${confPct}% < θ 74%)`;
+          diseaseDesc.textContent = data.message || `The AI detected foliar lesion patterns resembling ${cleanDiseaseName}, but host tree species could not be verified above the 74.0% safety threshold. Due to visual overlap in fungal symptoms across related crops, please confirm your tree species above.`;
+        }
         certaintyPill.textContent = "REJECTED (BELOW THRESHOLD)";
         certaintyPill.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300";
       } else {
